@@ -1,0 +1,38 @@
+<!-- auth/base.htmlを継承 -->
+{% extends "auth/base.html" %}
+
+<!-- base.htmlのblock title の中にhtmlを埋め込む -->
+{% block title %}ログイン{% endblock %}
+
+<!-- base.htmlのblock contentの中にhtmlを埋め込む -->
+{% block content %}
+<div class="mx-auto dt-auth-main">
+    <div class="card dt-auth-login">
+        <br>
+        <h2 class="login-head">ログイン</h2>
+        <section>
+            <!-- フォーム入力後はauth/views.pyのlogin関数を実行 -->
+            <form method="post" class="login-form" action="{{ url_for('auth.login') }}">
+                <!-- flash関数で入力したメッセージを順に取得 -->
+                {% for message in get_flashed_messages() %}
+                <!-- メッセージを順に表示 -->
+                <span class="dt-auth-flash">{{ message }}</span>
+                {% endfor %}
+                <!-- csrf対策。とりあえずすべてのhtmlファイルに書いておく -->
+                {{ form.csrf_token }}
+                <!-- auth/forms.pyのLoginFormクラスのemail、password、の情報を基にフォームを作成 -->
+                <!-- form.xxxの取得でforms.pyのxxxの情報を取得できる -->
+                <div class="email-title">メールアドレス</div>
+                {{ form.email(class="form-control dt-auth-input",placeholder="メールアドレス") }}
+                <br>
+                <div class="pass-title">パスワード</div>
+                {{ form.password(class="form-control dt-auth-input",placeholder="パスワード") }}
+                <br>
+                {{ form.submit(class="btn btn-md btn-primary btn-block dt-auth-btn") }}
+            </form>
+            <br>
+            <div class="support1">はじめての方は<a class="nav-link" href="{{ url_for('auth.signup') }}">こちら</a></div>
+        </section>
+    </div>
+</div>
+{% endblock %}

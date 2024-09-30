@@ -1,0 +1,17 @@
+{% extends "currydar/base.html"%}
+{% block head %}
+<title>イベント一覧</title>
+{% endblock %}
+{% block content %}
+<h2 class="event-table">イベント一覧</h2>
+<br>
+<table class="event-table">
+    {% for event in events %}
+    <tr>
+        <td>{{ event.event }}</td>
+        <td>{{ event.date }}</td>
+        <td><a href="{{ url_for('currydar.delete', event_id=event.id) }}">削除</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

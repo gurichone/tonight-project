@@ -1,0 +1,39 @@
+<!-- auth/base.htmlを継承 -->
+{% extends "auth/base.html" %}
+<!-- base.htmlのblock title の中にhtmlを埋め込む -->
+{% block title %}ユーザー新規登録{% endblock %}
+
+<!-- base.htmlのblock contentの中にhtmlを埋め込む -->
+{% block content %}
+<div class="mx-auto dt-auth-main">
+    <div class="card dt-auth-signup">
+        <br>
+        <h2 class="signup-head">ユーザー新規登録</h2>
+        <section>
+            <!-- フォーム入力後はauth/views.pyのsignup関数を実行。変数nextに現在のページ情報を追加。 -->
+            <form method="post" action="{{ url_for('auth.signup', next=request.args.get('next')) }}"
+                class="form-signin">
+                <!-- csrf対策。とりあえず書いておく -->
+                {{ form.csrf_token }}
+                <!-- flash関数で指定したメッセージを順に表示 -->
+                {% for message in get_flashed_messages() %}
+                <div class="dt-auth-flash">{{ message }}</div>
+                {% endfor %}
+                <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
+                <div class="username">ユーザ名</div>
+                {{ form.username(size=30, class="form-control dt-auth-input", placeholder="ユーザー名") }}
+                <br>
+                <div class="mail-signup">メールアドレス</div>
+                {{ form.email(class="form-control dt-auth-input",placeholder="メールアドレス") }}
+                <br>
+                <div class="password-signup">パスワード</div>
+                {{ form.password(class="form-control dt-auth-input",placeholder="パスワード") }}
+                <br>
+                {{ form.submit(class="btn btn-md btn-primary btn-block dt-auth-btn") }}
+            </form>
+            <br>
+            <div class="had-account">すでにアカウントをお持ちですか？<a class="nav-link" href="{{ url_for('auth.login') }}">ログイン</a></div>
+        </section>
+    </div>
+</div>
+{% endblock %}
