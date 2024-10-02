@@ -24,5 +24,8 @@ def create_app(config_name="local"):
     # calendarとすると既存のモジュールと衝突してしまうため名前を変えることになり東内のcurrydarが採用された
     from currydar import views as currydar_views # currydar/views.pyをcurrydar_viewsという名前で使用
     app.register_blueprint(currydar_views.currydar, url_prefix="/") # currydar_viewsのcurrydarとurl"/currydar"を紐づけ
+
+    from gemini import views as gemini_views # gemini/views.pyをgemini_viewsという名前で使用
+    app.register_blueprint(gemini_views.gemini, url_prefix="/gemini") # gemini_viewsのgeminiとurl"/gemini"を紐づけ
     
     return app
