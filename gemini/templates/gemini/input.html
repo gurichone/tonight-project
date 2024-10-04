@@ -14,7 +14,7 @@
     <p>
         <!-- ユーザ名の入力欄を表示 -->
         <div class="event-title">{{ form.question.label }} </div>
-        <div class="event-form">{{ form.question(placeholder="おい、なんか言ってみろよ") }}</div>
+        <div class="event-form">{{ form.question }}</div>
     </p>
     <!-- ユーザ名の入力に誤りがある場合はエラーを順に表示 -->
     {% for error in form.question.errors %}

@@ -13,6 +13,8 @@ class LocalConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = f"sqlite:///{basedir / 'local.sqlite'}"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
+    # 画像アップロード先にmedia/imagesを指定する
+    UPLOAD_FOLDER = "codes"
 
 
 # BaseConfigクラスを継承してTestingConfigクラスを作成する
@@ -21,7 +23,7 @@ class TestingConfig(BaseConfig):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     WTF_CSRF_ENABLED = False
     # 画像アップロード先にmedia/imagesを指定する
-    UPLOAD_FOLDER = str(Path(basedir, "media", "images"))
+    UPLOAD_FOLDER = str(Path(basedir,"codes"))
 
 
 # config辞書にマッピングする
