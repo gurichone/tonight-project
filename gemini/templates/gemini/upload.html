@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>gemini api</title>
+</head>
+<body>
+<h2 class="newEvent-title">gemini api</h2>
+<!-- crud/views.pyのcreate_user関数を実行 -->
+    <form action="{{ url_for('gemini.upload_code') }}" method="post" enctype="multipart/form-data"
+        novalidate="novalidate">
+        <!-- csrf対策。とりあえず書いておく -->
+        {{ form.csrf_token }}
+        <div>
+            <label>
+                <!-- 画像の投函フォームを作成 -->
+                <span> {{ form.code(class="form-control-file") }} </span>
+            </label>
+        </div>
+        <!-- フォームの入力に誤りがある場合はエラーを順に表示 -->
+        {% for error in form.code.errors %}
+        <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+        <hr />
+        <div>
+            <label> {{ form.submit(class="btn btn-primary") }} </label>
+        </div>
+    </form>
+</body>

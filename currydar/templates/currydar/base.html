@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<header>
+    <div id="topbar" class="topbar">
+        <h2 class="pagetitle">🍛Currydar</h2>
+        <ul class="account">
+            {% if current_user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="nav-link">{{ current_user.username }}</span>
+                </li>
+                <li class="nav-item">
+                    <!-- auth/views.pyのlogout関数を実行 -->
+                    <a href="{{ url_for('auth.logout') }}" class="nav-link">ログアウト</a>
+                </li>
+                <!-- ユーザが未ログインの時の処理 -->
+                {% else %}
+                <li class="nav-item">
+                    <!-- auth/views.pyのsignup関数を実行 -->
+                    <a class="nav-link" href="{{ url_for('auth.signup') }}">新規登録</a>
+                </li>
+                <li class="nav-item">
+                    <!-- auth/views.pyのlogin関数を実行 -->
+                    <a class="nav-link" href="{{ url_for('auth.login') }}">ログイン</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('currydar.currydar_app')}}">TOP</a>
+                </li>
+        </ul>
+    </div>
+    </header>
+<body>
+    {% block content %}{% endblock %}
+</body>
