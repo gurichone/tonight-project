@@ -23,6 +23,9 @@ class JupyterForms(FlaskForm): #ユーザー新規作成とユーザー編集用
     stdin = TextAreaField(
         "標準入力", # フォームに表示される文字を指定
     )
+    stdout = TextAreaField(
+        "出力", # フォームに表示される文字を指定
+    )
     code = SelectField(
         "ファイルを選択", # フォームに表示される文字を指定
         coerce=int
