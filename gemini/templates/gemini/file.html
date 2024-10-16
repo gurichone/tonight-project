@@ -5,9 +5,72 @@
     <title>gemini api</title>
 </head>
 <body>
+
 <h2 class="newEvent-title">gemini api</h2>
 <!-- crud/views.pyのcreate_user関数を実行 -->
-{% for line in txt %}
-    <p>{{line}}</p>
+ <table>
+    <tr>
+        <th>入力</th>
+        <th>期待される出力</th>
+        <th>実行結果</th>
+        <th>正誤</th>
+    </tr>
+{% for r in results %}
+    <tr>
+        <th>
+            {% for i in r.stdin %}
+            <p>{{ i }}</p>
+            {% endfor %}
+        </th>
+        <th>
+            {% for o in r.stdout %}
+            <p>{{ o }}</p>
+            {% endfor %}
+        </th>
+        <th>
+            {% for a in r.ans %}
+            <p>{{ a }}</p>
+            {% endfor %}
+        </th>
+        <th>
+            {% if r.ox %}
+            O
+            {% else %}
+            X
+            {% endif %}
+        </th>
+    </tr>
 {% endfor %}
+</table>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.7/push.min.js"></script>
+
+<script type="text/javascript">
+    setTimeout(function () {
+        Push.Permission.request(onGranted, onDenied);
+    }, 3 * 1000);
+
+    function onGranted() {
+        console.log('Granted!');
+    }
+
+    function onDenied() {
+        ga('send', 'event', 'browser-push', 'denied', 'top', 1);
+    }
+
+    if (Push.Permission.has()) {
+        Push.create("This is jupyter notebook", {
+            body:    "“This is K'Sante, a champion with 4,700 HP, 329 Armor, and 201 MR, has Unstoppable, a Shield, and goes over walls. Has Airborne, and the cooldown is only 1 second too. It costs 15 Mana. The W CD is even refreshed when he transforms. He has true damage on his passive. Then, when he stacks Armor and MR, he gets Ability Haste too, Ability Haste to his Q, and his spell casting speeds up. Then, he has an AD ratio, so his W…AAAAAAAAAAAAAAA”",
+            icon:    './images/icon.png', // Image path displayed right side
+            timeout: 4000,
+            onClick: function () {
+                location.href = 'https://www.reddit.com/r/leagueoflegends/comments/14f9ewr/showmaker_explains_ksante/'
+                this.close();
+            }
+        });
+    }
+
+</script>
 </body>
+</html>
+

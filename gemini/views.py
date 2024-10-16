@@ -40,6 +40,7 @@ def make_testcase(txt):
 @gemini.route('/', methods=["GET", "POST"])
 def gemini_app(): 
     # aaa = db.session.query(Codes).delete()
+    # db.session.commit()
     form = GeminiForms() # currydar/forms.pyのEventFormクラスを使えるようにする
     codes = db.session.query(Codes).all()
     form.code.choices = [(code.id, code.code_name)for code in codes]
