@@ -8,5 +8,17 @@
 <body>
 <h2 class="newEvent-title">gemini api</h2>
 <!-- crud/views.pyのcreate_user関数を実行 -->
-{{ ans }}
+{% for a in ans %}
+    {% if a.class == "head" %}
+        <h2>{{a.txt}}</h2>
+    {% elif a.class == "code" %}
+        <div style="background-color: black; color: white;">
+        <p>{{a.txt}}</p>
+    {% elif a.class == "endcode" %}
+        <p>{{a.txt}}</p>
+        </div>
+    {% else %}
+        <p>{{a.txt}}</p>
+    {% endif %}
+{% endfor%}
 </body>

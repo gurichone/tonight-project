@@ -57,9 +57,28 @@ def gemini_app():
         prompt = form.question.data + gemini_syntax + txt
         response = model.generate_content(prompt)
         # 応答をテキストとして取得（ここではresponse.textと仮定）
-        assistant_response = response.text
+        assistant_response = response.text.split("\n")
+
+        # 文字列整理
+        ans = list()
+        codeflag = False
+        for a in assistant_response:
+            if len(a) == 0:
+                continue
+            if codeflag and a[-3:] == "```":
+                ans.append({"class":"endcode", "txt":a[:-3]})
+            elif a[0] == "*":
+                if a[1] == "*":
+                    ans.append({"class":"head", "txt":a})
+                else:
+                    ans.append({"class":"text", "txt":a})
+            elif a[0:3] == "```":
+                codeflag = True
+                ans.append({"class":"code", "txt":a[3:]})
+            else:
+                ans.append({"class":"text", "txt":a})
         
-        return render_template("gemini/output.html", ans=assistant_response)
+        return render_template("gemini/output.html", ans=ans)
         
     return render_template("gemini/input.html", form=form)
 
