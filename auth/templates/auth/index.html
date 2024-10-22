@@ -1,0 +1,14 @@
+<!-- auth/base.htmlを継承 -->
+{% extends "auth/base.html" %}
+
+<!-- base.htmlのblock title の中にhtmlを埋め込む -->
+{% block title %}いんでっっっっくす{% endblock %}
+
+<!-- base.htmlのblock contentの中にhtmlを埋め込む -->
+{% block content %}
+    インデックス
+    <!-- {% if current_user.is_authenticated %}
+    {{ current_user.username }}
+    {% endif %} -->
+    <a href="{{ url_for('auth.delete') }}">ぜんぶきえてしまえばいい</a>
+{% endblock %}

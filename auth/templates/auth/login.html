@@ -11,6 +11,7 @@
         <br>
         <h2 class="login-head">ログイン</h2>
         <section>
+            <h3>教員</h3>
             <!-- フォーム入力後はauth/views.pyのlogin関数を実行 -->
             <form method="post" class="login-form" action="{{ url_for('auth.login') }}">
                 <!-- flash関数で入力したメッセージを順に取得 -->
@@ -19,19 +20,36 @@
                 <span class="dt-auth-flash">{{ message }}</span>
                 {% endfor %}
                 <!-- csrf対策。とりあえずすべてのhtmlファイルに書いておく -->
-                {{ form.csrf_token }}
+                {{ teacherform.csrf_token }}
                 <!-- auth/forms.pyのLoginFormクラスのemail、password、の情報を基にフォームを作成 -->
                 <!-- form.xxxの取得でforms.pyのxxxの情報を取得できる -->
-                <div class="email-title">メールアドレス</div>
-                {{ form.email(class="form-control dt-auth-input",placeholder="メールアドレス") }}
+                {{ teacherform.teacher_num(placeholder="教員番号") }}
                 <br>
-                <div class="pass-title">パスワード</div>
-                {{ form.password(class="form-control dt-auth-input",placeholder="パスワード") }}
+                {{ teacherform.password(placeholder="パスワード") }}
                 <br>
-                {{ form.submit(class="btn btn-md btn-primary btn-block dt-auth-btn") }}
+                {{ teacherform.submit }}
             </form>
-            <br>
-            <div class="support1">はじめての方は<a class="nav-link" href="{{ url_for('auth.signup') }}">こちら</a></div>
+        </section>
+
+        <section>
+            <h3>生徒</h3>
+            <!-- フォーム入力後はauth/views.pyのlogin関数を実行 -->
+            <form method="post" class="login-form" action="{{ url_for('auth.login') }}">
+                <!-- flash関数で入力したメッセージを順に取得 -->
+                {% for message in get_flashed_messages() %}
+                <!-- メッセージを順に表示 -->
+                <span class="dt-auth-flash">{{ message }}</span>
+                {% endfor %}
+                <!-- csrf対策。とりあえずすべてのhtmlファイルに書いておく -->
+                {{ studentform.csrf_token }}
+                <!-- auth/forms.pyのLoginFormクラスのemail、password、の情報を基にフォームを作成 -->
+                <!-- form.xxxの取得でforms.pyのxxxの情報を取得できる -->
+                {{ studentform.student_num(placeholder="生徒番号") }}
+                <br>
+                {{ studentform.password(placeholder="パスワード") }}
+                <br>
+                {{ studentform.submit }}
+            </form>
         </section>
     </div>
 </div>

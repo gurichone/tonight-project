@@ -8,31 +8,61 @@
 <div class="mx-auto dt-auth-main">
     <div class="card dt-auth-signup">
         <br>
-        <h2 class="signup-head">ユーザー新規登録</h2>
+        <h2 class="signup-head">新規登録</h2>
+        
         <section>
+            <h3>教員</h3>
             <!-- フォーム入力後はauth/views.pyのsignup関数を実行。変数nextに現在のページ情報を追加。 -->
-            <form method="post" action="{{ url_for('auth.signup', next=request.args.get('next')) }}"
+            <form method="post" action="{{ url_for('auth.signup')}}"
                 class="form-signin">
                 <!-- csrf対策。とりあえず書いておく -->
-                {{ form.csrf_token }}
+                {{ teacherform.csrf_token }}
                 <!-- flash関数で指定したメッセージを順に表示 -->
                 {% for message in get_flashed_messages() %}
                 <div class="dt-auth-flash">{{ message }}</div>
                 {% endfor %}
                 <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
-                <div class="username">ユーザ名</div>
-                {{ form.username(size=30, class="form-control dt-auth-input", placeholder="ユーザー名") }}
+                {{ teacherform.teacher_num(placeholder="教員番号") }}
                 <br>
-                <div class="mail-signup">メールアドレス</div>
-                {{ form.email(class="form-control dt-auth-input",placeholder="メールアドレス") }}
+                {{ teacherform.class_num(placeholder="クラス番号") }}
                 <br>
-                <div class="password-signup">パスワード</div>
-                {{ form.password(class="form-control dt-auth-input",placeholder="パスワード") }}
+                {{ teacherform.teacher_name(placeholder="氏名") }}
                 <br>
-                {{ form.submit(class="btn btn-md btn-primary btn-block dt-auth-btn") }}
+                {{ teacherform.email(placeholder="メールアドレス") }}
+                <br>
+                {{ teacherform.password(placeholder="パスワード") }}
+                <br>
+                {{ teacherform.submit }}
             </form>
-            <br>
-            <div class="had-account">すでにアカウントをお持ちですか？<a class="nav-link" href="{{ url_for('auth.login') }}">ログイン</a></div>
+            <!-- <br>
+            <div class="had-account">すでにアカウントをお持ちですか？<a class="nav-link" href="{{ url_for('auth.login') }}">ログイン</a></div> -->
+        </section>
+
+        
+        <section>
+            <h3>生徒</h3>
+            <!-- フォーム入力後はauth/views.pyのsignup関数を実行。変数nextに現在のページ情報を追加。 -->
+            <form method="post" action="{{ url_for('auth.signup')}}"
+                class="form-signin">
+                <!-- csrf対策。とりあえず書いておく -->
+                {{ studentform.csrf_token }}
+                <!-- flash関数で指定したメッセージを順に表示 -->
+                {% for message in get_flashed_messages() %}
+                <div class="dt-auth-flash">{{ message }}</div>
+                {% endfor %}
+                <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
+                {{ studentform.student_num(placeholder="生徒番号") }}
+                <br>
+                {{ studentform.class_num(placeholder="クラス番号") }}
+                <br>
+                {{ studentform.student_name(placeholder="氏名") }}
+                <br>
+                {{ studentform.email(placeholder="メールアドレス") }}
+                <br>
+                {{ studentform.password(placeholder="パスワード") }}
+                <br>
+                {{ studentform.submit }}
+            </form>
         </section>
     </div>
 </div>
