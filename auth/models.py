@@ -36,7 +36,6 @@ def load_user(id):
     else:
         return Student.query.get(id)
 
-
 # studentテーブル
 class Student(db.Model, UserMixin):
     __tablename__ = "student"
