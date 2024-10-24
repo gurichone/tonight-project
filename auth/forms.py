@@ -4,11 +4,11 @@ from wtforms.validators import DataRequired, Email, Length, NumberRange
 
 # SignUpFormを作成。フォームを作成する際はとりあえずカッコの中にFlaskFormを書いておく（フォーム作成に必要な機能を使えるようになる）
 class TeacherSignUpForm(FlaskForm):
-    teacher_num = DecimalField(
+    teacher_num = StringField(
         "教員番号",
         validators=[
             DataRequired("教員番号は必須です。"), # 入力必須の設定
-            NumberRange(0, 9999999, "7桁以内で入力してください"), # 教員番号は7桁
+            Length(6, 6, "6文字で入力してください。"), # 教員番号は6桁
         ],
     )
     class_num = StringField(
@@ -42,11 +42,11 @@ class TeacherSignUpForm(FlaskForm):
 # LoginFormを作成。フォームを作成する際はとりあえずカッコの中にFlaskFormを書いておく（フォーム作成に必要な機能を使えるようになる）
 class TeacherLoginForm(FlaskForm):
     # emailの入力欄を作成
-    teacher_num = DecimalField(
+    teacher_num = StringField(
         "教員番号",
         validators=[
             DataRequired("教員番号は必須です。"), # 入力必須の設定
-            NumberRange(0, 9999999, "7桁以内で入力してください"),
+            Length(6, 6, "6文字で入力してください。"),
         ],
     )
     password = PasswordField("パスワード", validators=[DataRequired("パスワードは必須です。")]) # パスワードを入力必須に設定
@@ -55,11 +55,11 @@ class TeacherLoginForm(FlaskForm):
 
     # SignUpFormを作成。フォームを作成する際はとりあえずカッコの中にFlaskFormを書いておく（フォーム作成に必要な機能を使えるようになる）
 class StudentSignUpForm(FlaskForm):
-    student_num = DecimalField(
+    student_num = StringField(
         "生徒番号",
         validators=[
             DataRequired("生徒番号は必須です。"), # 入力必須の設定
-            NumberRange(0, 9999999, "7桁以内で入力してください"), # 生徒番号は7桁
+            Length(7, 7, "7文字で入力してください。"), # 生徒番号は7桁
         ],
     )
     class_num = StringField(
@@ -93,11 +93,11 @@ class StudentSignUpForm(FlaskForm):
 # LoginFormを作成。フォームを作成する際はとりあえずカッコの中にFlaskFormを書いておく（フォーム作成に必要な機能を使えるようになる）
 class StudentLoginForm(FlaskForm):
     # emailの入力欄を作成
-    student_num = DecimalField(
+    student_num = StringField(
         "生徒番号",
         validators=[
             DataRequired("生徒番号は必須です。"), # 入力必須の設定
-            NumberRange(0, 9999999, "7桁以内で入力してください"),
+            Length(7, 7, "7文字で入力してください。"),
         ],
     )
     password = PasswordField("パスワード", validators=[DataRequired("パスワードは必須です。")]) # パスワードを入力必須に設定

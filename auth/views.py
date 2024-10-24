@@ -2,7 +2,7 @@ from app import db # app.pyのdbをインポート
 from auth.forms import TeacherLoginForm, TeacherSignUpForm, StudentLoginForm, StudentSignUpForm # auth/forms.pyのTeacherLoginForm, TeacherSignUpForm, StudentLoginForm, StudentSignUpFormクラスを使えるようにする
 from auth.models import Teacher, Student # auth/models.pyのTeacher, Studentクラス(データベース)を使えるようにする
 from flask import Blueprint, flash, redirect, render_template, request, url_for
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 
 # authアプリを生成。テンプレートを保存するフォルダ名にtemplates、スタティックを保存するフォルダ名にstaticを指定
 # htmlファイルを探すときは自動的にauth/templatesの中を参照するようになる
@@ -18,7 +18,7 @@ def signup():
     if teacherform.validate_on_submit(): 
         # フォームが正しく入力されているときの処理
         teacher = Teacher(
-            teacher_num=int(teacherform.teacher_num.data),
+            id=teacherform.teacher_num.data,
             class_num=teacherform.class_num.data,
             teacher_name=teacherform.teacher_name.data, # DBのユーザーテーブルのusernameにフォームに入力されたユーザ名を代入
             teacher_email=teacherform.email.data, # DBのユーザーテーブルのemailにフォームに入力されたメールアドレスを代入
@@ -41,7 +41,7 @@ def signup():
     if studentform.validate_on_submit(): 
         # フォームが正しく入力されているときの処理
         student = Student(
-            student_num=studentform.student_num.data,
+            id=studentform.student_num.data,
             class_num=studentform.class_num.data,
             student_name=studentform.student_name.data, # DBのユーザーテーブルのusernameにフォームに入力されたユーザ名を代入
             student_email=studentform.email.data, # DBのユーザーテーブルのemailにフォームに入力されたメールアドレスを代入
@@ -71,7 +71,7 @@ def login():
 
     if teacherform.validate_on_submit():
         # 入力されたメールアドレスを持つユーザデータを取得
-        teacher = Teacher.query.filter_by(teacher_num=int(teacherform.teacher_num.data)).first() 
+        teacher = Teacher.query.filter_by(id=teacherform.teacher_num.data).first() 
 
         # ユーザーが存在しパスワードが一致する場合はログインを許可する
         if teacher is not None and teacher.verify_password(teacherform.password.data):
@@ -84,7 +84,7 @@ def login():
     
     if studentform.validate_on_submit():
         # 入力されたメールアドレスを持つユーザデータを取得
-        student = Student.query.filter_by(student_num=int(studentform.student_num.data)).first() 
+        student = Student.query.filter_by(id=studentform.student_num.data).first() 
 
         # ユーザーが存在しパスワードが一致する場合はログインを許可する
         if student is not None and student.verify_password(studentform.password.data):
@@ -105,6 +105,7 @@ def logout():
     return redirect(url_for("currydar.currydar_app")) # auth/views.pyのlogin関数を実行
 
 @auth.route("/index")
+# @login_required
 def index():
     return render_template("auth/index.html")
 

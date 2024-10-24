@@ -7,8 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # teacherテーブル
 class Teacher(db.Model, UserMixin):
     __tablename__ = "teacher"
-    id = db.Column(db.Integer, primary_key=True)
-    teacher_num = db.Column(db.Integer, unique=True)
+    id = db.Column(db.String, primary_key=True)
     teacher_name = db.Column(db.String, index=True)
     teacher_email = db.Column(db.String, unique=True, index=True)
     password_hash = db.Column(db.String)
@@ -31,15 +30,14 @@ class Teacher(db.Model, UserMixin):
         return Teacher.query.filter_by(teacher_email=self.teacher_email).first() is not None
 
 @login_manager.user_loader
-def load_teacher(teacher_id):
+def load_user(teacher_id):
     return Teacher.query.get(teacher_id)
 
 
 # studentテーブル
 class Student(db.Model, UserMixin):
     __tablename__ = "student"
-    id = db.Column(db.Integer, primary_key=True)
-    student_num = db.Column(db.Integer, unique=True)
+    id = db.Column(db.String, primary_key=True)
     student_name = db.Column(db.String, index=True)
     student_email = db.Column(db.String, unique=True, index=True)
     password_hash = db.Column(db.String)
@@ -64,6 +62,6 @@ class Student(db.Model, UserMixin):
     def is_duplicate_email(self):
         return Student.query.filter_by(student_email=self.student_email).first() is not None
 
-@login_manager.user_loader
-def load_student(student_id):
-    return Student.query.get(student_id)
+# @login_manager.user_loader
+# def load_student(student_id):
+#     return Student.query.get(student_id)
