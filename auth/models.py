@@ -30,8 +30,11 @@ class Teacher(db.Model, UserMixin):
         return Teacher.query.filter_by(teacher_email=self.teacher_email).first() is not None
 
 @login_manager.user_loader
-def load_user(teacher_id):
-    return Teacher.query.get(teacher_id)
+def load_user(id):
+    if len(id) == 6:
+        return Teacher.query.get(id)
+    else:
+        return Student.query.get(id)
 
 
 # studentテーブル
