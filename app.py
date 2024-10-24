@@ -21,6 +21,9 @@ def create_app(config_name="local"):
     from auth import views as auth_views # auth/views.pyをauth_viewsという名前で使用
     app.register_blueprint(auth_views.auth, url_prefix="/") # auth_viewsのauthとurl"/auth"を紐づけ
 
+    from teacher import views as teacher_views
+    app.register_blueprint(teacher_views.teacher, url_prefix="/teacher")
+
     from gemini import views as gemini_views # gemini/views.pyをgemini_viewsという名前で使用
     app.register_blueprint(gemini_views.gemini, url_prefix="/gemini") # gemini_viewsのgeminiとurl"/gemini"を紐づけ
     
