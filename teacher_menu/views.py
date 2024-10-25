@@ -10,4 +10,4 @@ menu = Blueprint(
 
 @menu.route("/")
 def t_menu():
-    return "tounai is GOD"
+    return render_template("teacher_menu/index.html")

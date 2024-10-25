@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>TeacherMenu</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}">
+</head>
+<body>
+    <header>
+        <!-- 通知とアカウント情報のアイコン -->
+        <div class="teacher-session">
+            <a href="#" class="menu-icon">
+                <img src="{{ url_for('static', filename='images/notice.png') }}" alt="通知">
+                <p class="icon-text">通知</p>
+            </a>
+            <a href="#" class="menu-icon">
+                <img src="{{ url_for('static', filename='#') }}" alt="アカウント情報">
+                <p class="icon-text">アカウント情報</p>
+            </a>
+        </div>
+    </header>
+<!-- 教員用メニュー画面のメニューの一覧を作成 -->
+    <div class="teacher-menu">
+        <ul>
+            <li><a href="#" class="menu-item">
+                <img src="{{ url_for('static', filename='images/student.png') }}" alt="生徒管理">
+            </a></li>
+            
+            <li><a href="#" class="menu-item">
+                <img src="{{ url_for('static', filename='images/chat.png') }}" alt="チャット">
+            </a></li>
+
+            <li><a href="#" class="menu-item">
+                <img src="{{ url_for('static', filename='images/jikanwari.png') }}" alt="時間割管理">
+            </a></li>
+
+            <li><a href="#" class="menu-item">
+                <img src="{{ url_for('static', filename='images/teisyutu.png') }}" alt="提出物管理">
+            </a></li>
+
+            <li><a href="#" class="menu-item">
+                <img src="{{ url_for('static', filename='images/seiseki.png') }}" alt="成績管理">
+            </a></li>
+
+            <li><a href="#" class="menu-item">
+                <img src="{{ url_for('static', filename='images/noticesent.png') }}" alt="お知らせ送信">
+            </a></li>
+        </ul>
+    </div>
+</body>
+</html>
