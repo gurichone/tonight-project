@@ -11,4 +11,3 @@ class Score(db.Model):
 
 class Attend(db.Model):
     __tablename__ = "attend"
-    

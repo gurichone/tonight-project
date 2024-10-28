@@ -13,7 +13,16 @@ seiseki = Blueprint(
 # 成績画面は三つの要素から絞り込みをして検索する
 @seiseki.route("/")
 def search():
-    # db.session.query(Score).all()
+    form = SearchScore()
+    # 欄に一つでも入力があれば応答する
+    if form.validate_on_submit():
+        # 科目名、クラス番号、生徒番号から絞り込みをする
+        score = Score(
+            subject_name = form.subject_name.data,
+            class_num = form.class_num.data,
+            student_num = form.student_num.data,
+        )
+        db.session.query(Score).fliter_by(score)
         
     return render_template("/teacher_seiseki/index.html")
 

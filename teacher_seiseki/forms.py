@@ -11,4 +11,3 @@ class SearchScore(FlaskForm):
     student_num = IntegerField("生徒番号")
 
     submit = SubmitField("検索")
-
