@@ -10,4 +10,4 @@ student = Blueprint(
 
 @student.route("/")
 def teacher_student():
-    return render_template("teacher_student/stukanri.html")
+    return render_template("stukanri.html")

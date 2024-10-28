@@ -11,15 +11,16 @@ seiseki = Blueprint(
 )
 
 # 成績画面は三つの要素から絞り込みをして検索する
-@seiseki.route("/", methods=["GET", "POST"])
-def teacher_seiseki():
-    form = SearchScore()
-    if form.validate_on_submit():
-        # 科目名、クラス番号、生徒番号から絞り込みをする
-        score = Score()
-
-        db.session.query(Score).fliter(Score.subject_name=="",
-                                       Score.class_num=="",
-                                       Score.student_num=="").all()
+@seiseki.route("/")
+def search():
+    # db.session.query(Score).all()
         
-    return render_template("tempaltes/teacher_seiseki/seiseki.html", form=form)
+    return render_template("/teacher_seiseki/index.html")
+
+@seiseki.route("/add", methods=["GET"])
+def add():
+    return None
+
+@seiseki.route("/attendance")
+def attendance():
+    return None

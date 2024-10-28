@@ -11,3 +11,7 @@ menu = Blueprint(
 @menu.route("/")
 def t_menu():
     return render_template("teacher_menu/index.html")
+
+@menu.route("/student")
+def t_student():
+    return render_template("teacher_student/stukanri")
