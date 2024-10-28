@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>時間割</title>
+    <style>
+        table {
+            width: 100%; /* テーブルの幅を100%に設定 */
+            border-collapse: collapse; /* ボーダーの重なりを防ぐ */
+            margin: 20px auto; /* 上下のマージンを設定して中央に配置 */
+        }
+        th, td {
+            border: 1px solid black; /* 枠線を追加 */
+            padding: 10px; /* セル内のパディングを設定 */
+            text-align: center; /* セル内のテキストを中央揃え */
+        }
+        th {
+            background-color: #f2f2f2; /* ヘッダーの背景色 */
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">時間割</h1>
+    <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}">授業を追加</a>
+    <table>
+        <thead>
+            <tr>
+                <th>曜日</th>
+                <th>1時間目</th>
+                <th>2時間目</th>
+                <th>3時間目</th>
+                <th>備考</th>
+                <th>イベント</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data %}
+                <tr>
+                    <td>{{ entry.day }}</td>
+                    <td>{{ entry.period1 }}</td>
+                    <td>{{ entry.period2 }}</td>
+                    <td>{{ entry.period3 }}</td>
+                    <td>{{ entry.notes }}</td>
+                    <td>{{ entry.event }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
