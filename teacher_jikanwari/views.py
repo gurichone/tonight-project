@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for  # requestをインポート
 from app import db
-from app import db
 
 # Blueprintの作成
 jikanwari = Blueprint(
@@ -20,6 +19,7 @@ timetable_data = [
 # ルートの定義
 @jikanwari.route('/')
 def t_jikanwari():
+    timetable_data = Timetable.query.all()  # データベースから全エントリを取得
     return render_template('teacher_jikanwari/table.html', data=timetable_data)
 
 # Flaskアプリケーションの作成

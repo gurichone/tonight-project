@@ -1,33 +1,15 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>時間割追加</title>
-</head>
-<body>
-    <h1>時間割の追加</h1>
-    <form action="{{ url_for('teacher.jikanwari.add_entry') }}" method="POST">
-        <label for="day">曜日:</label>
-        <input type="text" name="day" required><br>
-        
-        <label for="period1">1時間目:</label>
-        <input type="text" name="period1" required><br>
-        
-        <label for="period2">2時間目:</label>
-        <input type="text" name="period2" required><br>
-        
-        <label for="period3">3時間目:</label>
-        <input type="text" name="period3" required><br>
-        
-        <label for="notes">備考:</label>
-        <input type="text" name="notes"><br>
-        
-        <label for="event">イベント:</label>
-        <input type="text" name="event"><br>
-
-        <button type="submit">追加</button>
-    </form>
-    <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">戻る</a>
-</body>
-</html>
+<form action="{{ url_for('jikanwari.add_entry') }}" method="POST">
+    <label for="day">曜日:</label>
+    <input type="text" name="day" required>
+    <label for="period1">1時間目:</label>
+    <input type="text" name="period1" required>
+    <label for="period2">2時間目:</label>
+    <input type="text" name="period2" required>
+    <label for="period3">3時間目:</label>
+    <input type="text" name="period3" required>
+    <label for="notes">備考:</label>
+    <input type="text" name="notes">
+    <label for="event">イベント:</label>
+    <input type="text" name="event">
+    <button type="submit">追加</button>
+</form>

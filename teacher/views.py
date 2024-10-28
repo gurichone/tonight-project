@@ -23,8 +23,8 @@ teacher.register_blueprint(teacher_menu_views.menu, url_prefix="/")
 # from teacher_teisyutu import views as teacher_teisyutu_views
 # teacher.register_blueprint(teacher_teisyutu_views.teisyutu, url_prefix="/teisyutu")
 
-from teacher_jikanwari import views as teacher_jikanwari_views
-teacher.register_blueprint(teacher_jikanwari_views.jikanwari, url_prefix="/jikanwari")
+# from teacher_jikanwari import views as teacher_jikanwari_views
+# teacher.register_blueprint(teacher_jikanwari_views.jikanwari, url_prefix="/jikanwari")
 
 # from teacher_saiten import views as teacher_saiten_views
 # teacher.register_blueprint(teacher_saiten_views.saiten, url_prefix="/saiten")
