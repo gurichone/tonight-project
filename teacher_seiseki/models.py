@@ -8,3 +8,7 @@ class Score(db.Model):
     subject_id = db.Column(db.String)
     subject_name = db.Column(db.String)
     attend_day = db.Column(db.Integer)
+
+class Attend(db.Model):
+    __tablename__ = "attend"
+    
