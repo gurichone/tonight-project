@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for  # requestをインポート
+from flask import Blueprint, render_template, request, redirect, url_for
 from app import db
 
 # Blueprintの作成
@@ -11,15 +11,14 @@ jikanwari = Blueprint(
 
 # タイムテーブルデータのサンプル
 timetable_data = [
-    {"day": "Monday", "period1": "Math", "period2": "Science", "period3": "History", "notes": "Bring calculator", "event": "Quiz"},
-    {"day": "Tuesday", "period1": "English", "period2": "PE", "period3": "Art", "notes": "Bring sports kit", "event": ""},
+    {"year": 2024, "month": 10, "day": 28, "weekday": "月曜日", "period1": "Math", "period2": "Science", "period3": "History", "notes": "Bring calculator", "event": "Quiz"},
+    {"year": 2024, "month": 10, "day": 29, "weekday": "火曜日", "period1": "English", "period2": "PE", "period3": "Art", "notes": "Bring sports kit", "event": ""},
     # 必要に応じてデータを追加
 ]
 
 # ルートの定義
 @jikanwari.route('/')
 def t_jikanwari():
-    timetable_data = Timetable.query.all()  # データベースから全エントリを取得
     return render_template('teacher_jikanwari/table.html', data=timetable_data)
 
 # Flaskアプリケーションの作成
@@ -34,21 +33,22 @@ def create_app():
 @jikanwari.route('/add', methods=['POST'])
 def add_entry():
     new_entry = {
-        "day": request.form['day'],
-        "period1": request.form['period1'],
-        "period2": request.form['period2'],
-        "period3": request.form['period3'],
-        "notes": request.form['notes'],
-        "event": request.form['event']
+        "year": request.form['year'],  # 西暦
+        "month": request.form['month'],  # 月
+        "day": request.form['day'],  # 日
+        "weekday": request.form['weekday'],  # 曜日
+        "period1": request.form['period1'],  # 1時間目
+        "period2": request.form['period2'],  # 2時間目
+        "period3": request.form['period3'],  # 3時間目
+        "notes": request.form['notes'],  # 備考
+        "event": request.form['event']  # イベント
     }
     timetable_data.append(new_entry)  # 新しい項目を追加
-    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正: 正しいエンドポイントにリダイレクト
+    return redirect(url_for('teacher.jikanwari.t_jikanwari')) 
 
 @jikanwari.route('/add', methods=['GET'])
 def show_add_entry():
     return render_template('teacher_jikanwari/add_entry.html')
-
-
 
 if __name__ == '__main__':
     app = create_app()

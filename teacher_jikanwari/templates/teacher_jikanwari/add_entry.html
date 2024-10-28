@@ -1,15 +1,114 @@
-<form action="{{ url_for('jikanwari.add_entry') }}" method="POST">
-    <label for="day">曜日:</label>
-    <input type="text" name="day" required>
-    <label for="period1">1時間目:</label>
-    <input type="text" name="period1" required>
-    <label for="period2">2時間目:</label>
-    <input type="text" name="period2" required>
-    <label for="period3">3時間目:</label>
-    <input type="text" name="period3" required>
-    <label for="notes">備考:</label>
-    <input type="text" name="notes">
-    <label for="event">イベント:</label>
-    <input type="text" name="event">
-    <button type="submit">追加</button>
-</form>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>授業を追加</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: left;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 15px;
+            max-width: 600px;
+        }
+        label {
+            padding-right: 10px;
+            align-self: center;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            grid-column: span 2;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        a {
+            display: block;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        function updateWeekday() {
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+
+            if (year && month && day) {
+                const date = new Date(year, month - 1, day);
+                const weekdays = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
+                const weekday = weekdays[date.getDay()];
+                document.getElementById('weekday').value = weekday;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>授業を追加</h1>
+    <form action="{{ url_for('teacher.jikanwari.add_entry') }}" method="POST">
+        <label for="year">西暦:</label>
+        <select id="year" name="year" required onchange="updateWeekday()">
+            {% for y in range(2020, 2031) %}
+                <option value="{{ y }}">{{ y }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="month">月:</label>
+        <select id="month" name="month" required onchange="updateWeekday()">
+            {% for m in range(1, 13) %}
+                <option value="{{ m }}">{{ m }}月</option>
+            {% endfor %}
+        </select>
+
+        <label for="day">日:</label>
+        <select id="day" name="day" required onchange="updateWeekday()">
+            {% for d in range(1, 32) %}
+                <option value="{{ d }}">{{ d }}日</option>
+            {% endfor %}
+        </select>
+
+        <label for="weekday">曜日:</label>
+        <input type="text" id="weekday" name="weekday" readonly>
+
+        <label for="period1">1時間目:</label>
+        <input type="text" id="period1" name="period1" required>
+
+        <label for="period2">2時間目:</label>
+        <input type="text" id="period2" name="period2" required>
+
+        <label for="period3">3時間目:</label>
+        <input type="text" id="period3" name="period3" required>
+
+        <label for="notes">備考:</label>
+        <input type="text" id="notes" name="notes">
+
+        <label for="event">イベント:</label>
+        <input type="text" id="event" name="event">
+
+        <input type="submit" value="追加">
+    </form>
+    <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">時間割表に戻る</a>
+</body>
+</html>
