@@ -14,3 +14,34 @@ a.t-student img {
     width: 250px;
 }
 
+/* 共通部分 */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-height: 100vh;
+    background-image: url("../images/bg_left.png"), url("../images/bg_repeat.png"), url("../images/bg_EduEase_400.png"), url("../images/bg_black.png");
+    background-size: auto 95%, 100% 95%, auto 100%, 100% 100%;
+    background-repeat: no-repeat, no-repeat, repeat, repeat;
+    background-position: 0 0, 30vh 0, 0 0, 0 0;
+  }
+
+#bg_homebutton {
+    position: fixed;
+    bottom: 8vh;
+    right: 10px;
+}
+
+#bg_homebutton img{
+    height: 9vh;
+}
+
+#bg_menu {
+  width: 15%;
+  position: fixed;
+  bottom: 20%;
+  right: 10px;
+  background-color: aqua;
+  display: none;
+}
+/* 共通部分 */

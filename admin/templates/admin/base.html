@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %}{% endblock %}</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}" />
+	</head>
+	<body>
+		{% block content %}{% endblock %}
+		<div id="bg_homebutton" onclick="changeDisplay()"><img src="{{ url_for('static', filename='images/bg_home.png') }}"></div>
+		<div id="bg_menu">
+			<ul>
+				<li>メニュー</li>
+				<li>出席登録</li>
+				<li>TODOリスト</li>
+			</ul>
+		</div>
+	</body>
+	<script>
+		const changeDisplay = () => {
+			var ele = document.getElementById('bg_menu');
+
+			if (ele.style.display == 'block') {
+			ele.style.display = 'none';
+			} else {
+				ele.style.display = 'block';
+			}
+		};
+	</script>
+</html>
