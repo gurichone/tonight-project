@@ -27,4 +27,7 @@ def create_app(config_name="local"):
     from gemini import views as gemini_views # gemini/views.pyをgemini_viewsという名前で使用
     app.register_blueprint(gemini_views.gemini, url_prefix="/gemini") # gemini_viewsのgeminiとurl"/gemini"を紐づけ
     
+    from admin import views as admin_views
+    app.register_blueptint(admin_views.admin, url_prefix="/admin")
+
     return app
