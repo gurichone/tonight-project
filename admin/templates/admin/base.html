@@ -4,7 +4,7 @@
 		<title>{% block title %}{% endblock %}</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}" />
 	</head>
-	<body>
+	<body id="body">
 		{% block content %}{% endblock %}
 		<div id="bg_homebutton" onclick="changeDisplay()"><img src="{{ url_for('static', filename='images/bg_home.png') }}"></div>
 		<div id="bg_menu">

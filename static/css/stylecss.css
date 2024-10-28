@@ -15,7 +15,7 @@ a.t-student img {
 }
 
 /* 共通部分 */
-body {
+#body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
