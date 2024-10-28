@@ -17,8 +17,8 @@ class Submission(db.Model):
     __tablename__ = "submission"
     submission_id = db.Column(db.String, primary_key=True)
     submission_name = db.Column(db.String, nullable=False)
-    subject_id = db.Column(db.String, db.Foreignkey("Subject.subject_id"), nullable=False)
-    course_name = db.COlumn(db.String, db.Foreignkey("Course.course_name"), nullable=False)
+    subject_id = db.Column(db.String, nullable=False)
+    course_name = db.Column(db.String, nullable=False)
     submission_type = db.Column(db.String, nullable=False)
     submissin_rimit = db.Column(db.DateTime, nullable=False)
     scoreing_type = db.Column(db.Integer, nullable=False)
@@ -27,8 +27,8 @@ class Submission(db.Model):
 
 class SubmissionSituation(db.Model):
     __tablename__ = "submission_situation"
-    submission_id = db.Column(db.String, db.Foreignkey("Submission.submission_id"), primary_key=True)
-    student_id = db.Column(db.String, db.Foreignkey("Student.id"), nullable=False)
+    submission_id = db.Column(db.String, primary_key=True)
+    student_id = db.Column(db.String, nullable=False)
     point = db.Column(db.Integer)
     submitted = db.Column(db.Boolean, nullable=False, default=0)
     file = db.Column(db.String)

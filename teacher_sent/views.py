@@ -1,13 +1,13 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from app import db
 
-send = Blueprint(
-    "send",
+sent = Blueprint(
+    "sent",
     __name__,
     template_folder="templates",
     static_folder="static",
 )
 
-@send.route("/")
-def teacher_send():
-    return "send"
+@sent.route("/")
+def teacher_sent():
+    return "sent"
