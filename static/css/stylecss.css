@@ -6,7 +6,10 @@ li {
     list-style: none;
 }
 
-a.menu-icon img{
+a.menu-icon img {
     width: 12%;
 }
 
+a.t-student img {
+    width: 250px;
+}
