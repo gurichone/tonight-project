@@ -3,8 +3,8 @@ from app import db
 class Subject(db.Model):
     __tablename__ = "subject"
     subject_id = db.Column(db.String(10), primary_key=True)
-    subject_name = db.Column(db.String(20), primary_key=True)
-    course_name = db.Column(db.String(30))
+    subject_name = db.Column(db.String(20))
+    course_name = db.Column(db.String(30), primary_key=True)
 
 class Course(db.Model):
     __tablename__ = "course"
