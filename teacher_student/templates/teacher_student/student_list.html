@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>生徒一覧</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}">
+    </head>
+
+    <body>
+        <header>
+            <h2>生徒一覧</h2>
+            <a href="">戻る</a>
+        </header>
+
+        <!-- 検索欄 -->
+        <form method="GET" action="teacher_student/student_list">
+            <label>クラス番号</label>
+            <select name="class_num">
+                <option value="--" 
+                {% if class_num_query == "--" or class_num_query is none %}selected{% endif %}>--</option>
+                {% for class_num in class_nums %}
+                <option value="{{ class_num }}"
+                {% if class_num == class_num_query %}selected{% endif %}>{{ class_num }}</option>
+                {% endfor %}
+            </select>
+
+            <label>生徒番号</label>
+            <select name="id">
+                <option value="--"
+                {% if id_query == "--" or id_query is none %}selected{% endif %}>--</option>
+                {% for id in student_ids %}
+                <option value="{{ id }}"
+                {% if id == id_query %}selected{% endif %}>{{ id }}</option>
+                {% endfor %}
+            </select>
+
+            <label>氏名</label>
+            <input type="text" name = "name" placeholder="氏名" value="{{ student_name_query }}">
+
+            <button type="submit">検索</button>
+        </form>
+<!-- リストを表示 -->
+        <table>
+            <tr>
+                <th>学生番号</th>
+                <th>氏名</th>
+                <th>クラス番号</th>
+            </tr>
+
+            {% for student in students %}
+            <tr>
+                <td>{{ student.id }}</td>
+                <td>{{ student.student_name }}</td>                
+                <td>{{ student.class_num }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

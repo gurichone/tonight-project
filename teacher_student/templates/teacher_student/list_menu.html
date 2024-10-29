@@ -2,12 +2,12 @@
 <html lang="ja">
     <head>
         <meta charset="UTF-8">
-        <title>StudentKANRI</title>
-        <link rel="stylecss" href="{{ url_for('static', filename='css/stylecss.css') }}">
+        <title>生徒管理メニュー</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}">
     </head>
     <body>
         <header>
-            <p>戻る</p>
+            <a href="#">戻る</a>
         </header>
 
         <div class="teacher-student">
@@ -16,7 +16,7 @@
                     <img src="{{ url_for('static', filename='images/kurasukanri.png') }}" alt="クラス管理">
                 </a></li>
                 
-                <li><a href="#" class="t-student">
+                <li><a href="student_list" class="t-student">
                     <img src="{{ url_for('static', filename='images/seitoitiran.png') }}" alt="生徒一覧">
                 </a></li>
             </ul>
