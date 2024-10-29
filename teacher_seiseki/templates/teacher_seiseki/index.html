@@ -7,18 +7,24 @@
 <!-- 以下のコードはお試し用のため、修正は必須になります -->
     <body>
         <h2>成績</h2>
+        <form action="{{ url_for('teacher.seiseki.search') }}" method="POST" novalidate="novalidate">
+            <!-- 科目名を選ぶ -->
             <select name="subject_name">
-                <option value=""></option>
-                <option value="python">Python</option>
-                <option value="employment">就職関連</option>
+                {% for subject_name in Score %}
+                <option name="{{ subject_name }}">{{ subject_name }}</option>
+                {% endfor %}
             </select>
+            <!-- クラス番号を選ぶ -->
             <select name="class_num">
-                <option value=""></option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
+                {% for class_num in Score %}
+                <option name="{{ class_num }}">{{ class_num }}</option>
+                {% endfor %}
             </select>
-            <p></p>
-            <p></p>
+            <!-- 生徒番号を入力 -->
+            <input type="text" value="student_num">
+            <p>{{ score.submit }}</p>
+        </form>
+        <form action="{{ url_for('teacher.seiseki.add') }}"><input type="submit">成績登録</form>
+        <form action="{{ url_for('teacher.seiseki.attendance') }}"><input type="submit">出席登録</form>
     </body>
 </html>

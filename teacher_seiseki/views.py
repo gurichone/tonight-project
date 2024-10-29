@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from app import db
-from teacher_seiseki.forms import SearchScore
+from teacher_seiseki.forms import SearchScore, AddScore
 from teacher_seiseki.models import Score
 
 seiseki = Blueprint(
@@ -10,25 +10,40 @@ seiseki = Blueprint(
     static_folder="static",
 )
 
-# 成績画面は三つの要素から絞り込みをして検索する
-@seiseki.route("/")
+# 教員のメニュー画面にある成績ボタンを押すと生徒の成績を検索する欄が出てくる
+@seiseki.route("/", methods=["GET", "POST"])
 def search():
-    form = SearchScore()
-    # 欄に一つでも入力があれば応答する
-    if form.validate_on_submit():
-        # 科目名、クラス番号、生徒番号から絞り込みをする
+    score = SearchScore()
+    if score.validate_on_submit():
+        # 科目名、クラス番号、生徒番号のいずれかを入力する
         score = Score(
-            subject_name = form.subject_name.data,
-            class_num = form.class_num.data,
-            student_num = form.student_num.data,
+            subject_name = score.subject_name.data,
+            class_num = score.class_num.data,
+            student_num = score.student_num.data,
         )
-        db.session.query(Score).fliter_by(score)
-        
-    return render_template("/teacher_seiseki/index.html")
+        # 検索結果を出力してhtmlに表示
+        db.session.execute("select * from Score")
+        return redirect(url_for("teacher.seiseki.search"))  
+    return render_template("/teacher_seiseki/index.html", score=score)
 
-@seiseki.route("/add", methods=["GET"])
+# 成績画面の成績登録ボタンをクリックすると追加する画面を表示
+@seiseki.route("/add", methods=["GET", "POST"])
 def add():
-    return None
+    score = AddScore()
+    if score.validate_on_submit():
+        # 生徒番号、氏名、科目名、評価を入力
+        score = Score(
+            student_num = score.student_num.data,
+            student_name = score.Student_name.data,
+            subject_name = score.subject_name.data,
+            assessment_id = score.assessment_id.data,
+        )
+        # データベースに登録
+        db.session.add(score)
+        db.session.commit
+        return redirect(url_for("teacher.seiseki.add"))
+    return render_template("/teacher_seiseki/add.html", score=score)
+
 
 @seiseki.route("/attendance")
 def attendance():

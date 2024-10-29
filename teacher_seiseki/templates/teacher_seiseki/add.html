@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>成績登録</title>
+    </head>
+    <body>
+        <h2>成績登録</h2>
+        <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
+            {{ score.csrf_token }}
+            <p>
+                {{ score.student_num.label }} {{ score.student_num(placeholder="") }}
+            </p>
+            <p>
+                {{ score.student_name.label }} {{ score.student_name(placeholder="") }}
+            </p>
+            <p>
+                {{ score.subject_name.label }} {{ score.subject_name(placeholder="") }}
+            </p>
+            <p>
+                {{ score.assessment_id.label }} {{ score.assessment_id(placeholder="") }}
+            </p>
+            <p>{{ score.submit() }}</p>
+        </form>
+    </body>
+</html>

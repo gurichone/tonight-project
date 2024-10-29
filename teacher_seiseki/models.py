@@ -5,9 +5,8 @@ class Score(db.Model):
     score_id = db.Column(db.String, primary_key=True)
     class_num = db.Column(db.Integer)
     student_num = db.Column(db.Integer)
-    subject_id = db.Column(db.String)
-    subject_name = db.Column(db.String)
+    student_name = db.Column(db.String(20))
+    subject_id = db.Column(db.String(10))
+    subject_name = db.Column(db.String(20))
+    assessment_id = db.Column(db.String(1))
     attend_day = db.Column(db.Integer)
-
-# class Attend(db.Model):
-#     __tablename__ = "attend"
