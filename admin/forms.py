@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, DecimalField
+from wtforms import PasswordField, StringField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, Length, NumberRange
 
 
@@ -31,10 +31,7 @@ class SubjectForm(FlaskForm):
             Length(1, 20, "20文字以内で入力してください。"),
         ],
     )
-    course_name = StringField(
+    course_name = SelectField(
         "コース名",
-        validators=[
-            Length(1, 30, "30文字以内で入力してください。"),
-        ],
     )
     submit = SubmitField("登録")

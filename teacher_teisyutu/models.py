@@ -2,9 +2,8 @@ from app import db
 
 class Subject(db.Model):
     __tablename__ = "subject"
-    id = db.Column(db.String, primary_key=True)
-    subject_id = db.Column(db.String(10), nullable=False)
-    subject_name = db.Column(db.String(20), nullable=False)
+    subject_id = db.Column(db.String(10), primary_key=True)
+    subject_name = db.Column(db.String(20), primary_key=True)
     course_name = db.Column(db.String(30))
 
 class Course(db.Model):

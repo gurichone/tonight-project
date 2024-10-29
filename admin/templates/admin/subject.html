@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Subjectテーブル{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Subjectテーブル</h1>
+    <table>
+        <tr><th>subject_id</th><th>subject_name</th><th>course_name</th></tr>
+    {% for s in subject_list %}
+    <tr><td>{{ s.subject_id }}</td><td>{{ s.subject_name }}</td><td>{{ s.course_name }}</td></tr>     
+    {% endfor %}
+    </table>
+    <br>
+    <h2>追加</h2>
+    <form method="post" action="{{ url_for('admin.subject')}}"
+        class="form-signin">
+        <!-- csrf対策。とりあえず書いておく -->
+        {{ subject_form.csrf_token }}
+        <!-- flash関数で指定したメッセージを順に表示 -->
+        {% for message in get_flashed_messages() %}
+        <div class="dt-auth-flash">{{ message }}</div>
+        {% endfor %}
+        <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
+        {{ subject_form.subject_id(placeholder="科目ID") }}
+        <br>
+        {{ subject_form.subject_name(placeholder="科目名") }}
+        <br>
+        {{ subject_form.course_name(placeholder="コース名") }}
+        <br>
+        {{ subject_form.submit }}
+    </form>
+    <br>
+    <h2>削除</h2>
+    <a href="{{url_for('admin.subject_delete')}}">Subjectテーブルのすべてを消す</a>
+</div>
+{% endblock %}
