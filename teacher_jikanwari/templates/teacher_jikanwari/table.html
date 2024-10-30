@@ -2,51 +2,81 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>時間割表</title>
-    <style>
-        body {
-            text-align: center;  /* テキストを中央に配置 */
+    <script>
+        function filterEntries() {
+            const selectedYear = document.getElementById("year-filter").value;
+            const selectedMonth = document.getElementById("month-filter").value;
+
+            document.querySelectorAll("tbody tr").forEach(row => {
+                const year = row.querySelector("td:nth-child(1)").innerText;
+                const month = row.querySelector("td:nth-child(2)").innerText.replace("月", "");
+                if ((selectedYear === "" || selectedYear === year) && (selectedMonth === "" || selectedMonth === month)) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            });
         }
-        table {
-            margin: 0 auto;  /* テーブルを中央に配置 */
-            border-collapse: collapse; /* テーブルの枠線を重ねる */
-            width: 80%;  /* テーブルの幅を指定 */
-        }
-        th, td {
-            border: 1px solid black;  /* セルの枠線を設定 */
-            padding: 10px;  /* セルの内側の余白 */
-        }
-    </style>
+    </script>
 </head>
 <body>
-    <h1>時間割表</h1>
-    <table>
-        <tr>
-            <th>西暦</th>
-            <th>月</th>
-            <th>日</th>
-            <th>曜日</th>
-            <th>1時間目</th>
-            <th>2時間目</th>
-            <th>3時間目</th>
-            <th>備考</th>
-            <th>イベント</th>
-        </tr>
-        {% for entry in data %}
-        <tr>
-            <td>{{ entry.year }}</td>  <!-- 西暦 -->
-            <td>{{ entry.month }}</td>  <!-- 月 -->
-            <td>{{ entry.day }}</td>  <!-- 日 -->
-            <td>{{ entry.weekday }}</td>  <!-- 曜日 -->
-            <td>{{ entry.period1 }}</td>
-            <td>{{ entry.period2 }}</td>
-            <td>{{ entry.period3 }}</td>
-            <td>{{ entry.notes }}</td>
-            <td>{{ entry.event }}</td>
-        </tr>
-        {% endfor %}
+    <h1 style="text-align: center;">時間割表</h1>
+
+    <div style="text-align: center; margin: 20px;">
+        <label for="year-filter">年:</label>
+        <select id="year-filter" onchange="filterEntries()">
+            <option value="">すべて</option>
+            {% for y in range(2020, 2031) %}
+                <option value="{{ y }}">{{ y }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="month-filter">月:</label>
+        <select id="month-filter" onchange="filterEntries()">
+            <option value="">すべて</option>
+            {% for m in range(1, 13) %}
+                <option value="{{ m }}">{{ m }}月</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+        <thead>
+            <tr>
+                <th style="border: 1px solid black; padding: 10px;">年</th>
+                <th style="border: 1px solid black; padding: 10px;">月</th>
+                <th style="border: 1px solid black; padding: 10px;">曜日</th>
+                <th style="border: 1px solid black; padding: 10px;">1時間目</th>
+                <th style="border: 1px solid black; padding: 10px;">2時間目</th>
+                <th style="border: 1px solid black; padding: 10px;">3時間目</th>
+                <th style="border: 1px solid black; padding: 10px;">備考</th>
+                <th style="border: 1px solid black; padding: 10px;">イベント</th>
+                <th style="border: 1px solid black; padding: 10px;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data %}
+            <tr>
+                <td style="border: 1px solid black; padding: 10px;">{{ entry.year }}</td>
+                <td style="border: 1px solid black; padding: 10px;">{{ entry.month }}月</td>
+                <td style="border: 1px solid black; padding: 10px;">{{ entry.weekday }}</td>
+                <td style="border: 1px solid black; padding: 10px;">{{ entry.period1 }}</td>
+                <td style="border: 1px solid black; padding: 10px;">{{ entry.period2 }}</td>
+                <td style="border: 1px solid black; padding: 10px;">{{ entry.period3 }}</td>
+                <td style="border: 1px solid black; padding: 10px;">{{ entry.notes }}</td>
+                <td style="border: 1px solid black; padding: 10px;">{{ entry.event }}</td>
+                <td style="border: 1px solid black; padding: 10px;">
+                    <a href="{{ url_for('teacher.jikanwari.edit_entry', id=entry.id) }}">編集</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-    <br>
-    <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}">授業を追加</a>  <!-- 追加ボタン -->
+
+    <div style="text-align: center; margin: 20px;">
+        <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}">授業を追加</a>
+    </div>
 </body>
 </html>

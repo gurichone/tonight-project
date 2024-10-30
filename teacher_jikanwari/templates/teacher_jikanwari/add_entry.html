@@ -7,47 +7,44 @@
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            text-align: left;
+            background-color: #f4f4f4;
         }
+
         h1 {
-            margin-bottom: 20px;
+            text-align: center;
         }
+
         form {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 15px;
             max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
+
         label {
-            padding-right: 10px;
-            align-self: center;
+            display: block;
+            margin: 10px 0 5px;
         }
-        input[type="text"], select {
+
+        select, input[type="text"], input[type="submit"] {
             width: 100%;
             padding: 8px;
+            margin-bottom: 15px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+
         input[type="submit"] {
-            grid-column: span 2;
-            padding: 10px;
-            background-color: #28a745;
+            background-color: #5cb85c;
             color: white;
-            border: none;
-            border-radius: 5px;
+            font-size: 16px;
             cursor: pointer;
         }
+
         input[type="submit"]:hover {
-            background-color: #218838;
-        }
-        a {
-            display: block;
-            margin-top: 20px;
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
+            background-color: #4cae4c;
         }
     </style>
     <script>
@@ -66,9 +63,9 @@
     </script>
 </head>
 <body>
-    <h1>授業を追加</h1>
+    <h1>時間割追加</h1>
     <form action="{{ url_for('teacher.jikanwari.add_entry') }}" method="POST">
-        <label for="year">西暦:</label>
+        <label for="year">年:</label>
         <select id="year" name="year" required onchange="updateWeekday()">
             {% for y in range(2020, 2031) %}
                 <option value="{{ y }}">{{ y }}</option>
@@ -109,6 +106,8 @@
 
         <input type="submit" value="追加">
     </form>
-    <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">時間割表に戻る</a>
+    <div style="text-align: center; margin-top: 10px;">
+        <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">時間割表に戻る</a>
+    </div>
 </body>
 </html>
