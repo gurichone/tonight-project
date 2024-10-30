@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for,flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app import db
 from .models import Timetable
 
@@ -10,43 +10,23 @@ jikanwari = Blueprint(
     static_folder="static",
 )
 
+# 指定IDのエントリを取得する関数
 def get_entry_by_id(id):
-    """指定されたIDのエントリをデータベースから取得する関数"""
     return Timetable.query.get(id)
 
-def delete_entry_by_id(id):
-    """指定されたIDのエントリをデータベースから削除する関数"""
-    entry = get_entry_by_id(id)
-    if entry:
-        db.session.delete(entry)
-        db.session.commit()  # 変更をコミット
-
-# タイムテーブルデータのサンプル
-timetable_data = [
-    {"year": 2024, "month": 10, "day": 28, "weekday": "月曜日", "period1": "Math", "period2": "Science", "period3": "History", "notes": "Bring calculator", "event": "Quiz"},
-    {"year": 2024, "month": 10, "day": 29, "weekday": "火曜日", "period1": "English", "period2": "PE", "period3": "Art", "notes": "Bring sports kit", "event": ""},
-    # 必要に応じてデータを追加
-]
-
-# ルートの定義
+# タイムテーブルの表示ルート
 @jikanwari.route('/')
 def t_jikanwari():
-    timetable_data = Timetable.query.all()  # データベースから全てのデータを取得
+    timetable_data = Timetable.query.order_by(
+        Timetable.year, 
+        Timetable.month, 
+        Timetable.day
+    ).all()
     return render_template('teacher_jikanwari/table.html', data=timetable_data)
 
-
-# Flaskアプリケーションの作成
-def create_app():
-    app = Flask(__name__)
-
-    # Blueprintの登録
-    app.register_blueprint(jikanwari, url_prefix='/teacher')
-
-    return app
-
+# エントリ追加ルート
 @jikanwari.route('/add', methods=['POST'])
 def add_entry():
-    # フォームからデータを取得
     new_entry = Timetable(
         year=int(request.form['year']),
         month=int(request.form['month']),
@@ -58,22 +38,20 @@ def add_entry():
         notes=request.form['notes'],
         event=request.form['event']
     )
-    # データベースに保存
     db.session.add(new_entry)
     db.session.commit()
-
-    return redirect(url_for('teacher.jikanwari.t_jikanwari'))
-
+    flash("新しいエントリーが追加されました")
+    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
 
 @jikanwari.route('/add', methods=['GET'])
 def show_add_entry():
     return render_template('teacher_jikanwari/add_entry.html')
 
-@jikanwari.route('/teacher/jikanwari/edit/<int:id>', methods=['GET', 'POST'])
+# エントリ編集ルート
+@jikanwari.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_entry(id):
     entry = Timetable.query.get_or_404(id)
     if request.method == 'POST':
-        # 更新データの取得
         entry.year = request.form['year']
         entry.month = request.form['month']
         entry.day = request.form['day']
@@ -82,17 +60,30 @@ def edit_entry(id):
         entry.period3 = request.form['period3']
         entry.notes = request.form['notes']
         entry.event = request.form['event']
-
-        # データベースに保存
         db.session.commit()
         flash("時間割が更新されました")
-        return redirect(url_for('teacher.jikanwari.t_jikanwari'))
-
-    # GETリクエストの場合、編集画面を表示
+        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
     return render_template('teacher_jikanwari/edit_entry.html', entry=entry)
 
+# エントリ削除確認ルート
+@jikanwari.route('/delete_confirmation/<int:id>', methods=['GET'])
+def delete_confirmation(id):
+    entry = get_entry_by_id(id)
+    if entry:
+        return render_template('teacher_jikanwari/delete_confirmation.html', entry=entry)
+    else:
+        flash("エントリーが見つかりません")
+        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
 
-
-if __name__ == '__main__':
-    app = create_app()
-    app.run(debug=True)
+# エントリ削除ルート
+@jikanwari.route('/delete/<int:id>', methods=['POST'])
+def delete_entry(id):
+    # 指定されたIDのエントリーを取得
+    entry = Timetable.query.get(id)
+    if entry:
+        db.session.delete(entry)
+        db.session.commit()
+        flash("エントリーが削除されました")  # 削除後のメッセージを追加
+    else:
+        flash("エントリーが見つかりません")  # エントリーが見つからない場合のメッセージ
+    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正

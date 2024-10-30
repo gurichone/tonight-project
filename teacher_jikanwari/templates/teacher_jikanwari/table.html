@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>時間割表</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <script>
-        function filterEntries() {
+        function updateTable() {
             const selectedYear = document.getElementById("year-filter").value;
             const selectedMonth = document.getElementById("month-filter").value;
 
             document.querySelectorAll("tbody tr").forEach(row => {
-                const year = row.querySelector("td:nth-child(1)").innerText;
-                const month = row.querySelector("td:nth-child(2)").innerText.replace("月", "");
-                if ((selectedYear === "" || selectedYear === year) && (selectedMonth === "" || selectedMonth === month)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                const year = row.querySelector("td[data-type='year']").innerText;
+                const month = row.querySelector("td[data-type='month']").innerText.replace("月", "");
+
+                const yearMatch = selectedYear === "" || selectedYear === year;
+                const monthMatch = selectedMonth === "" || selectedMonth === month;
+
+                row.style.display = (yearMatch && monthMatch) ? "" : "none";
             });
         }
     </script>
@@ -24,29 +25,32 @@
 <body>
     <h1 style="text-align: center;">時間割表</h1>
 
-    <div style="text-align: center; margin: 20px;">
-        <label for="year-filter">年:</label>
-        <select id="year-filter" onchange="filterEntries()">
-            <option value="">すべて</option>
-            {% for y in range(2020, 2031) %}
-                <option value="{{ y }}">{{ y }}</option>
-            {% endfor %}
-        </select>
-
-        <label for="month-filter">月:</label>
-        <select id="month-filter" onchange="filterEntries()">
-            <option value="">すべて</option>
-            {% for m in range(1, 13) %}
-                <option value="{{ m }}">{{ m }}月</option>
-            {% endfor %}
-        </select>
+    <div style="text-align: right; margin: 20px;">
+        <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}" style="border: 1px solid black; padding: 10px; text-decoration: none;">授業を追加</a>
     </div>
 
     <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
         <thead>
             <tr>
-                <th style="border: 1px solid black; padding: 10px;">年</th>
-                <th style="border: 1px solid black; padding: 10px;">月</th>
+                <th style="border: 1px solid black; padding: 10px;">
+                    <label for="year-filter">年:</label>
+                    <select id="year-filter" onchange="updateTable()">
+                        <option value="">すべて</option>
+                        {% for y in range(2020, 2030) %}
+                            <option value="{{ y }}">{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th style="border: 1px solid black; padding: 10px;">
+                    <label for="month-filter">月:</label>
+                    <select id="month-filter" onchange="updateTable()">
+                        <option value="">すべて</option>
+                        {% for m in range(1, 13) %}
+                            <option value="{{ m }}">{{ m }}月</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th style="border: 1px solid black; padding: 10px;">日</th>
                 <th style="border: 1px solid black; padding: 10px;">曜日</th>
                 <th style="border: 1px solid black; padding: 10px;">1時間目</th>
                 <th style="border: 1px solid black; padding: 10px;">2時間目</th>
@@ -59,24 +63,22 @@
         <tbody>
             {% for entry in data %}
             <tr>
-                <td style="border: 1px solid black; padding: 10px;">{{ entry.year }}</td>
-                <td style="border: 1px solid black; padding: 10px;">{{ entry.month }}月</td>
+                <td style="border: 1px solid black; padding: 10px;" data-type="year">{{ entry.year }}</td>
+                <td style="border: 1px solid black; padding: 10px;" data-type="month">{{ entry.month }}月</td>
+                <td style="border: 1px solid black; padding: 10px;" data-type="day">{{ entry.day }}日</td>
                 <td style="border: 1px solid black; padding: 10px;">{{ entry.weekday }}</td>
                 <td style="border: 1px solid black; padding: 10px;">{{ entry.period1 }}</td>
                 <td style="border: 1px solid black; padding: 10px;">{{ entry.period2 }}</td>
                 <td style="border: 1px solid black; padding: 10px;">{{ entry.period3 }}</td>
                 <td style="border: 1px solid black; padding: 10px;">{{ entry.notes }}</td>
                 <td style="border: 1px solid black; padding: 10px;">{{ entry.event }}</td>
-                <td style="border: 1px solid black; padding: 10px;">
+                <td style="border: 1px solid black; padding: 10px; text-align: center;">
                     <a href="{{ url_for('teacher.jikanwari.edit_entry', id=entry.id) }}">編集</a>
+                    <a href="{{ url_for('teacher.jikanwari.delete_confirmation', id=entry.id) }}">削除</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-
-    <div style="text-align: center; margin: 20px;">
-        <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}">授業を追加</a>
-    </div>
 </body>
 </html>

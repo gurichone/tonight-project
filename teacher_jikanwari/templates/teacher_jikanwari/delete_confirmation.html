@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>削除確認</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>削除確認</h1>
+    <p>{{ entry.year }}年{{ entry.month }}月{{ entry.day }}日 のエントリーを削除しますか？</p>
+    <form action="{{ url_for('teacher.jikanwari.delete_entry', id=entry.id) }}" method="POST">
+        <button type="submit">削除する</button>
+        <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">キャンセル</a>
+    </form>
+</body>
+</html>

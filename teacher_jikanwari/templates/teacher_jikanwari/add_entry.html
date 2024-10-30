@@ -60,6 +60,15 @@
                 document.getElementById('weekday').value = weekday;
             }
         }
+
+        function initializeWeekday() {
+            const year = document.getElementById('year').value;
+            const month = document.getElementById('month').value;
+            const day = document.getElementById('day').value;
+            updateWeekday();
+        }
+
+        window.onload = initializeWeekday;
     </script>
 </head>
 <body>
