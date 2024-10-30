@@ -1,6 +1,6 @@
 from pathlib import Path
 
-basedir = Path(__file__).parent.parent # baseディレクトリの指定(appsフォルダ)
+basedir = Path(__file__).parent # baseディレクトリの指定(appsフォルダ)
 
 class BaseConfig:
     SECRET_KEY = "2AZSMss3p5QPbcY2hBsJ"
