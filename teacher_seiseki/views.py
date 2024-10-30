@@ -23,14 +23,15 @@ def search():
     nums = set((c.class_num)for c in class_nums)
     score.class_num.choices = [(c,c)for c in nums]
     if score.validate_on_submit():
+        filter_results = []
         # 科目名、クラス番号、生徒番号のいずれかを入力する
-        score = Score(
-            subject_name = score.subject_name.data,
-            class_num = score.class_num.data,
-            student_num = score.student_num.data,
-        )
-        # 検索結果を出力してhtmlに表示
-        # db.session.
+        # score = Score(
+        #     subject_name = score.subject_name.data,
+        #     class_num = score.class_num.data,
+        #     student_num = score.student_num.data,
+        # )
+        # # 検索結果を出力してhtmlに表示
+        # db.session.query(Score).
         return redirect(url_for("teacher.seiseki.search"))  
     return render_template("/teacher_seiseki/index.html",score=score)
 
@@ -39,7 +40,6 @@ def search():
 def add():
     score = AddScore()
     if score.validate_on_submit():
-        print("AAAAAAAAAAAAAAAAAAAAAA", score.student_num.data)
         # 生徒番号、氏名、科目名、評価を入力
         score = Score(
             student_num = score.student_num.data,
@@ -49,7 +49,7 @@ def add():
         )
         # データベースに登録
         db.session.add(score)
-        db.session.commit
+        db.session.commit()
         return redirect(url_for("teacher.seiseki.add"))
     return render_template("/teacher_seiseki/add.html", score=score)
 
