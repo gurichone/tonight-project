@@ -8,23 +8,17 @@
     <body>
         <h2>成績</h2>
         <form action="{{ url_for('teacher.seiseki.search') }}" method="POST" novalidate="novalidate">
+            {{ score.csrf_token }}
             <!-- 科目名を選ぶ -->
-            <select name="subject_name">
-                {% for subject_name in Score %}
-                <option name="{{ subject_name }}">{{ subject_name }}</option>
-                {% endfor %}
-            </select>
+            {{ score.subject_name.label }}{{ score.subject_name }}
             <!-- クラス番号を選ぶ -->
-            <select name="class_num">
-                {% for class_num in Score %}
-                <option name="{{ class_num }}">{{ class_num }}</option>
-                {% endfor %}
-            </select>
+            {{ score.class_num.label }}{{ score.class_num }}
             <!-- 生徒番号を入力 -->
-            <input type="text" value="student_num">
-            <p>{{ score.submit }}</p>
+            {{ score.student_num.label }}{{ score.student_num }}
+            <!-- ボタンを押して検索 -->
+            {{ score.submit }}            
         </form>
-        <form action="{{ url_for('teacher.seiseki.add') }}"><input type="submit">成績登録</form>
-        <form action="{{ url_for('teacher.seiseki.attendance') }}"><input type="submit">出席登録</form>
+        <form action="{{ url_for('teacher.seiseki.add') }}"><input type="submit" value="成績登録"></form>
+        <form action="{{ url_for('teacher.seiseki.attend') }}"><input type="submit" value="出席登録"></form>
     </body>
 </html>
