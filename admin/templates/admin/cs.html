@@ -6,9 +6,9 @@
 <div>
     <h1>CourseSubjectテーブル</h1>
     <table>
-        <tr><th>cs_name</th><th>course_name</th></tr>
+        <tr><th>course_id</th><th>course_name</th><th>subject_id</th><th>subject_name</th></tr>
     {% for cs in cs_list %}
-    <tr><td>{{ cs.course_id }}</td><td>{{ cs.course_name }}</td><td>{{ cs.subject_id }}</td></tr>     
+    <tr><td>{{ cs.Course.course_id }}</td><td>{{ cs.Course.course_name }}</td><td>{{ cs.Subject.subject_id }}</td><td>{{ cs.Subject.subject_name }}</td></tr>     
     {% endfor %}
     </table>
     <br>

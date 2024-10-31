@@ -71,7 +71,7 @@ def cs():
         db.session.add(cs)
         db.session.commit()
         return render_template("admin/admin.html", message="COURSE_SUBJECTテーブルに保存しました")
-    cs_list = db.session.query(CourseSubject, Course).join(CourseSubject, CourseSubject.course_id==Course.course_id).all()
+    cs_list = db.session.query(CourseSubject, Course, Subject).join(Course, CourseSubject.course_id==Course.course_id).join(Subject, CourseSubject.subject_id==Subject.subject_id).all()
     print("qwwqwq", cs_list)
     return render_template("admin/cs.html", form=form, cs_list=cs_list)
 
