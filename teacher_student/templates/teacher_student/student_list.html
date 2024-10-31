@@ -11,49 +11,55 @@
             <h2>生徒一覧</h2>
             <a href="">戻る</a>
         </header>
-
-        <!-- 検索欄 -->
-        <form method="GET" action="teacher_student/student_list">
-            <label>クラス番号</label>
-            <select name="class_num">
-                <option value="--" 
-                {% if class_num_query == "--" or class_num_query is none %}selected{% endif %}>--</option>
-                {% for class_num in class_nums %}
-                <option value="{{ class_num }}"
-                {% if class_num == class_num_query %}selected{% endif %}>{{ class_num }}</option>
-                {% endfor %}
-            </select>
-
-            <label>生徒番号</label>
-            <select name="id">
-                <option value="--"
-                {% if id_query == "--" or id_query is none %}selected{% endif %}>--</option>
-                {% for id in student_ids %}
-                <option value="{{ id }}"
-                {% if id == id_query %}selected{% endif %}>{{ id }}</option>
-                {% endfor %}
-            </select>
-
-            <label>氏名</label>
-            <input type="text" name = "name" placeholder="氏名" value="{{ student_name_query }}">
-
-            <button type="submit">検索</button>
-        </form>
-<!-- リストを表示 -->
-        <table>
-            <tr>
-                <th>学生番号</th>
-                <th>氏名</th>
-                <th>クラス番号</th>
-            </tr>
-
-            {% for student in students %}
-            <tr>
-                <td>{{ student.id }}</td>
-                <td>{{ student.student_name }}</td>                
-                <td>{{ student.class_num }}</td>
-            </tr>
+    <!-- 検索フォーム -->
+    <form method="POST" action="{{ url_for('teacher.student.student_list') }}">
+        {{ stu_list.csrf_token }}
+        <label for="id">生徒番号</label>
+        <select name="id" id="id">
+            {% for id, label in stu_list.id.choices %}
+                <option value="{{ id }}" {% if stu_list.id.data == id %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
-        </table>
-    </body>
+        </select>
+
+        <label for="class_num">クラス番号</label>
+        <select name="class_num" id="class_num">
+            {% for class_num, label in stu_list.class_num.choices %}
+                <option value="{{ class_num }}" {% if stu_list.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="student_name">
+            <input type="text" name="student_name" id="student_name"
+            placeholder="氏名" value="">
+        </label>
+
+        <button type="submit">検索</button>
+    </form>
+
+    <!-- 検索結果のメッセージ表示 -->
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
+
+    <!-- 学生の一覧表示 -->
+    <table>
+        <thead>
+            <tr>
+                <th>学生ID</th>
+                <th>クラス番号</th>
+                <th>学生名</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <td>{{ student.id }}</td>
+                    <td>{{ student.class_num }}</td>
+                    <td>{{ student.student_name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
 </html>

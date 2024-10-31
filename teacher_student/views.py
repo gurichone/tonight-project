@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request
 from auth.models import Student
+from teacher_student.forms import StudentSearch
 from app import db
 
 student = Blueprint(
@@ -13,36 +14,57 @@ student = Blueprint(
 def teacher_student():
     return render_template("teacher_student/list_menu.html")
 
-@student.route("/student_list", methods=['GET'])
+@student.route("/student_list", methods=["GET", "POST"])
 def student_list():
-    # GETパラメータを取得
-    id_query = request.args.get('id')
-    student_name_query = request.args.get('student_name')
-    class_num_query = request.args.get('class_num')
+    # フォームインスタンスの作成
+    stu_list = StudentSearch()
+    
+    # 学生リストの取得
+    students = Student.query.with_entities(
+        Student.id,
+        Student.class_num,
+        Student.student_name
+    ).all()
 
-    # クラス番号と生徒番号の選択肢を取得(重複しないようにdistinctを使用)
-    student_ids = [student.id for student in Student.query.with_entities(Student.id).distinct().all()]
-    class_nums = [student.class_num for student in Student.query.with_entities(Student.class_num).distinct().all()]
+    # クラス番号と学生IDの選択肢を設定（プレースホルダーを追加）
+    clases = set((s.class_num) for s in students)
+    stu_list.class_num.choices = [("", "ーー")] + [(s, s) for s in clases]
+    
+    ids = ((s.id) for s in students)
+    stu_list.id.choices = [("", "ーー")] + [(s, s) for s in ids]
 
-    # クエリの構築
+    # 検索条件に基づいてクエリをフィルタリング
     query = Student.query
-    if id_query and id_query != "--": # --が選択されている場合は未入力とする
-        query = query.filter(Student.id == id_query)
-    if student_name_query:
-        query = query.filter(Student.student_name.like(f"%{student_name_query}%"))
-    if class_num_query and class_num_query != "--": # --が選択されている場合は未入力とする
-        query = query.filter(Student.class_num == class_num_query)
 
-    # 最終的なクエリの実行
-    students = query.with_entities(Student.id, Student.student_name, Student.class_num).all()
+    if stu_list.validate_on_submit():
+        # student_idが選択されていればフィルタリング
+        if stu_list.id.data:
+            query = query.filter(Student.id == stu_list.id.data)
+        
+        # class_numが選択されていればフィルタリング
+        if stu_list.class_num.data:
+            query = query.filter(Student.class_num == stu_list.class_num.data)
 
-    return render_template('teacher_student/student_list.html',
-                           students = students,
-                           student_ids = student_ids,
-                           class_nums = class_nums,
-                           id_query = id_query,
-                           student_name_query = student_name_query,
-                           class_num_query = class_num_query)
+        # student_nameが入力されていればフィルタリング
+        if stu_list.student_name.data:
+            query = query.filter(Student.student_name.like(f"%{stu_list.student_name.data}%"))
 
-    # students = db.session.query(Student).with_entities(Student.id, Student.student_name, Student.class_num).all()
-    # return render_template('teacher_student/student_list.html', students = students)
+    # フィルタリング結果を取得
+    students = query.with_entities(
+        Student.id,
+        Student.class_num,
+        Student.student_name
+    ).all()
+
+    # メッセージ設定
+    if not students:
+        message = "検索条件に合う学生は見つかりませんでした"
+    else:
+        message = f"{len(students)}件の学生が見つかりました"
+
+    return render_template(
+        'teacher_student/student_list.html', 
+        stu_list=stu_list, 
+        students=students, 
+        message=message
+    )
