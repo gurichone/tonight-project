@@ -9,7 +9,6 @@ class SubmissionForms(FlaskForm): #ユーザー新規作成とユーザー編集
     # イベントを入力するフィールドを作成
     subject = SelectField(
         "科目名", # フォームに表示される文字を指定
-        coerce=int
     )
     type = SelectField(
         "実施内容", # フォームに表示される文字を指定
