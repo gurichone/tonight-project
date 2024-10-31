@@ -26,11 +26,11 @@ class CreateSubmissionForms(FlaskForm):
         "提出物名", # フォームに表示される文字を指定
         validators=[
             DataRequired(message="入力は必須です。"),  # 入力必須の設定
-            # length(max=20, message="20文字以内で入力してください。"), # 文字数を1~30文字に設定
         ],
     )
     type = SelectField(
         "実施内容", # フォームに表示される文字を指定
+        choices=[(1, "効果測定"), (2, "演習問題")],
         coerce=int
     )
     rimit = DateTimeField(

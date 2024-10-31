@@ -32,8 +32,8 @@ class Submission(db.Model):
     question_file = db.Column(db.String)
     testcase_file = db.Column(db.String)
 
-class SubmissionSituation(db.Model):
-    __tablename__ = "submission_situation"
+class Personal_Submission(db.Model):
+    __tablename__ = "personal_submission"
     submission_id = db.Column(db.String, primary_key=True)
     student_id = db.Column(db.String)
     point = db.Column(db.Integer)

@@ -1,10 +1,10 @@
-{% extends "admin/base.html" %}
+{% extends "teacher_teisyutsu/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('teacher_menu/t_menu') }}"></a>{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}"></a>{% endblock %}
 
 {% block content %}
 <div>
-    <form action="{{ url_for('teacher_teisyutsu.t_teisyutsu') }}" method="POST">
+    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}" method="POST">
     {{ form.csrf_token }}
     {{ form.subject.label }}{{ form.subject }}
     <br>
@@ -18,13 +18,13 @@
         <tr><th></th><th>ファイル名</th><th>実施内容</th><th></th><th></th></tr>
         {% for sub in submissions %}
         <tr>
-            <th><a href="{{ url_for('teacher_saiten.saiten', id=sub.submission_id) }}">採点</a></th>
+            <th><a href="{{ url_for('teacher.saiten.saiten', id=sub.submission_id) }}">採点</a></th>
             <th>{{ sub.subject_name}}</th>
             <th>{{ sub.submission_type}}</th>
-            <th><a href="{{ url_for('teacher_teisyutsu.edit', id=sub.submission_id) }}">変更</a></th>
-            <th><a href="{{ url_for('teacher_teisyutsu.delete', id=sub.submission_id) }}">削除</a></th>
+            <th><a href="{{ url_for('teacher.teisyutsu.edit', id=sub.submission_id) }}">変更</a></th>
+            <th><a href="{{ url_for('teacher.teisyutsu.delete', id=sub.submission_id) }}">削除</a></th>
         </tr>
-        {% end for %}
+        {% endfor %}
     </table>
 </div>
 {% endblock %}
