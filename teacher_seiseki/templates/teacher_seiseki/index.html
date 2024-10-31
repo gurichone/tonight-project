@@ -6,18 +6,54 @@
     </head>
 <!-- 以下のコードはお試し用のため、修正は必須になります -->
     <body>
-        <h2>成績</h2>
+        <header>
+            <h2>成績</h2>
+            <a href="">戻る</a>
+        </header>
         <form action="{{ url_for('teacher.seiseki.search') }}" method="POST" novalidate="novalidate">
             {{ score.csrf_token }}
             <!-- 科目名を選ぶ -->
-            {{ score.subject_name.label }}{{ score.subject_name }}
+            <label for="subject_name">科目名</label>
+            <select name="subject_name" id="subject_name">
+                {% for subject_name, label in score.subject_name.choices %}
+                    <option value="{{ subject_name }}" {% if score.subject_name.data == subject_name %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
             <!-- クラス番号を選ぶ -->
-            {{ score.class_num.label }}{{ score.class_num }}
+            <label for="class_num">クラス番号</label>
+            <select name="class_num" id="class_num">
+                {% for class_num, label in score.class_num.choices %}
+                    <option value="{{ class_num }}" {% if score.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
             <!-- 生徒番号を入力 -->
-            {{ score.student_num.label }}{{ score.student_num }}
+            {{ score.student_name.label }}{{ score.student_name }}
             <!-- ボタンを押して検索 -->
-            {{ score.submit }}            
+            {{ score.submit }}
         </form>
+        <!-- 検索結果を表示 -->
+        {% if results %}
+        <table>
+            <thead>
+                <tr>
+                    <th>科目名</th>
+                    <th>氏名</th>
+                    <th>成績</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score in results %}
+                <tr>
+                    <th>{{ score.subject_name }}</th>
+                    <td>{{ score.student_name }}</td>
+                    <td>{{ score.assessment_id }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <h2>一致する結果がありません</h2>
+        {% endif %}
         <form action="{{ url_for('teacher.seiseki.add') }}"><input type="submit" value="成績登録"></form>
         <form action="{{ url_for('teacher.seiseki.attend') }}"><input type="submit" value="出席登録"></form>
     </body>

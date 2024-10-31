@@ -8,10 +8,11 @@ class SearchScore(FlaskForm):
 
     class_num = SelectField("クラス番号")
 
-    student_num = IntegerField("生徒番号")
+    student_name = StringField("氏名")
 
     submit = SubmitField("検索")
 
+    # バリデーションは未実装
     # def validate_student_num(self, student_num):
     #     # バリデーション内容：生徒番号は7桁以外は禁止
     #     len_stu_num = str(student_num)
