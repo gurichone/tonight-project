@@ -1,25 +1,5 @@
 from app import db
 
-class Subject(db.Model):
-    __tablename__ = "subject"
-    subject_id = db.Column(db.Integer, primary_key=True)
-    subject_name = db.Column(db.String)
-
-class Course(db.Model):
-    __tablename__ = "course"
-    course_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    course_name = db.Column(db.String)
-
-class ClassNum(db.Model):
-    __tablename__ = "class_num"
-    class_num = db.Column(db.String, primary_key=True)
-    course_id = db.Column(db.Integer)
-
-class CourseSubject(db.Model):
-    __tablename__ = "course_subject"
-    course_id = db.Column(db.Integer, primary_key=True)
-    subject_id = db.Column(db.Integer, primary_key=True)
-
 class Submission(db.Model):
     __tablename__ = "submission"
     submissin_id = db.Column(db.Integer, primary_key=True)
