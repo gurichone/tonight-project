@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for
 from app import db
 from .models import Timetable
 
@@ -40,7 +40,7 @@ def add_entry():
     )
     db.session.add(new_entry)
     db.session.commit()
-    flash("新しいエントリーが追加されました")
+    
     return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
 
 @jikanwari.route('/add', methods=['GET'])
@@ -61,8 +61,8 @@ def edit_entry(id):
         entry.notes = request.form['notes']
         entry.event = request.form['event']
         db.session.commit()
-        flash("時間割が更新されました")
-        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
+        
+        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  
     return render_template('teacher_jikanwari/edit_entry.html', entry=entry)
 
 # エントリ削除確認ルート
@@ -72,7 +72,7 @@ def delete_confirmation(id):
     if entry:
         return render_template('teacher_jikanwari/delete_confirmation.html', entry=entry)
     else:
-        flash("エントリーが見つかりません")
+        
         return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
 
 # エントリ削除ルート
@@ -83,7 +83,4 @@ def delete_entry(id):
     if entry:
         db.session.delete(entry)
         db.session.commit()
-        flash("エントリーが削除されました")  # 削除後のメッセージを追加
-    else:
-        flash("エントリーが見つかりません")  # エントリーが見つからない場合のメッセージ
-    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
+    return redirect(url_for('teacher.jikanwari.t_jikanwari')) 
