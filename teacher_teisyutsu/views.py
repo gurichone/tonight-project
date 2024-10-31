@@ -2,7 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for
 from flask_login import current_user, login_required
 from app import db
 from teacher_teisyutsu.forms import SubmissionForms, CreateSubmissionForms
-from teacher_teisyutsu.models import Subject, Course, Submission, Personal_Submission
+from teacher_teisyutsu.models import Submission, Personal_Submission
+from auth.models import Subject, Course
 from auth.models import Teacher
 
 

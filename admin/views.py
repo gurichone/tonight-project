@@ -2,7 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from app import db 
 from admin.forms import CourseForm, SubjectForm, ClassNumForm, CourseSubjectForm
 from auth.models import Teacher, Student 
-from teacher_teisyutsu.models import Subject, Course, ClassNum, CourseSubject
+from auth.models import Subject, Course, ClassNum, CourseSubject
 
 admin = Blueprint("admin", __name__, template_folder="templates", static_folder="static")
 
