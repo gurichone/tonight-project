@@ -5,10 +5,10 @@ class Subject(db.Model):
     subject_id = db.Column(db.Integer, primary_key=True)
     subject_name = db.Column(db.String)
 
-    class Course(db.Model):
-        __tablename__ = "course"
-        course_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-        course_name = db.Column(db.String)
+class Course(db.Model):
+    __tablename__ = "course"
+    course_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    course_name = db.Column(db.String)
 
 class ClassNum(db.Model):
     __tablename__ = "class_num"
