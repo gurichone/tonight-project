@@ -47,7 +47,7 @@ class Student(db.Model, UserMixin):
     birth_date = db.Column(db.Date)
     school_name = db.Column(db.String)
     course_name = db.Column(db.String)
-    class_num = db.Column(db.Integer)
+    class_num = db.Column(db.String)
     icon_path = db.Column(db.String)
 
     @property

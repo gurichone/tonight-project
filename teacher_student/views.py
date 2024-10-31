@@ -19,19 +19,19 @@ def student_list():
     # フォームインスタンスの作成
     stu_list = StudentSearch()
     
-    # 学生リストの取得
+    # 生徒リストの取得
     students = Student.query.with_entities(
         Student.id,
         Student.class_num,
         Student.student_name
     ).all()
 
-    # クラス番号と学生IDの選択肢を設定（プレースホルダーを追加）
+    # クラス番号と生徒番号の選択肢を設定（プレースホルダーを追加）
     clases = set((s.class_num) for s in students)
-    stu_list.class_num.choices = [("", "ーー")] + [(s, s) for s in clases]
+    stu_list.class_num.choices = [("", "--")] + [(s, s) for s in clases]
     
     ids = ((s.id) for s in students)
-    stu_list.id.choices = [("", "ーー")] + [(s, s) for s in ids]
+    stu_list.id.choices = [("", "--")] + [(s, s) for s in ids]
 
     # 検索条件に基づいてクエリをフィルタリング
     query = Student.query
@@ -56,12 +56,20 @@ def student_list():
         Student.student_name
     ).all()
 
+        # 検索条件をフォームに設定
+    stu_list.id.data = request.form.get('id', "")  # 生徒番号
+    stu_list.class_num.data = request.form.get('class_num', "")  # クラス番号
+    stu_list.student_name.data = request.form.get('student_name', "")  # 氏名
+
     # メッセージ設定
     if not students:
-        message = "検索条件に合う学生は見つかりませんでした"
+        message = "検索条件に合う生徒は見つかりませんでした"
     else:
-        message = f"{len(students)}件の学生が見つかりました"
+        message = f"{len(students)}件の生徒が見つかりました"
 
+
+    # print("\n\n\n", stu_list.class_num.data, type(stu_list.class_num.data), "\n", stu_list.class_num.choices, "\n\n\n")
+    # print("\n\n\n", stu_list.id.data, type(stu_list.id.data), "\n", stu_list.id.choices, "\n\n\n")
     return render_template(
         'teacher_student/student_list.html', 
         stu_list=stu_list, 

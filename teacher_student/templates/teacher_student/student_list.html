@@ -13,7 +13,10 @@
         </header>
     <!-- 検索フォーム -->
     <form method="POST" action="{{ url_for('teacher.student.student_list') }}">
+
         {{ stu_list.csrf_token }}
+
+        <!-- 生徒番号のセレクトボックス -->
         <label for="id">生徒番号</label>
         <select name="id" id="id">
             {% for id, label in stu_list.id.choices %}
@@ -21,6 +24,7 @@
             {% endfor %}
         </select>
 
+        <!-- クラス番号のセレクトボックス -->
         <label for="class_num">クラス番号</label>
         <select name="class_num" id="class_num">
             {% for class_num, label in stu_list.class_num.choices %}
@@ -28,9 +32,10 @@
             {% endfor %}
         </select>
 
+        <!-- 氏名のテキストボックス -->
         <label for="student_name">
             <input type="text" name="student_name" id="student_name"
-            placeholder="氏名" value="">
+            placeholder="氏名" value="{{ stu_list.student_name.data }}">
         </label>
 
         <button type="submit">検索</button>
@@ -41,13 +46,13 @@
         <p>{{ message }}</p>
     {% endif %}
 
-    <!-- 学生の一覧表示 -->
+    <!-- 生徒の一覧表示 -->
     <table>
         <thead>
             <tr>
-                <th>学生ID</th>
+                <th>生徒番号</th>
                 <th>クラス番号</th>
-                <th>学生名</th>
+                <th>氏名</th>
             </tr>
         </thead>
         <tbody>
