@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+
+{% block title %}ClassNumテーブル{% endblock %}
+
+{% block content %}
+<div>
+    <h1>ClassNumテーブル</h1>
+    <table>
+        <tr><th>course_id</th><th>course_name</th><th>subject_id</th><th>subject_name</th></tr>
+    {% for c in class_list %}
+    <tr><td>{{ c.ClassNum.class_num }}</td><td>{{ c.Course.course_id }}</td><td>{{ c.Course.course_name }}</td></tr>     
+    {% endfor %}
+    </table>
+    <br>
+    <h2>追加</h2>
+    <form method="post" action="{{ url_for('admin.class_num')}}"
+        class="form-signin">
+        <!-- csrf対策。とりあえず書いておく -->
+        {{ form.csrf_token }}
+        <!-- flash関数で指定したメッセージを順に表示 -->
+        {% for message in get_flashed_messages() %}
+        <div class="dt-auth-flash">{{ message }}</div>
+        {% endfor %}
+        {{ form.class_num.label }}
+        {{ form.class_num(placeholder="クラス番号") }}
+        <br>
+        {{ form.course.label }}
+        {{ form.course(placeholder="コース名") }}
+        <br>
+        {{ form.submit }}
+    </form>
+    <br>
+    <h2>削除</h2>
+    <a href="{{url_for('admin.class_delete')}}">ClassNumテーブルのすべてを消す</a>
+</div>
+{% endblock %}

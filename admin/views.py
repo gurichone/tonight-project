@@ -25,6 +25,8 @@ def course():
 
 @admin.route("/course/delete")
 def course_delete():
+    ccc = db.session.query(ClassNum).delete()
+    bbb = db.session.query(CourseSubject).delete()
     aaa = db.session.query(Course).delete()
     db.session.commit()
     return render_template("admin/admin.html", message="けしたよ")
@@ -44,6 +46,7 @@ def subject():
 
 @admin.route("/subject/delete")
 def subject_delete():
+    bbb = db.session.query(CourseSubject).delete()
     aaa = db.session.query(Subject).delete()
     db.session.commit()
     return render_template("admin/admin.html", message="けしたよ")
@@ -72,11 +75,34 @@ def cs():
         db.session.commit()
         return render_template("admin/admin.html", message="COURSE_SUBJECTテーブルに保存しました")
     cs_list = db.session.query(CourseSubject, Course, Subject).join(Course, CourseSubject.course_id==Course.course_id).join(Subject, CourseSubject.subject_id==Subject.subject_id).all()
-    print("qwwqwq", cs_list)
     return render_template("admin/cs.html", form=form, cs_list=cs_list)
 
 @admin.route("/cs/delete")
 def cs_delete():
     aaa = db.session.query(CourseSubject).delete()
+    db.session.commit()
+    return render_template("admin/admin.html", message="けしたよ")
+
+@admin.route("/class", methods=["GET", "POST"])
+def class_num():
+    form = ClassNumForm()
+    # Courseテーブルから全取得
+    courses = db.session.query(Course).all()
+    # フォームのSelectField.choicesに設定
+    form.course.choices = [(c.course_id, c.course_name)for c in courses]
+    if form.validate_on_submit():
+        class_num = ClassNum(
+            class_num = form.class_num.data,
+            course_id = form.course.data
+        )
+        db.session.add(class_num)
+        db.session.commit()
+        return render_template("admin/admin.html", message="COURSE_SUBJECTテーブルに保存しました")
+    class_list=db.session.query(ClassNum, Course).join(Course, ClassNum.course_id==Course.course_id).all()
+    return render_template("admin/class.html", form=form, class_list=class_list)
+
+@admin.route("/class/delete")
+def class_delete():
+    aaa = db.session.query(ClassNum).delete()
     db.session.commit()
     return render_template("admin/admin.html", message="けしたよ")

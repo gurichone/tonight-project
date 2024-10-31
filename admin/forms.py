@@ -28,7 +28,7 @@ class ClassNumForm(FlaskForm):
             Length(4, 4, "4文字で入力してください。"),
         ],
     )
-    course_name = SelectField(
+    course = SelectField(
         "コース名",
     )
     submit = SubmitField("登録")
