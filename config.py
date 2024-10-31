@@ -6,6 +6,7 @@ class BaseConfig:
     SECRET_KEY = "2AZSMss3p5QPbcY2hBsJ"
     WTF_CSRF_SECRET_KEY = "AuwzyszU5sugKN7KZs6f"
     OWM_API_KEY = "133181fd446d837a42413992c3e8b9e2"
+    SQLALCHEMY_ECHO=True
 
 
 # BaseConfigクラスを継承してLocalConfigクラスを作成する
