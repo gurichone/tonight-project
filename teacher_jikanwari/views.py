@@ -84,3 +84,7 @@ def delete_entry(id):
         db.session.delete(entry)
         db.session.commit()
     return redirect(url_for('teacher.jikanwari.t_jikanwari')) 
+
+
+
+
