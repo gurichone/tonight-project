@@ -18,6 +18,7 @@
         <!-- csrf対策。とりあえず書いておく -->
         {{ course_form.csrf_token }}
         <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
+        {{ course_form.course_name.label }}
         {{ course_form.course_name(placeholder="コース名") }}
         <br>
         {{ course_form.submit }}

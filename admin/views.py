@@ -29,6 +29,25 @@ def course_delete():
     db.session.commit()
     return render_template("admin/admin.html", message="けしたよ")
 
+@admin.route("/subject", methods=["GET", "POST"])
+def subject():
+    subject_form = SubjectForm()
+    if subject_form.validate_on_submit():
+        subject = Subject(
+            subject_name = subject_form.subject_name.data,
+        )
+        db.session.add(subject)
+        db.session.commit()
+        return render_template("admin/admin.html", message="subjectテーブルに保存しました")
+    subject_list = db.session.query(Subject).all()
+    return render_template("admin/subject.html", subject_form=subject_form, subject_list=subject_list)
+
+@admin.route("/subject/delete")
+def subject_delete():
+    aaa = db.session.query(Subject).delete()
+    db.session.commit()
+    return render_template("admin/admin.html", message="けしたよ")
+
 @admin.route("/cs", methods=["GET", "POST"])
 def cs():
     form = CourseSubjectForm()
@@ -37,13 +56,13 @@ def cs():
     courses = db.session.query(Course).all()
 
     # フォームのSelectField.choicesに設定
-    form.course_name.choices = [(c.course_id, c.course_name)for c in courses]
+    form.course.choices = [(c.course_id, c.course_name)for c in courses]
 
     # Subjectテーブルから全取得
     subjects = db.session.query(Subject).all()
 
     # フォームのSelectField.choicesに設定
-    form.subject_name.choices = [(s.subject_id, s.subject_name)for s in subjects]
+    form.subject.choices = [(s.subject_id, s.subject_name)for s in subjects]
     if form.validate_on_submit():
         cs = CourseSubject(
             subject_id = form.subject.data,
@@ -52,11 +71,12 @@ def cs():
         db.session.add(cs)
         db.session.commit()
         return render_template("admin/admin.html", message="COURSE_SUBJECTテーブルに保存しました")
-    cs_list = db.session.query(CourseSubject).all()
-    return render_template("admin/subject.html", form=form, cs_list=cs_list)
+    cs_list = db.session.query(CourseSubject, Course).join(CourseSubject, CourseSubject.course_id==Course.course_id).all()
+    print("qwwqwq", cs_list)
+    return render_template("admin/cs.html", form=form, cs_list=cs_list)
 
-@admin.route("/subject/delete")
-def subject_delete():
+@admin.route("/cs/delete")
+def cs_delete():
     aaa = db.session.query(CourseSubject).delete()
     db.session.commit()
     return render_template("admin/admin.html", message="けしたよ")

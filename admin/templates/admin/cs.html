@@ -1,0 +1,37 @@
+{% extends "admin/base.html" %}
+
+{% block title %}CourseSubjectテーブル{% endblock %}
+
+{% block content %}
+<div>
+    <h1>CourseSubjectテーブル</h1>
+    <table>
+        <tr><th>cs_name</th><th>course_name</th></tr>
+    {% for cs in cs_list %}
+    <tr><td>{{ cs.course_id }}</td><td>{{ cs.course_name }}</td><td>{{ cs.subject_id }}</td></tr>     
+    {% endfor %}
+    </table>
+    <br>
+    <h2>追加</h2>
+    <form method="post" action="{{ url_for('admin.cs')}}"
+        class="form-signin">
+        <!-- csrf対策。とりあえず書いておく -->
+        {{ form.csrf_token }}
+        <!-- flash関数で指定したメッセージを順に表示 -->
+        {% for message in get_flashed_messages() %}
+        <div class="dt-auth-flash">{{ message }}</div>
+        {% endfor %}
+        <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
+        {{ form.course.label }}
+        {{ form.course(placeholder="コース名") }}
+        <br>
+        {{ form.subject.label }}
+        {{ form.subject(placeholder="科目名") }}
+        <br>
+        {{ form.submit }}
+    </form>
+    <br>
+    <h2>削除</h2>
+    <a href="{{url_for('admin.cs_delete')}}">CourseSubjectテーブルのすべてを消す</a>
+</div>
+{% endblock %}
