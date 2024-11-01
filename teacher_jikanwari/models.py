@@ -2,6 +2,7 @@
 from app import db
 
 class Timetable(db.Model):
+    __tablename__ = "timetable"
     id = db.Column(db.Integer, primary_key=True)
     year = db.Column(db.Integer, nullable=False)
     month = db.Column(db.Integer, nullable=False)

@@ -17,10 +17,17 @@ def get_entry_by_id(id):
 # タイムテーブルの表示ルート
 @jikanwari.route('/')
 def t_jikanwari():
-    timetable_data = Timetable.query.order_by(
-        Timetable.year, 
-        Timetable.month, 
-        Timetable.day
+    timetable_data = Timetable.query.with_entities(
+        Timetable.id,          # idを追加
+        Timetable.year,
+        Timetable.month,
+        Timetable.day,
+        Timetable.weekday,
+        Timetable.period1,
+        Timetable.period2,
+        Timetable.period3,
+        Timetable.notes,
+        Timetable.event
     ).all()
     return render_template('teacher_jikanwari/table.html', data=timetable_data)
 
@@ -62,7 +69,7 @@ def edit_entry(id):
         entry.event = request.form['event']
         db.session.commit()
         
-        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  
+        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
     return render_template('teacher_jikanwari/edit_entry.html', entry=entry)
 
 # エントリ削除確認ルート
@@ -72,19 +79,13 @@ def delete_confirmation(id):
     if entry:
         return render_template('teacher_jikanwari/delete_confirmation.html', entry=entry)
     else:
-        
         return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
 
 # エントリ削除ルート
 @jikanwari.route('/delete/<int:id>', methods=['POST'])
 def delete_entry(id):
-    # 指定されたIDのエントリーを取得
     entry = Timetable.query.get(id)
     if entry:
         db.session.delete(entry)
         db.session.commit()
-    return redirect(url_for('teacher.jikanwari.t_jikanwari')) 
-
-
-
-
+    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正
