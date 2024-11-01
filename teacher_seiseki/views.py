@@ -11,11 +11,11 @@ seiseki = Blueprint(
 )
 
 # 教員のメニュー画面にある成績ボタンを押すと生徒の成績を検索する欄が出てくる
-@seiseki.route("/search", methods=["GET", "POST"])
+@seiseki.route("/", methods=["GET", "POST"])
 def search():
     # フォームインスタンスの作成
     score = SearchScore()
-    
+ 
     # リストの取得
     results = Score.query.with_entities(
         Score.subject_name,
@@ -54,21 +54,28 @@ def search():
 # 成績画面の成績登録ボタンをクリックすると追加する画面を表示
 @seiseki.route("/add", methods=["GET", "POST"])
 def add():
-    score = AddScore()
-    if score.validate_on_submit():
-        # 生徒番号、氏名、科目名、評価を入力
-        score = Score(
-            student_num = score.student_num.data,
-            student_name = score.student_name.data,
-            subject_name = score.subject_name.data,
-            assessment_id = score.assessment_id.data,
-        )
-        # データベースに登録
-        db.session.add(score)
-        db.session.commit()
-        return redirect(url_for("teacher.seiseki.add"))
-    # htmlに表示
-    return render_template("/teacher_seiseki/add.html", score=score)
+    score_form = AddScore()
+
+    if score_form.validate_on_submit():
+        action = request.form.get('action')
+        if action == 'confirm':
+            # フォームデータをそのまま表示する確認画面に移動
+            return render_template("teacher_seiseki/add.html", score=score_form, confirm=True, success=False)
+
+        elif action == 'add':
+            # フォームデータを使用してScoreモデルのインスタンスを作成し、データベースに登録
+            score = Score(
+                student_num=score_form.student_num.data,
+                student_name=score_form.student_name.data,
+                subject_name=score_form.subject_name.data,
+                assessment_id=score_form.assessment_id.data
+            )
+            db.session.add(score)
+            db.session.commit()
+            return render_template("teacher_seiseki/add.html", score=score_form, confirm=False, success=True)
+
+    return render_template("teacher_seiseki/add.html", score=score_form, confirm=False, success=False)
+
 
 @seiseki.route("/attend", methods=["GET", "POST"])
 def attend():

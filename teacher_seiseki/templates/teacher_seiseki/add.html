@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>成績登録</title>
-    </head>
-    <body>
-        <h2>成績登録</h2>
-        <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
-            {{ score.csrf_token }}
-            <p>
-                {{ score.student_num.label }} {{ score.student_num(placeholder="") }}
-            </p>
-            <p>
-                {{ score.student_name.label }} {{ score.student_name(placeholder="") }}
-            </p>
-            <p>
-                {{ score.subject_name.label }} {{ score.subject_name(placeholder="") }}
-            </p>
-            <p>
-                {{ score.assessment_id.label }} {{ score.assessment_id(placeholder="") }}
-            </p>
-            {{ score.submit }}
-        </form>
-    </body>
+
+<head>
+    <meta charset="UTF-8">
+    <title>成績登録</title>
+</head>
+
+<body>
+    <h2>成績登録</h2>
+
+    <!-- 登録が完了したら以下の分を表示 -->
+    {% if success %}
+    <p style="color: green">登録が完了しました</p>
+
+    <!-- 最初は入力フォームの表示 -->
+    {% elif not confirm %}
+    <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
+        {{ score.csrf_token }}
+        <p>{{ score.student_num.label }} {{ score.student_num }}</p>
+        <p>{{ score.student_name.label }} {{ score.student_name }}</p>
+        <p>{{ score.subject_name.label }} {{ score.subject_name }}</p>
+        <p>{{ score.assessment_id.label }} {{ score.assessment_id }}</p>
+        <button type="submit" name="action" value="confirm">確認</button>
+    </form>
+
+    <!-- 入力が完了したら確認画面に遷移 -->
+    {% else %}
+    <form action="{{ url_for('teacher.seiseki.add') }}" method="POST">
+        {{ score.csrf_token }}
+        <h3>以下の内容を登録しますか？</h3>
+        <p>生徒番号: {{ score.student_num }}</p>
+        <p>氏名: {{ score.student_name }}</p>
+        <p>科目名: {{ score.subject_name }}</p>
+        <p>評価: {{ score.assessment_id }}</p>
+        <input type="hidden" name="student_num" value="{{ score.student_num.data }}">
+        <input type="hidden" name="student_name" value="{{ score.student_name.data }}">
+        <input type="hidden" name="subject_name" value="{{ score.subject_name.data }}">
+        <input type="hidden" name="assessment_id" value="{{ score.assessment_id.data }}">
+        <button type="submit" name="action" value="add">確定</button>
+    </form>
+
+    {% endif %}
+</body>
+
 </html>
