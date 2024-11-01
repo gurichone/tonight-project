@@ -45,8 +45,8 @@ class Student(db.Model, UserMixin):
     password_hash = db.Column(db.String)
     entrollment_year = db.Column(db.Integer)
     birth_date = db.Column(db.Date)
-    school_name = db.Column(db.String)
-    course_name = db.Column(db.String)
+    school_id = db.Column(db.String)
+    course_id = db.Column(db.String)
     class_num = db.Column(db.String)
     icon_path = db.Column(db.String)
 
@@ -88,3 +88,8 @@ class CourseSubject(db.Model):
     __tablename__ = "course_subject"
     course_id = db.Column(db.Integer, primary_key=True)
     subject_id = db.Column(db.Integer, primary_key=True)
+
+class School(db.Model):
+    __tablename__ = "school"
+    school_id = db.Column(db.Integer, primary_key=True)
+    school_name = db.Column(db.String)
