@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>出席確認</title>
+    </head>
+    <body>
+        <header>
+            <h2>出席確認</h2>
+            <a href="">戻る</a>
+        </header>
+        <form action="{{ url_for('teacher.seiseki.attend') }}" method="POST" novalidate="novalidate">
+            {{ attend.crsf_token }}
+            {{ attend.subject_name.label }}{{ attend.subject_name }}
+            {{ attend.class_num.label }}{{ attend.class_num }}
+            {{ attend.student_name.label }}{{ attend.student_name }}
+            {{ attend.submit }}
+        </form>
+        {% if results %}
+        <table>
+            <thead>
+                <tr>
+                    <th>科目名</th>
+                    <th>氏名</th>
+                    <th>日数</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attend in results %}
+                <tr>
+                    <td>{{ attend.subject_name }}</td>
+                    <td>{{ attend.student_name }}</td>
+                    <td>{{ attend.attend_day }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        {% endif %}
+    </body>
+</html>
