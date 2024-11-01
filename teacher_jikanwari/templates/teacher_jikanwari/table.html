@@ -20,18 +20,66 @@
             });
         }
     </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('your-image-url.jpg'); /* ここに画像のURLを設定 */
+            background-size: cover; /* 背景画像をカバーする */
+            background-repeat: no-repeat; /* 背景画像を繰り返さない */
+            background-position: center; /* 背景画像を中央に配置 */
+            color: black; /* テキストのデフォルト色を黒に設定 */
+        }
+        table {
+            width: 100%;
+            border-collapse: separate; /* 複数のセル間にスペースを持たせる */
+            border-spacing: 10px; /* セル間のスペースを設定 */
+            margin: 20px 0;
+            background-color: rgba(225, 225, 225, 0.8); /* 背景を白にして透明度を設定 */
+        }
+        th {
+            border: 1px solid black;
+            padding: 10px;
+            background-color: #cacaca; /* ヘッダーの背景色を灰色に */
+            color: white; /* ヘッダーの文字色を白に */
+        }
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            background-color: white; /* セルの背景色を白に */
+            color: black; /* セルの文字色を黒に */
+        }
+        .header-cell {
+            background-color: #000000; /* 年、月、日、曜日のヘッダーの背景色 */
+            color: white; /* 年、月、日、曜日のヘッダーの文字色 */
+        }
+        select {
+            background-color: #000000; /* プルダウンメニューの背景色をヘッダーと同じに */
+            color: white; /* プルダウンメニューの文字色を白に */
+            border: 1px solid black; /* プルダウンメニューの境界線 */
+            padding: 5px; /* パディングを追加 */
+            border-radius: 5px; /* 角を丸くする */
+        }
+        a {
+            text-decoration: none;
+            color: black; /* リンクの文字色を黒に */
+            background-color: rgb(255, 255, 255); /* リンクの背景色を黒に */
+            padding: 5px 10px; /* ボタンにパディングを追加 */
+            border-radius: 5px; /* ボタンに角を丸くする */
+            display: inline-block; /* ボタンをブロック表示 */
+        }
+    </style>
 </head>
 <body>
     <h1 style="text-align: center;">時間割表</h1>
 
     <div style="text-align: right; margin: 20px;">
-        <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}" style="border: 1px solid black; padding: 10px; text-decoration: none;">授業を追加</a>
+        <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}">授業を追加</a>
     </div>
 
-    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <table>
         <thead>
             <tr>
-                <th style="border: 1px solid black; padding: 10px;">
+                <th class="header-cell">
                     <label for="year-filter">年:</label>
                     <select id="year-filter" onchange="updateTable()">
                         <option value="">すべて</option>
@@ -40,7 +88,7 @@
                         {% endfor %}
                     </select>
                 </th>
-                <th style="border: 1px solid black; padding: 10px;">
+                <th class="header-cell">
                     <label for="month-filter">月:</label>
                     <select id="month-filter" onchange="updateTable()">
                         <option value="">すべて</option>
@@ -49,29 +97,29 @@
                         {% endfor %}
                     </select>
                 </th>
-                <th style="border: 1px solid black; padding: 10px;">日</th>
-                <th style="border: 1px solid black; padding: 10px;">曜日</th>
-                <th style="border: 1px solid black; padding: 10px;">1時間目</th>
-                <th style="border: 1px solid black; padding: 10px;">2時間目</th>
-                <th style="border: 1px solid black; padding: 10px;">3時間目</th>
-                <th style="border: 1px solid black; padding: 10px;">備考</th>
-                <th style="border: 1px solid black; padding: 10px;">イベント</th>
-                <th style="border: 1px solid black; padding: 10px;">操作</th>
+                <th class="header-cell">日</th>
+                <th class="header-cell">曜日</th>
+                <th>1時間目</th>
+                <th>2時間目</th>
+                <th>3時間目</th>
+                <th>備考</th>
+                <th>イベント</th>
+                <th>操作</th>
             </tr>
         </thead>
         <tbody>
             {% for entry in data %}
             <tr>
-                <td style="border: 1px solid black; padding: 10px;" data-type="year">{{ entry.year }}</td>
-                <td style="border: 1px solid black; padding: 10px;" data-type="month">{{ entry.month }}月</td>
-                <td style="border: 1px solid black; padding: 10px;" data-type="day">{{ entry.day }}日</td>
-                <td style="border: 1px solid black; padding: 10px;">{{ entry.weekday }}</td>
-                <td style="border: 1px solid black; padding: 10px;">{{ entry.period1 }}</td>
-                <td style="border: 1px solid black; padding: 10px;">{{ entry.period2 }}</td>
-                <td style="border: 1px solid black; padding: 10px;">{{ entry.period3 }}</td>
-                <td style="border: 1px solid black; padding: 10px;">{{ entry.notes }}</td>
-                <td style="border: 1px solid black; padding: 10px;">{{ entry.event }}</td>
-                <td style="border: 1px solid black; padding: 10px; text-align: center;">
+                <td data-type="year">{{ entry.year }}</td>
+                <td data-type="month">{{ entry.month }}月</td>
+                <td data-type="day">{{ entry.day }}日</td>
+                <td>{{ entry.weekday }}</td>
+                <td>{{ entry.period1 }}</td>
+                <td>{{ entry.period2 }}</td>
+                <td>{{ entry.period3 }}</td>
+                <td>{{ entry.notes }}</td>
+                <td>{{ entry.event }}</td>
+                <td style="text-align: center;">
                     <a href="{{ url_for('teacher.jikanwari.edit_entry', id=entry.id) }}">編集</a>
                     <a href="{{ url_for('teacher.jikanwari.delete_confirmation', id=entry.id) }}">削除</a>
                 </td>
