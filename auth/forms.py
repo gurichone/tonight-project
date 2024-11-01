@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, DateField, SelectField
+from wtforms import PasswordField, StringField, SubmitField, DateField, SelectField, SelectMultipleField
 from wtforms.validators import DataRequired, Email, Length, NumberRange
 
 # SignUpFormを作成。フォームを作成する際はとりあえずカッコの中にFlaskFormを書いておく（フォーム作成に必要な機能を使えるようになる）
@@ -31,7 +31,7 @@ class TeacherSignUpForm(FlaskForm):
             DataRequired("パスワードは必須です。") # 入力必須の設定
         ]
     )
-    teacher_class_num = SelectField(
+    teacher_class_num = SelectMultipleField(
         "クラス番号",
     )
     submit = SubmitField("登録") # フォームの入力完了ボタンの作成
