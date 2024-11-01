@@ -1,8 +1,8 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from app import db 
-from admin.forms import CourseForm, SubjectForm, ClassNumForm, CourseSubjectForm
-from auth.models import Teacher, Student 
-from auth.models import Subject, Course, ClassNum, CourseSubject
+from admin.forms import CourseForm, SubjectForm, ClassNumForm, CourseSubjectForm, SchoolForm, StudentAddForm
+from auth.models import Teacher, Student, Subject, Course, ClassNum, CourseSubject, School
+import datetime
 
 admin = Blueprint("admin", __name__, template_folder="templates", static_folder="static")
 
@@ -48,6 +48,25 @@ def subject():
 def subject_delete():
     bbb = db.session.query(CourseSubject).delete()
     aaa = db.session.query(Subject).delete()
+    db.session.commit()
+    return render_template("admin/admin.html", message="けしたよ")
+
+@admin.route("/school", methods=["GET", "POST"])
+def school():
+    school_form = SchoolForm()
+    if school_form.validate_on_submit():
+        school = School(
+            school_name = school_form.school_name.data,
+        )
+        db.session.add(school)
+        db.session.commit()
+        return render_template("admin/admin.html", message="schoolテーブルに保存しました")
+    school_list = db.session.query(School).all()
+    return render_template("admin/school.html", school_form=school_form, school_list=school_list)
+
+@admin.route("/school/delete")
+def school_delete():
+    aaa = db.session.query(School).delete()
     db.session.commit()
     return render_template("admin/admin.html", message="けしたよ")
 

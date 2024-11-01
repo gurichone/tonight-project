@@ -27,7 +27,7 @@ class Teacher(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
     
     def is_duplicate_email(self):
-        return Teacher.query.filter_by(teacher_email=self.teacher_email).first() is not None
+        return Teacher.query.filter_by(teacher_email=self.teacher_email).first() is not None or Student.query.filter_by(student_email=self.teacher_email).first() is not None
 
 @login_manager.user_loader
 def load_user(id):
@@ -62,7 +62,7 @@ class Student(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
     
     def is_duplicate_email(self):
-        return Student.query.filter_by(student_email=self.student_email).first() is not None
+        return Student.query.filter_by(student_email=self.student_email).first() is not None or Teacher.query.filter_by(teacher_email=self.student_email).first() is not None
 
 # @login_manager.user_loader
 # def load_student(student_id):

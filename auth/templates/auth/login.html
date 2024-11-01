@@ -23,9 +23,9 @@
                 {{ teacherform.csrf_token }}
                 <!-- auth/forms.pyのLoginFormクラスのemail、password、の情報を基にフォームを作成 -->
                 <!-- form.xxxの取得でforms.pyのxxxの情報を取得できる -->
-                {{ teacherform.teacher_num(placeholder="教員番号") }}
+                {{ teacherform.teacher_id(placeholder="教員番号") }}
                 <br>
-                {{ teacherform.password(placeholder="パスワード") }}
+                {{ teacherform.teacher_password(placeholder="パスワード") }}
                 <br>
                 {{ teacherform.submit }}
             </form>
@@ -44,9 +44,9 @@
                 {{ studentform.csrf_token }}
                 <!-- auth/forms.pyのLoginFormクラスのemail、password、の情報を基にフォームを作成 -->
                 <!-- form.xxxの取得でforms.pyのxxxの情報を取得できる -->
-                {{ studentform.student_num(placeholder="生徒番号") }}
+                {{ studentform.student_id(placeholder="生徒番号") }}
                 <br>
-                {{ studentform.password(placeholder="パスワード") }}
+                {{ studentform.student_password(placeholder="パスワード") }}
                 <br>
                 {{ studentform.submit }}
             </form>

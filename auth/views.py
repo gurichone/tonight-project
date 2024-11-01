@@ -1,8 +1,9 @@
 from app import db # app.pyのdbをインポート
 from auth.forms import TeacherLoginForm, TeacherSignUpForm, StudentLoginForm, StudentSignUpForm # auth/forms.pyのTeacherLoginForm, TeacherSignUpForm, StudentLoginForm, StudentSignUpFormクラスを使えるようにする
-from auth.models import Teacher, Student # auth/models.pyのTeacher, Studentクラス(データベース)を使えるようにする
+from auth.models import Teacher, Student, School, ClassNum, Course # auth/models.pyのTeacher, Student, School, ClassNum, Courseクラス(データベース)を使えるようにする
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_user, logout_user, current_user, login_required
+import datetime
 
 # authアプリを生成。テンプレートを保存するフォルダ名にtemplates、スタティックを保存するフォルダ名にstaticを指定
 # htmlファイルを探すときは自動的にauth/templatesの中を参照するようになる
@@ -14,15 +15,21 @@ def signup():
     teacherform = TeacherSignUpForm() # forms.pyのTeacherSignUpFormクラスを使えるようにする
     studentform = StudentSignUpForm() # forms.pyのStudentSignUpFormクラスを使えるようにする
 
+    schools=db.session.query(School).all()
+    studentform.student_school.choices=[(s.school_id, s.school_name)for s in schools]
+    class_nums=db.session.query(ClassNum).all()
+    studentform.student_class_num.choices=[(s.class_num, s.class_num)for s in class_nums]
+    teacherform.teacher_class_num.choices=[(s.class_num, s.class_num)for s in class_nums]
+    studentform.student_entrollment_year.choices=[(i, i)for i in range(datetime.datetime.now().year, 1900, -1)]
     # フォームが正しく入力されているかをチェックする
     if teacherform.validate_on_submit(): 
         # フォームが正しく入力されているときの処理
         teacher = Teacher(
-            id=teacherform.teacher_num.data,
-            class_num=teacherform.class_num.data,
+            id=teacherform.teacher_id.data,
             teacher_name=teacherform.teacher_name.data, # DBのユーザーテーブルのusernameにフォームに入力されたユーザ名を代入
-            teacher_email=teacherform.email.data, # DBのユーザーテーブルのemailにフォームに入力されたメールアドレスを代入
-            password=teacherform.password.data, # DBのユーザーテーブルのpasswordにフォームに入力されたパスワードを代入
+            teacher_email=teacherform.teacher_email.data, # DBのユーザーテーブルのemailにフォームに入力されたメールアドレスを代入
+            password=teacherform.teacher_password.data, # DBのユーザーテーブルのpasswordにフォームに入力されたパスワードを代入
+            class_num=teacherform.teacher_class_num.data,
         )
 
         # メールアドレス重複チェックをする
@@ -40,12 +47,17 @@ def signup():
         # フォームが正しく入力されているかをチェックする
     if studentform.validate_on_submit(): 
         # フォームが正しく入力されているときの処理
+        course=db.session.query(ClassNum).filter_by(class_num=studentform.student_class_num.data).first()
         student = Student(
-            id=studentform.student_num.data,
-            class_num=studentform.class_num.data,
-            student_name=studentform.student_name.data, # DBのユーザーテーブルのusernameにフォームに入力されたユーザ名を代入
-            student_email=studentform.email.data, # DBのユーザーテーブルのemailにフォームに入力されたメールアドレスを代入
-            password=studentform.password.data, # DBのユーザーテーブルのpasswordにフォームに入力されたパスワードを代入
+            id=studentform.student_id.data,
+            student_name=studentform.student_name.data,
+            student_email=studentform.student_email.data,
+            password=studentform.student_password.data,
+            entrollment_year=studentform.student_entrollment_year.data,
+            birth_date=studentform.student_birth_date.data,
+            school_id=studentform.student_school.data,
+            course_id=course.course_id,
+            class_num=studentform.student_class_num.data,
         )
 
         # メールアドレス重複チェックをする
@@ -71,10 +83,10 @@ def login():
 
     if teacherform.validate_on_submit():
         # 入力されたメールアドレスを持つユーザデータを取得
-        teacher = Teacher.query.filter_by(id=teacherform.teacher_num.data).first() 
+        teacher = Teacher.query.filter_by(id=teacherform.teacher_id.data).first() 
 
         # ユーザーが存在しパスワードが一致する場合はログインを許可する
-        if teacher is not None and teacher.verify_password(teacherform.password.data):
+        if teacher is not None and teacher.verify_password(teacherform.teacher_password.data):
             # ユーザ情報をセッションに登録
             login_user(teacher)
             # crud/templates/crud/index.htmlを表示
@@ -84,10 +96,10 @@ def login():
     
     if studentform.validate_on_submit():
         # 入力されたメールアドレスを持つユーザデータを取得
-        student = Student.query.filter_by(id=studentform.student_num.data).first() 
+        student = Student.query.filter_by(id=studentform.student_id.data).first() 
 
         # ユーザーが存在しパスワードが一致する場合はログインを許可する
-        if student is not None and student.verify_password(studentform.password.data):
+        if student is not None and student.verify_password(studentform.student_password.data):
             # ユーザ情報をセッションに登録
             login_user(student)
             # crud/templates/crud/index.htmlを表示
@@ -102,7 +114,7 @@ def login():
 @auth.route("/logout")
 def logout():
     logout_user() # ログアウト処理
-    return redirect(url_for("currydar.currydar_app")) # auth/views.pyのlogin関数を実行
+    return redirect(url_for("auth.login")) # auth/views.pyのlogin関数を実行
 
 @auth.route("/index")
 # @login_required

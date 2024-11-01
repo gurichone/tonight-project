@@ -22,15 +22,15 @@
                 <div class="dt-auth-flash">{{ message }}</div>
                 {% endfor %}
                 <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
-                {{ teacherform.teacher_num(placeholder="教員番号") }}
-                <br>
-                {{ teacherform.class_num(placeholder="クラス番号") }}
+                {{ teacherform.teacher_id(placeholder="教員番号") }}
                 <br>
                 {{ teacherform.teacher_name(placeholder="氏名") }}
                 <br>
-                {{ teacherform.email(placeholder="メールアドレス") }}
+                {{ teacherform.teacher_email(placeholder="メールアドレス") }}
                 <br>
-                {{ teacherform.password(placeholder="パスワード") }}
+                {{ teacherform.teacher_password(placeholder="パスワード") }}
+                <br>
+                {{ teacherform.teacher_class_num(placeholder="クラス番号") }}
                 <br>
                 {{ teacherform.submit }}
             </form>
@@ -51,15 +51,29 @@
                 <div class="dt-auth-flash">{{ message }}</div>
                 {% endfor %}
                 <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
-                {{ studentform.student_num(placeholder="生徒番号") }}
+                {{ studentform.student_id.label }}
+                {{ studentform.student_id(placeholder="生徒番号") }}
                 <br>
-                {{ studentform.class_num(placeholder="クラス番号") }}
-                <br>
+                {{ studentform.student_name.label }}
                 {{ studentform.student_name(placeholder="氏名") }}
                 <br>
-                {{ studentform.email(placeholder="メールアドレス") }}
+                {{ studentform.student_email.label }}
+                {{ studentform.student_email(placeholder="メールアドレス") }}
                 <br>
-                {{ studentform.password(placeholder="パスワード") }}
+                {{ studentform.student_password.label }}
+                {{ studentform.student_password(placeholder="パスワード") }}
+                <br>
+                {{ studentform.student_entrollment_year.label }}
+                {{ studentform.student_entrollment_year(placeholder="入学年度") }}
+                <br>
+                {{ studentform.student_birth_date.label }}
+                {{ studentform.student_birth_date(placeholder="誕生日") }}
+                <br>
+                {{ studentform.student_school.label }}
+                {{ studentform.student_school(placeholder="学校名") }}
+                <br>
+                {{ studentform.student_class_num.label }}
+                {{ studentform.student_class_num(placeholder="クラス番号") }}
                 <br>
                 {{ studentform.submit }}
             </form>
