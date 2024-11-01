@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ student.student_name }}の詳細</title>
+</head>
+<body>
+    <header>
+        <h2>生徒詳細</h2>
+        <h3>{{ student.student_name }}</h3>
+        <a href="{{ url_for('teacher.student.student_list') }}">戻る</a>
+    </header>
+
+    <table>
+        <tr>
+            <th>氏名</th>
+            <td>{{ student.student_name }}</td>
+        </tr>
+        <tr>
+            <th>入学年度</th>
+            <td>{{ student.entrollment_year }}</td>
+        </tr>
+        <tr>
+            <th>生徒番号</th>
+            <td>{{ student.id }}</td>
+        </tr>
+        <tr>
+            <th>生年月日</th>
+            <td>{{ student.birth_date }}</td>
+        </tr>
+        <tr>
+            <th>学校名</th>
+            <td>{{ student.school_name }}</td>
+        </tr>
+        <tr>
+            <th>コース名</th>
+            <td>{{ student.course_name }}</td>
+        </tr>
+        <tr>
+            <th>クラス番号</th>
+            <td>{{ student.class_num }}</td>
+        </tr>
+        <tr>
+            <th>メールアドレス</th>
+            <td>{{ student.student_email }}</td>
+        </tr>
+    </table>
+</body>
+</html>

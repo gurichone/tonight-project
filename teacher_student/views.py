@@ -70,9 +70,21 @@ def student_list():
 
     # print("\n\n\n", stu_list.class_num.data, type(stu_list.class_num.data), "\n", stu_list.class_num.choices, "\n\n\n")
     # print("\n\n\n", stu_list.id.data, type(stu_list.id.data), "\n", stu_list.id.choices, "\n\n\n")
+
     return render_template(
         'teacher_student/student_list.html', 
         stu_list=stu_list, 
         students=students, 
         message=message
     )
+
+@student.route("/student/<string:id>")
+def student_detail(id):
+    # Studentクラスの全フィールドを取得
+    student = Student.query.filter_by(id=id).first_or_404()
+    return render_template('teacher_student/student_detail.html', student=student)
+
+
+@student.route("/class_list", methods=["GET", "POST"])
+def class_list():
+    return render_template('teacher_student/class_list.html')

@@ -61,6 +61,7 @@
                     <td>{{ student.id }}</td>
                     <td>{{ student.class_num }}</td>
                     <td>{{ student.student_name }}</td>
+                    <td><a href="{{ url_for('teacher.student.student_detail', id=student.id) }}">詳細</a></td>
                 </tr>
             {% endfor %}
         </tbody>

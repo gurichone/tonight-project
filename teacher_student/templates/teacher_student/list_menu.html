@@ -7,12 +7,12 @@
     </head>
     <body>
         <header>
-            <a href="#">戻る</a>
+            <a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>
         </header>
 
         <div class="teacher-student">
             <ul>
-                <li><a href="#" class="t-student">
+                <li><a href="class_list" class="t-student">
                     <img src="{{ url_for('static', filename='images/kurasukanri.png') }}" alt="クラス管理">
                 </a></li>
                 
