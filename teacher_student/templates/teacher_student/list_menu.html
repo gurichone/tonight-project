@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>生徒管理メニュー</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}">
-    </head>
-    <body>
-        <header>
-            <a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>
-        </header>
+{% extends "teacher_teisyutsu/base.html" %}
+{% block title %}生徒管理メニュー{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block content %}
 
         <div class="teacher-student">
             <ul>
@@ -21,5 +14,4 @@
                 </a></li>
             </ul>
         </div>
-    </body>
-</html>
+{% endblock %}

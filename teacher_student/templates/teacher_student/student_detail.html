@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ student.student_name }}の詳細</title>
-</head>
-<body>
-    <header>
-        <h2>生徒詳細</h2>
-        <h3>{{ student.student_name }}</h3>
-        <a href="{{ url_for('teacher.student.student_list') }}">戻る</a>
-    </header>
+{% extends "teacher_teisyutsu/base.html" %}
+{% block title %}{{ student.student_name }}の詳細{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.student.student_list') }}">戻る</a>{% endblock %}
+{% block content %}
+<h2>生徒詳細</h2>
+<h3>{{ student.student_name }}</h3>
 
     <table>
         <tr>
@@ -45,5 +39,4 @@
             <td>{{ student.student_email }}</td>
         </tr>
     </table>
-</body>
-</html>
+{% endblock %}

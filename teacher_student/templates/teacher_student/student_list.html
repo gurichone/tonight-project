@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>生徒一覧</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}">
-    </head>
+{% extends "teacher_teisyutsu/base.html" %}
+{% block title %}生徒一覧{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.student.teacher_student') }}">戻る</a>{% endblock %}
+{% block content %}
+<h2>生徒一覧</h2>
 
-    <body>
-        <header>
-            <h2>生徒一覧</h2>
-            <a href="">戻る</a>
-        </header>
     <!-- 検索フォーム -->
     <form method="POST" action="{{ url_for('teacher.student.student_list') }}">
 
@@ -67,5 +60,4 @@
         </tbody>
     </table>
 
-</body>
-</html>
+{% endblock %}

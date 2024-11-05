@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, url_for, request
-from auth.models import Student
+from flask import Blueprint, render_template, redirect, url_for, request, session
+from auth.models import Student,Teacher
 from teacher_student.forms import StudentSearch
 from app import db
 
@@ -84,7 +84,24 @@ def student_detail(id):
     student = Student.query.filter_by(id=id).first_or_404()
     return render_template('teacher_student/student_detail.html', student=student)
 
-
-@student.route("/class_list", methods=["GET", "POST"])
+@student.route("/class_list")
 def class_list():
-    return render_template('teacher_student/class_list.html')
+    # ログイン中の教員アカウントIDをセッションから取得
+    # teacher_id = session.get('teacher_id')
+
+    teacher_id = '111111'
+
+    # 教員情報を取得し、担当クラス番号を取得
+    teacher = Teacher.query.get(teacher_id)
+    if not teacher:
+        return "教員情報が見つかりません", 404
+    
+    # クラスごとに生徒を分類し、辞書形式で保持
+    class_students = {}
+    for student in Student.query.filter_by(class_num=teacher.class_num).all():
+        class_num = student.class_num
+        if class_num not in class_students:
+            class_students[class_num] = []
+        class_students[class_num].append(student)
+
+    return render_template('teacher_student/class_list.html', class_students=class_students)
