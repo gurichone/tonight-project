@@ -31,7 +31,7 @@ class TeacherSignUpForm(FlaskForm):
             DataRequired("パスワードは必須です。") # 入力必須の設定
         ]
     )
-    teacher_class_num = SelectMultipleField(
+    teacher_class_num = SelectField(
         "クラス番号",
     )
     submit = SubmitField("登録") # フォームの入力完了ボタンの作成
