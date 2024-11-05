@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session
-from auth.models import Student,Teacher
+from auth.models import Student,Teacher, School, Course
 from teacher_student.forms import StudentSearch
 from app import db
 
@@ -82,7 +82,17 @@ def student_list():
 def student_detail(id):
     # Studentクラスの全フィールドを取得
     student = Student.query.filter_by(id=id).first_or_404()
-    return render_template('teacher_student/student_detail.html', student=student)
+    
+    # 学校名とコース名を取得
+    school = School.query.filter_by(school_id=student.school_id).first()
+    course = Course.query.filter_by(course_id=student.course_id).first()
+
+    return render_template(
+        'teacher_student/student_detail.html',
+        student=student,
+        school_name=school.school_name if school else "不明",
+        course_name=course.course_name if course else "不明"
+    )
 
 @student.route("/class_list")
 def class_list():
