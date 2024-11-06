@@ -1,0 +1,27 @@
+{% extends "teacher_teisyutsu/base.html" %}
+{% block title %}生徒削除確認{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.student.class_list') }}">戻る</a>{% endblock %}
+{% block content %}
+
+<h2>本当に削除しますか？</h2>
+
+<table>
+    <tr>
+        <th>生徒番号</th>
+        <td>{{ student.id }}</td>
+    </tr>
+    <tr>
+        <th>クラス番号</th>
+        <td>{{ student.class_num }}</td>
+    </tr>
+    <tr>
+        <th>氏名</th>
+        <td>{{ student.student_name }}</td>
+    </tr>
+</table>
+
+<form action="{{ url_for('teacher.student.delete_student', id=student.id) }}" method="post">
+    <button type="submit">削除</button>
+</form>
+
+{% endblock %}

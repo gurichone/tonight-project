@@ -10,13 +10,26 @@
         <button onclick="scrollContainer('class-{{ class_num }}', -1)">左へスクロール</button>
         <button onclick="scrollContainer('class-{{ class_num }}', 1)">右へスクロール</button>
         <div class="class-container" id="class-{{ class_num }}">
-            {% for student in students %}
-                <div class="student-card">
-                    <p>生徒番号: {{ student.id }}</p>
-                    <p>氏名: {{ student.student_name }}</p>
-
-                </div>
-            {% endfor %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>生徒番号</th>
+                        <th>氏名</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                        <tr>
+                            <td>{{ student.id }}</td>
+                            <td>{{ student.student_name }}</td>
+                            <td>
+                                <!-- 削除ページのリンクを生徒ごとに表示 -->
+                                <a href="{{ url_for('teacher.student.delete_confirm', id=student.id) }}">削除</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     {% endfor %}
 

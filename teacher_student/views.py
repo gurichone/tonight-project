@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session
+from flask import Blueprint, render_template, redirect, url_for, request, session, flash
 from auth.models import Student,Teacher, School, Course
 from teacher_student.forms import StudentSearch
 from app import db
@@ -104,7 +104,7 @@ def class_list():
     # 教員情報を取得し、担当クラス番号を取得
     teacher = Teacher.query.get(teacher_id)
     if not teacher:
-        return "教員情報が見つかりません", 404
+        return "先生どこーーーー？", 404
     
     # クラスごとに生徒を分類し、辞書形式で保持
     class_students = {}
@@ -115,3 +115,30 @@ def class_list():
         class_students[class_num].append(student)
 
     return render_template('teacher_student/class_list.html', class_students=class_students)
+
+# 生徒削除確認ページ
+@student.route("/student/delete_confirm/<string:id>")
+def delete_confirm(id):
+    student = Student.query.get(id)
+    if not student:
+        return "いないよそんな人", 404
+    return render_template("teacher_student/delete_confirm.html", student=student)
+
+# 生徒削除処理
+@student.route("/student/delete/<string:id>", methods=["POST"])
+def delete_student(id):
+    student = Student.query.get(id)
+    if not student:
+        return "もうおらんで", 404
+
+    db.session.delete(student)
+    db.session.commit()
+    flash("削除が完了しました", "success")
+
+    # 削除完了ページへ遷移
+    return redirect(url_for("teacher.student.delete_success"))
+
+# 削除完了ページ
+@student.route("/student/delete_success")
+def delete_success():
+    return render_template("teacher_student/delete_success.html")
