@@ -8,13 +8,14 @@
 
 <body>
     <h2>成績登録</h2>
-
-    <!-- 登録が完了したら以下の分を表示 -->
+    <!-- 登録が完了したら以下の内容を表示 -->
     {% if success %}
-    <p style="color: green">登録が完了しました</p>
+    <p>登録が完了しました</p>
+    <a href="{{ url_for('teacher.seiseki.search')}}">戻る</a>
 
-    <!-- 最初は入力フォームの表示 -->
+    <!-- 最初に入力フォームの表示を行う -->
     {% elif not confirm %}
+    <a href="javascript:history.back();">戻る</a>
     <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
         {{ score.csrf_token }}
         <p>{{ score.student_num.label }} {{ score.student_num }}</p>
@@ -39,7 +40,6 @@
         <input type="hidden" name="assessment_id" value="{{ score.assessment_id.data }}">
         <button type="submit" name="action" value="add">確定</button>
     </form>
-
     {% endif %}
 </body>
 

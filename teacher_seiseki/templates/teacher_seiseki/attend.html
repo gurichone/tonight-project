@@ -7,15 +7,30 @@
     <body>
         <header>
             <h2>出席確認</h2>
-            <a href="">戻る</a>
         </header>
+        <!-- 出席日数を確認する際の情報の絞り込みを行う -->
         <form action="{{ url_for('teacher.seiseki.attend') }}" method="POST" novalidate="novalidate">
-            {{ attend.crsf_token }}
-            {{ attend.subject_name.label }}{{ attend.subject_name }}
-            {{ attend.class_num.label }}{{ attend.class_num }}
-            {{ attend.student_name.label }}{{ attend.student_name }}
+            {{ attend.csrf_token }}
+            <!-- 科目名を選ぶ -->
+            <label for="subject_name">科目名</label>
+            <select name="subject_name" id="subject_name">
+                {% for subject_name, label in attend.subject_name.choices %}
+                    <option value="{{ subject_name }}" {% if attend.subject_name.data == subject_name %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <!-- クラス番号を選ぶ -->
+            <label for="class_num">クラス番号</label>
+            <select name="class_num" id="class_num">
+                {% for class_num, label in attend.class_num.choices %}
+                    <option value="{{ class_num }}" {% if attend.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <!-- 生徒番号を入力 -->
+            {{ attend.student_name.label }} {{ attend.student_name }}
+            <!-- ボタンを押して検索 -->
             {{ attend.submit }}
         </form>
+        <!-- 検索結果を表示 -->
         {% if results %}
         <table>
             <thead>
@@ -36,6 +51,7 @@
             </tbody>
         </table>
         {% else %}
+            <h2>一致する結果がありません</h2>
         {% endif %}
     </body>
 </html>
