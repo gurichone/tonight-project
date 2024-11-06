@@ -62,7 +62,7 @@
         a {
             text-decoration: none;
             color: black; /* リンクの文字色を黒に */
-            background-color: rgb(255, 255, 255); /* リンクの背景色を黒に */
+            background-color: rgb(255, 255, 255); /* リンクの背景色を白に */
             padding: 5px 10px; /* ボタンにパディングを追加 */
             border-radius: 5px; /* ボタンに角を丸くする */
             display: inline-block; /* ボタンをブロック表示 */
@@ -74,6 +74,7 @@
 
     <div style="text-align: right; margin: 20px;">
         <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}">授業を追加</a>
+        <a href="{{ url_for('teacher.jikanwari.lesson_count') }}">授業数登録</a>
     </div>
 
     <table>

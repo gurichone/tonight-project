@@ -17,6 +17,7 @@ def get_entry_by_id(id):
 # タイムテーブルの表示ルート
 @jikanwari.route('/')
 def t_jikanwari():
+    # 日付の早い順にエントリを取得
     timetable_data = Timetable.query.with_entities(
         Timetable.id,          
         Timetable.year,
@@ -28,17 +29,37 @@ def t_jikanwari():
         Timetable.period3,
         Timetable.notes,
         Timetable.event
-    ).order_by(Timetable.year, Timetable.month, Timetable.day).all()  # 年、月、日でソート
+    ).order_by(Timetable.year, Timetable.month, Timetable.day).all()  # ここを追加
     return render_template('teacher_jikanwari/table.html', data=timetable_data)
 
-# エントリ追加ルート
+
+# エントリ追加ルート（GETメソッド）
+@jikanwari.route('/add', methods=['GET'])
+def show_add_entry():
+    return render_template('teacher_jikanwari/add_entry.html')
+
+# エントリ追加ルート（POSTメソッド）
 @jikanwari.route('/add', methods=['POST'])
 def add_entry():
+    year = int(request.form['year'])
+    month = int(request.form['month'])
+    day = int(request.form['day'])
+    weekday = request.form['weekday']
+
+    # 同じ日付のエントリが存在するか確認
+    existing_entry = Timetable.query.filter_by(year=year, month=month, day=day, weekday=weekday).first()
+
+    if existing_entry:
+        # エントリが既に存在する場合、エラーメッセージを表示
+        error_message = "この日付のエントリは既に存在します。別の日付を選択してください。"
+        return render_template('teacher_jikanwari/add_entry.html', error=error_message)
+
+    # 新しいエントリを作成
     new_entry = Timetable(
-        year=int(request.form['year']),
-        month=int(request.form['month']),
-        day=int(request.form['day']),
-        weekday=request.form['weekday'],
+        year=year,
+        month=month,
+        day=day,
+        weekday=weekday,
         period1=request.form['period1'],
         period2=request.form['period2'],
         period3=request.form['period3'],
@@ -48,13 +69,9 @@ def add_entry():
     db.session.add(new_entry)
     db.session.commit()
     
-    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  
+    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正されたエンドポイント名
 
-@jikanwari.route('/add', methods=['GET'])
-def show_add_entry():
-    return render_template('teacher_jikanwari/add_entry.html')
 
-# エントリ編集ルート
 @jikanwari.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit_entry(id):
     entry = Timetable.query.get_or_404(id)
@@ -69,8 +86,10 @@ def edit_entry(id):
         entry.event = request.form['event']
         db.session.commit()
         
-        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  
+        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # エンドポイントを修正
+    # GETリクエストの場合、編集ページをレンダリング
     return render_template('teacher_jikanwari/edit_entry.html', entry=entry)
+
 
 # エントリ削除確認ルート
 @jikanwari.route('/delete_confirmation/<int:id>', methods=['GET'])
@@ -79,7 +98,7 @@ def delete_confirmation(id):
     if entry:
         return render_template('teacher_jikanwari/delete_confirmation.html', entry=entry)
     else:
-        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  
+        return redirect(url_for('jikanwari.t_jikanwari'))  # 修正されたエンドポイント名
 
 # エントリ削除ルート
 @jikanwari.route('/delete/<int:id>', methods=['POST'])
@@ -88,4 +107,11 @@ def delete_entry(id):
     if entry:
         db.session.delete(entry)
         db.session.commit()
-    return redirect(url_for('teacher.jikanwari.t_jikanwari'))
+    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正されたエンドポイント名
+
+# 授業数登録ページ
+@jikanwari.route('/lesson_count')
+def lesson_count():
+    # 授業数を取得
+    lesson_count = Timetable.query.count()
+    return render_template('teacher_jikanwari/lesson_count.html', lesson_count=lesson_count)

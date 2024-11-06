@@ -73,6 +73,11 @@
 </head>
 <body>
     <h1>時間割追加</h1>
+    
+    {% if error %}
+        <div style="color: red; text-align: center; margin-bottom: 20px;">{{ error }}</div>
+    {% endif %}
+
     <form action="{{ url_for('teacher.jikanwari.add_entry') }}" method="POST">
         <label for="year">年:</label>
         <select id="year" name="year" required onchange="updateWeekday()">
