@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, request, session, flash
+from flask_login import current_user, login_required
 from auth.models import Student,Teacher, School, Course
 from teacher_student.forms import StudentSearch
 from app import db
@@ -11,7 +12,12 @@ student = Blueprint(
 )
 
 @student.route("/")
+@login_required
 def teacher_student():
+    # 教員か生徒かの判別
+    if len(current_user.id) != 6:
+        return "fu** you"
+    # 生徒管理メニューを表示
     return render_template("teacher_student/list_menu.html")
 
 @student.route("/student_list", methods=["GET", "POST"])
@@ -97,9 +103,10 @@ def student_detail(id):
 @student.route("/class_list")
 def class_list():
     # ログイン中の教員アカウントIDをセッションから取得
-    # teacher_id = session.get('teacher_id')
+    teacher_id = current_user.id
 
-    teacher_id = '111111'
+    # # ログイン中のアカウントがまだ取得できないのでここに直接記述
+    # teacher_id = '111111'
 
     # 教員情報を取得し、担当クラス番号を取得
     teacher = Teacher.query.get(teacher_id)
