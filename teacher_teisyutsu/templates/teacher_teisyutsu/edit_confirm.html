@@ -1,10 +1,10 @@
 {% extends "teacher/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}">戻る</a>{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=submission_id) }}">戻る</a>{% endblock %}
 
 {% block content %}
 <div>
-    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_confirmation') }}" method="POST">
+    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_confirm_edit') }}" method="POST">
     {{ form.csrf_token }}
     {{ form.name.label }}
     <input type="text" name="name" value="{{ form.name.data }}" readonly>

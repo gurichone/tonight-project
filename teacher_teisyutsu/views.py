@@ -18,7 +18,7 @@ teisyutsu = Blueprint(
 @login_required
 def t_teisyutsu():
     if len(current_user.id) != 6:
-        return "get out here boy"
+        return render_template("teacher/gohb.html")
     form = SubmissionForms()
     # 科目の選択肢をデータベースから取得
     subjects = db.session.query(Subject).all()
@@ -73,10 +73,10 @@ def t_teisyutsu_confirmation():
             subject_id = form2.subject.data,
             class_num = current_user.class_num,
             submission_type = form2.type.data,
-            submissin_rimit = form2.rimit.data,
-            scoreing_type = form2.scoring_type.data,
-            question_file = form2.question.data,
-            testcase_file = form2.testcase.data
+            submission_rimit = form2.rimit.data,
+            scoring_type = form2.scoring_type.data,
+            question = form2.question.data,
+            testcase = form2.testcase.data
         )
         db.session.add(submission)
         db.session.commit()
@@ -104,10 +104,71 @@ def t_teisyutsu_confirmation():
     
 
 
-@teisyutsu.route("/edit", methods=["GET", "POST"])
+@teisyutsu.route("/edit/<submission_id>", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu_edit(submission_id):
-    return id
+    session["submission"]=submission_id
+    form1 = CreateSubmissionForms()
+    submission=db.session.query(Submission).filter_by(submission_id=submission_id).first()
+    subjects = db.session.query(Subject).all()
+    subjects=[(s.subject_id, s.subject_name)for s in subjects]
+    for i in range(len(subjects)):
+        if subjects[i][0] == submission.subject_id:
+            subjects[0], subjects[i] = subjects[i], subjects[0]
+    form1.subject.choices=subjects
+    # 科目の選択肢をデータベースから取得
+    if form1.validate_on_submit():
+        # もう一つのフォームにデータを移す(入力内容確認の準備)
+        form2 = CreateSubmissionForms()
+        s = db.session.query(Subject).filter_by(subject_id = form1.subject.data).first()
+        form2.name.data=form1.name.data
+        form2.subject.choices=[(s.subject_id, s.subject_name)]
+        form2.type.choices=[form2.type.choices[form1.type.data]]
+        form2.rimit.data=form1.rimit.data
+        form2.scoring_type.choices=[form2.scoring_type.choices[form1.scoring_type.data]]
+        form2.question.data=form1.question.data
+        form2.testcase.data=form1.testcase.data
+        # 入力内容確認画面を表示
+        return render_template("teacher_teisyutsu/edit_confirm.html", form=form2)
+    # 編集画面
+    form1.name.data=submission.submission_name
+    for i in range(len(form1.type.choices)):
+        if form1.type.choices[i][0] == submission.submission_type:
+            form1.type.choices[0], form1.type.choices[i] = form1.type.choices[i], form1.type.choices[0]
+    form1.rimit.data=submission.submission_rimit
+    for i in range(len(form1.scoring_type.choices)):
+        if form1.scoring_type.choices[i][0] == submission.scoring_type:
+            form1.scoring_type.choices[0], form1.scoring_type.choices[i] = form1.scoring_type.choices[i], form1.scoring_type.choices[0]
+    form1.question.data=submission.question
+    form1.testcase.data=submission.testcase
+
+    return render_template("teacher_teisyutsu/edit.html", form=form1, submission_id=submission_id)
+
+@teisyutsu.route("/confirm_edit", methods=["GET", "POST"])
+@login_required
+def t_teisyutsu_confirm_edit():
+    form2 = CreateSubmissionForms()
+    subjects = db.session.query(Subject).all()
+    form2.subject.choices=[(s.subject_id, s.subject_name)for s in subjects]
+    if form2.validate_on_submit():
+        submission_id=session["submission"]
+        # データベースに保存
+        submission = db.session.query(Submission).filter_by(submission_id=submission_id).first()
+        submission.submission_name = form2.name.data
+        submission.subject_id = form2.subject.data
+        submission.class_num = current_user.class_num
+        submission.submission_type = form2.type.data
+        submission.submission_rimit = form2.rimit.data
+        submission.scoring_type = form2.scoring_type.data
+        submission.question = form2.question.data
+        submission.testcase = form2.testcase.data
+        
+        db.session.add(submission)
+        db.session.commit()
+        
+        return render_template("teacher_teisyutsu/edit_done.html")
+    # return redirect(url_for("teacher.teisyutsu.t_teisyutsu"))
+    return render_template("teacher_teisyutsu/confirmation.html", form=form2)
 
 @teisyutsu.route("/delete/<submission_id>", methods=["GET", "POST"])
 @login_required

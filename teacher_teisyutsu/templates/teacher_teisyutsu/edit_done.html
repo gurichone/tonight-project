@@ -1,10 +1,10 @@
 {% extends "teacher/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}">戻る</a>{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">戻る</a>{% endblock %}
 
 {% block content %}
 <div>
-    <h2>登録が完了しました</h2>
+    <h2>変更が完了しました</h2>
     <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">提出物管理画面に戻る</a>
 </div>
 {% endblock %}

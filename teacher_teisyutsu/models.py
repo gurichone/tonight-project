@@ -7,10 +7,10 @@ class Submission(db.Model):
     subject_id = db.Column(db.Integer)
     class_num = db.Column(db.String)
     submission_type = db.Column(db.Integer)
-    submissin_rimit = db.Column(db.DateTime)
-    scoreing_type = db.Column(db.Integer)
-    question_file = db.Column(db.String)
-    testcase_file = db.Column(db.String)
+    submission_rimit = db.Column(db.DateTime)
+    scoring_type = db.Column(db.Integer)
+    question = db.Column(db.String)
+    testcase = db.Column(db.String)
 
 class Personal_Submission(db.Model):
     __tablename__ = "personal_submission"

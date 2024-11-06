@@ -36,17 +36,17 @@
             </a></li>
 
             <!-- 時間割管理 -->
-            <li><a href="#" class="menu-item">
+            <li><a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}" class="menu-item">
                 <img src="{{ url_for('static', filename='images/jikanwari.png') }}" alt="時間割管理">
             </a></li>
 
             <!-- 提出物管理 -->
-            <li><a href="#" class="menu-item">
+            <li><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}" class="menu-item">
                 <img src="{{ url_for('static', filename='images/teisyutu.png') }}" alt="提出物管理">
             </a></li>
 
             <!-- 成績管理 -->
-            <li><a href="#" class="menu-item">
+            <li><a href="{{ url_for('teacher.seiseki.search') }}" class="menu-item">
                 <img src="{{ url_for('static', filename='images/seiseki.png') }}" alt="成績管理">
             </a></li>
 

@@ -20,7 +20,7 @@ a.t-student img {
     padding: 0;
     box-sizing: border-box;
     min-height: 100vh;
-    background-image: url("../images/bg_left.png"), url("../images/bg_repeat.png"), url("../images/bg_EduEase_400.png"), url("../images/bg_black.png");
+    background-image: url("../images/bg_left.png"), url("../images/bg_repeat.png"), url("../images/bg_EduEase_400.png"), url("../images/bg_black_right.png");
     background-size: auto 95%, 100% 95%, auto 100%, 100% 100%;
     background-repeat: no-repeat, no-repeat, repeat, repeat;
     background-position: 0 0, 30vh 0, 0 0, 0 0;

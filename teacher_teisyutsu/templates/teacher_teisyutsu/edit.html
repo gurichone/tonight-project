@@ -4,7 +4,7 @@
 
 {% block content %}
 <div>
-    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}" method="POST">
+    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=submission_id) }}" method="POST">
     {{ form.csrf_token }}
     {{ form.name.label }}{{ form.name }}
     <br>
