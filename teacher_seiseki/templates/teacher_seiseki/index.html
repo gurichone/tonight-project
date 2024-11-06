@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <title>成績</title>
     </head>
-<!-- 以下のコードはお試し用のため、修正は必須になります -->
     <body>
         <header>
             <h2>成績</h2>
@@ -36,6 +35,7 @@
         <table>
             <thead>
                 <tr>
+                    <th>ID</th>
                     <th>科目名</th>
                     <th>氏名</th>
                     <th>成績</th>
@@ -44,9 +44,15 @@
             <tbody>
                 {% for score in results %}
                 <tr>
-                    <th>{{ score.subject_name }}</th>
+                    <td>{{ score.score_id }}</td>
+                    <td>{{ score.subject_name }}</td>
                     <td>{{ score.student_name }}</td>
                     <td>{{ score.assessment_id }}</td>
+                    <td>
+                        <form action="{{ url_for('teacher.seiseki.delete', score_id=score.score_id) }}" method="POST">
+                            <button type="submit" onclick="return confirm('削除してよろしいですか？')">削除</button>
+                        </form> 
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

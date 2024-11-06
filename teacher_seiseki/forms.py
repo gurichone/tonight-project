@@ -12,14 +12,7 @@ class SearchScore(FlaskForm):
 
     submit = SubmitField("検索")
 
-    # バリデーションは未実装
-    # def validate_student_num(self, student_num):
-    #     # バリデーション内容：生徒番号は7桁以外は禁止
-    #     len_stu_num = str(student_num)
-    #     if len_stu_num != len(7):
-    #         raise ValidationError("生徒番号は7桁で入力してください")
-
-#データベースに成績を追加するためのフォームクラスを作成 
+# データベースに成績を追加するためのフォームクラスを作成 
 class AddScore(FlaskForm):
     student_num = StringField("生徒番号")
 
@@ -30,3 +23,13 @@ class AddScore(FlaskForm):
     assessment_id = StringField("評価")
 
     submit = SubmitField("登録")
+
+# 出席日数を絞り込みするフォームを作成
+class AttendScore(FlaskForm):
+    subject_name = SelectField("科目名")
+
+    class_num = SelectField("クラス番号")
+
+    student_name = StringField("氏名")
+
+    submit = SubmitField("検索")

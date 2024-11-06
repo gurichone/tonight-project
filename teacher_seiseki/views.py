@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, request
+from flask import Blueprint, render_template, redirect, url_for, request,flash
 from app import db
-from teacher_seiseki.forms import SearchScore, AddScore
+from teacher_seiseki.forms import SearchScore, AddScore, AttendScore
 from teacher_seiseki.models import Score
+from auth.models import Student, ClassNum, Subject
 
 seiseki = Blueprint(
     "seiseki",
@@ -18,6 +19,7 @@ def search():
  
     # リストの取得
     results = Score.query.with_entities(
+        Score.score_id,
         Score.subject_name,
         Score.class_num,
         Score.student_name,
@@ -47,20 +49,22 @@ def search():
         # フィルタリング結果を取得
         results = query.all()
         return render_template("/teacher_seiseki/index.html", score=score, results=results)
-    # 検索が行われていない場合、空の結果を表示
+    # 検索が行われていない場合、全部の結果を表示
     return render_template("/teacher_seiseki/index.html", score=score, results=results)
-
 
 # 成績画面の成績登録ボタンをクリックすると追加する画面を表示
 @seiseki.route("/add", methods=["GET", "POST"])
 def add():
+    # フォームインスタンスを作成
     score_form = AddScore()
-
+    # バリデートする際の変数actionの変化によって表示するものを変更する
     if score_form.validate_on_submit():
         action = request.form.get('action')
+        # 
         if action == 'confirm':
-            # フォームデータをそのまま表示する確認画面に移動
-            return render_template("teacher_seiseki/add.html", score=score_form, confirm=True, success=False)
+            # 受け取ったフォームデータをそのまま表示する確認画面に移動
+            return render_template("teacher_seiseki/add.html", 
+                                   score=score_form, confirm=True, success=False)
 
         elif action == 'add':
             # フォームデータを使用してScoreモデルのインスタンスを作成し、データベースに登録
@@ -72,15 +76,18 @@ def add():
             )
             db.session.add(score)
             db.session.commit()
-            return render_template("teacher_seiseki/add.html", score=score_form, confirm=False, success=True)
+            # 登録完了画面を表示する
+            return render_template("teacher_seiseki/add.html", 
+                                   score=score_form, confirm=False, success=True)
+    # 最初は登録する情報を入力する画面に移る
+    return render_template("teacher_seiseki/add.html", 
+                           score=score_form, confirm=False, success=False)
 
-    return render_template("teacher_seiseki/add.html", score=score_form, confirm=False, success=False)
-
-
+# 出席日数を確認する画面を表示する
 @seiseki.route("/attend", methods=["GET", "POST"])
 def attend():
     # フォームインスタンスの作成
-    attend = SearchScore()
+    attend = AttendScore()
     
     # リストの取得
     results = Score.query.with_entities(
@@ -99,7 +106,6 @@ def attend():
     
     # ベースクエリの定義
     query = Score.query
-
     # フォームのバリデーションと検索条件の適用
     if attend.validate_on_submit():
         # 科目名、クラス番号、生徒番号のいずれかを入力しフィルターする
@@ -110,8 +116,20 @@ def attend():
         if attend.student_name.data:
             query = query.filter(Score.student_name.like(f"%{attend.student_name.data}%"))
 
-        # フィルタリング結果を取得
+        # フィルタリング結果を取得し、画面に表示
         results = query.all()
         return render_template("/teacher_seiseki/attend.html", attend=attend, results=results)
-    # 検索が行われていない場合、空の結果を表示
+    # 検索が行われていない場合、全部の結果を表示
     return render_template("/teacher_seiseki/attend.html", attend=attend, results=results)
+
+@seiseki.route("/delete/<int:score_id>", methods=["POST"])
+def delete(score_id):
+    score = Score.query.get(score_id)
+    print(score.score_id)
+    if score:
+        db.session.delete(score)
+        db.session.commit()
+        flash("削除しました","success")
+    else:
+        flash("該当箇所が見つかりませんでした","error")
+    return redirect(url_for("teacher.seiseki.search"))
