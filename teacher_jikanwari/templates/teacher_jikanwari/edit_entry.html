@@ -57,7 +57,7 @@
     <form action="{{ url_for('teacher.jikanwari.edit_entry', id=entry.id) }}" method="POST">
         <label for="year">年:</label>
         <select name="year">
-            {% for y in range(2022, 2031) %}
+            {% for y in range(2020, 2031) %}
                 <option value="{{ y }}" {% if y == entry.year %}selected{% endif %}>{{ y }}</option>
             {% endfor %}
         </select>

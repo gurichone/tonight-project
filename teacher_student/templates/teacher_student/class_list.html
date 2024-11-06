@@ -1,4 +1,4 @@
-{% extends "teacher_teisyutsu/base.html" %}
+{% extends "teacher/base.html" %}
 {% block title %}クラス管理{% endblock %}
 {% block modorulink %}<a href="{{ url_for('teacher.student.teacher_student') }}">戻る</a>{% endblock %}
 {% block content %}
@@ -6,7 +6,8 @@
 <h2>クラス管理</h2>
 
     {% for class_num, students in class_students.items() %}
-        <h2>クラス: {{ class_num }}</h2>
+        <h3>クラス {{ class_num }}</h3>
+        <!-- スクロールするためのボタン（仮） -->
         <button onclick="scrollContainer('class-{{ class_num }}', -1)">左へスクロール</button>
         <button onclick="scrollContainer('class-{{ class_num }}', 1)">右へスクロール</button>
         <div class="class-container" id="class-{{ class_num }}">

@@ -1,4 +1,4 @@
-{% extends "teacher_teisyutsu/base.html" %}
+{% extends "teacher/base.html" %}
 {% block title %}生徒一覧{% endblock %}
 {% block modorulink %}<a href="{{ url_for('teacher.student.teacher_student') }}">戻る</a>{% endblock %}
 {% block content %}
@@ -54,6 +54,7 @@
                     <td>{{ student.id }}</td>
                     <td>{{ student.class_num }}</td>
                     <td>{{ student.student_name }}</td>
+                    <!-- 生徒の詳細画面へのボタン -->
                     <td><a href="{{ url_for('teacher.student.student_detail', id=student.id) }}">詳細</a></td>
                 </tr>
             {% endfor %}

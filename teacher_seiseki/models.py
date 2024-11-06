@@ -2,6 +2,7 @@ from app import db
 
 # このデータベースは変更する必要がある(2024/10/30現在)
 # #をつけたカラムは他のデータベースを使用してhtmlに表示できるようにしたい
+
 class Score(db.Model):
     __tablename__ = "score"
     score_id = db.Column(db.Integer, primary_key=True)

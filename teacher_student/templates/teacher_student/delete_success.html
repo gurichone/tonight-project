@@ -1,9 +1,10 @@
-{% extends "teacher_teisyutsu/base.html" %}
+{% extends "teacher/base.html" %}
 {% block content %}
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       <ul>
         {% for category, message in messages %}
+        <!-- 削除完了メッセージを表示 -->
           <li class="alert alert-{{ category }}">{{ message }}</li>
         {% endfor %}
       </ul>

@@ -1,4 +1,4 @@
-{% extends "teacher_teisyutsu/base.html" %}
+{% extends "teacher/base.html" %}
 {% block title %}生徒削除確認{% endblock %}
 {% block modorulink %}<a href="{{ url_for('teacher.student.class_list') }}">戻る</a>{% endblock %}
 {% block content %}
@@ -19,7 +19,7 @@
         <td>{{ student.student_name }}</td>
     </tr>
 </table>
-
+<!-- 削除ボタン -->
 <form action="{{ url_for('teacher.student.delete_student', id=student.id) }}" method="post">
     <button type="submit">削除</button>
 </form>
