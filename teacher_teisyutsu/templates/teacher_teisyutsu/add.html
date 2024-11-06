@@ -1,0 +1,26 @@
+{% extends "teacher_teisyutsu/base.html" %}
+
+{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}"></a>{% endblock %}
+
+{% block content %}
+<div>
+    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}" method="POST">
+    {{ form.csrf_token }}
+    {{ form.name.label }}{{ form.name }}
+    <br>
+    {{ form.subject.label }}{{ form.subject }}
+    <br>
+    {{ form.type.label }}{{ form.type }}
+    <br>
+    {{ form.rimit.label }}{{ form.rimit }}
+    <br>
+    {{ form.scoring_type.label }}{{ form.scoring_type }}
+    <br>
+    {{ form.question.label }}{{ form.question }}
+    <br>
+    {{ form.testcase.label }}{{ form.testcase }}
+    <br>
+    {{ form.submit }}
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "teacher_teisyutsu/base.html" %}
+
+{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}"></a>{% endblock %}
+
+{% block content %}
+<div>
+    <h2>削除しました</h2>
+    <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">提出物管理画面に戻る</a>
+</div>
+{% endblock %}

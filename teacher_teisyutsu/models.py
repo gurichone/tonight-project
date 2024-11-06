@@ -2,7 +2,7 @@ from app import db
 
 class Submission(db.Model):
     __tablename__ = "submission"
-    submissin_id = db.Column(db.Integer, primary_key=True)
+    submission_id = db.Column(db.Integer, primary_key=True)
     submission_name = db.Column(db.String)
     subject_id = db.Column(db.Integer)
     class_num = db.Column(db.String)
@@ -14,8 +14,8 @@ class Submission(db.Model):
 
 class Personal_Submission(db.Model):
     __tablename__ = "personal_submission"
-    submission_id = db.Column(db.String, primary_key=True)
-    student_id = db.Column(db.String)
+    submission_id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.String, primary_key=True)
     point = db.Column(db.Integer)
     submitted = db.Column(db.Boolean, default=0)
     file = db.Column(db.String)

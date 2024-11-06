@@ -14,15 +14,16 @@
     </form>
 </div>
 <div>
+    <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}">+</a>
     <table>
-        <tr><th></th><th>ファイル名</th><th>実施内容</th><th></th><th></th></tr>
+        <tr><th>ファイル名</th><th>実施内容</th><th></th><th></th></tr>
         {% for sub in submissions %}
         <tr>
-            <th><a href="{{ url_for('teacher.saiten.saiten', id=sub.submission_id) }}">採点</a></th>
-            <th>{{ sub.subject_name}}</th>
-            <th>{{ sub.submission_type}}</th>
-            <th><a href="{{ url_for('teacher.teisyutsu.edit', id=sub.submission_id) }}">変更</a></th>
-            <th><a href="{{ url_for('teacher.teisyutsu.delete', id=sub.submission_id) }}">削除</a></th>
+            <!-- <th><a href="">採点</a></th> -->
+            <td>{{ sub.Submission.submission_name}}</td>
+            <td>{{ sub.Submission.submission_type}}</td>
+            <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=sub.Submission.submission_id) }}">変更</a></td>
+            <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_delete', submission_id=sub.Submission.submission_id) }}">削除</a></td>
         </tr>
         {% endfor %}
     </table>
