@@ -35,3 +35,6 @@ teacher.register_blueprint(teacher_notice_views.notice, url_prefix="/notice")
 
 from teacher_sent import views as teacher_sent_views
 teacher.register_blueprint(teacher_sent_views.sent, url_prefix="/sent")
+
+from teacher_profile import views as teacher_prof_views
+teacher.register_blueprint(teacher_prof_views.prof, url_prefix="/prof")

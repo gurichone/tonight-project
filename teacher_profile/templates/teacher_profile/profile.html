@@ -1,0 +1,38 @@
+{% extends "teacher/base.html" %}
+{% block title %}アカウント情報{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block content %}
+
+<h2>アカウント情報</h2>
+<div class="profile-container">
+    <div class="profile-image">
+        <img src="{{ url_for('static', filename=teacher.icon_path if teacher.icon_path else 'images/default_icon.png') }}" alt="プロフィール画像">
+        <button onclick="window.location.href='{{ url_for('teacher.profile.edit_profile_image') }}'">画像を編集</button>
+    </div>
+    <table>
+        <tr>
+            <th>教員番号</th>
+            <td>{{ teacher.id }}</td>
+        </tr>
+        <tr>
+            <th>クラス番号</th>
+            <td>{{ teacher.class_num }}</td>
+        </tr>
+        <tr>
+            <th>氏名</th>
+            <td>{{ teacher.teacher_name }}</td>
+        </tr>
+        <tr>
+            <th>メールアドレス</th>
+            <td>{{ teacher.teacher_email }}</td>
+        </tr>
+        <tr>
+            <th>パスワード</th>
+            <td>********</td>
+            <!-- ここにパスワード変更ボタンを実装 -->
+        </tr>
+    </table>
+        <!-- auth/views.pyのlogout関数を実行 -->
+        <a href="{{ url_for('auth.logout') }}" class="nav-link">ログアウト</a>
+</div>
+{% endblock %}
