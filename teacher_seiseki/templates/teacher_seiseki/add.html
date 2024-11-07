@@ -11,23 +11,47 @@
     <!-- 登録が完了したら以下の内容を表示 -->
     {% if success %}
     <p>登録が完了しました</p>
-    <a href="{{ url_for('teacher.seiseki.search')}}">戻る</a>
+    <a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>
 
     <!-- 最初に入力フォームの表示を行う -->
     {% elif not confirm %}
-    <a href="javascript:history.back();">戻る</a>
+    <a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>
     <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
         {{ score.csrf_token }}
+        <!-- 既に登録した情報が存在する際にエラー文を表示する処理 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for category,message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
         <p>{{ score.student_num.label }} {{ score.student_num }}</p>
+        <!-- 各エラーが起きた際の処理(forms.py参照) -->
+        {% for error in score.student_num.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
         <p>{{ score.student_name.label }} {{ score.student_name }}</p>
+        {% for error in score.student_name.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
         <p>{{ score.subject_name.label }} {{ score.subject_name }}</p>
+        {% for error in score.subject_name.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
         <p>{{ score.assessment_id.label }} {{ score.assessment_id }}</p>
+        {% for error in score.assessment_id.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
         <button type="submit" name="action" value="confirm">確認</button>
     </form>
 
     <!-- 入力が完了したら確認画面に遷移 -->
     {% else %}
-    <form action="{{ url_for('teacher.seiseki.add') }}" method="POST">
+    <a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>
+    <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
         {{ score.csrf_token }}
         <h3>以下の内容を登録しますか？</h3>
         <p>生徒番号: {{ score.student_num }}</p>
@@ -35,9 +59,22 @@
         <p>科目名: {{ score.subject_name }}</p>
         <p>評価: {{ score.assessment_id }}</p>
         <input type="hidden" name="student_num" value="{{ score.student_num.data }}">
+        <!-- 一応ここにも追加したけど必要なさそう -->
+        {% for error in score.student_num.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
         <input type="hidden" name="student_name" value="{{ score.student_name.data }}">
+        {% for error in score.student_name.eerrors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
         <input type="hidden" name="subject_name" value="{{ score.subject_name.data }}">
+        {% for error in score.subject_name.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
         <input type="hidden" name="assessment_id" value="{{ score.assessment_id.data }}">
+        {% for error in score.assessment_id.errors %}
+            <span style="color:red">{{ error }}</span>
+        {% endfor %}
         <button type="submit" name="action" value="add">確定</button>
     </form>
     {% endif %}

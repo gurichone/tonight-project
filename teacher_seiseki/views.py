@@ -67,6 +67,17 @@ def add():
                                    score=score_form, confirm=True, success=False)
 
         elif action == 'add':
+            # 重複チェックを実行
+            existing_score = Score.query.filter_by(
+                student_num = score_form.student_num.data,
+                student_name = score_form.student_name.data,
+                subject_name = score_form.subject_name.data
+            ).first()
+            # エラー文を表示
+            if existing_score:
+                flash("同じ情報が既に登録されています。", "error")
+                return render_template("teacher_seiseki/add.html",
+                                       score=score_form,confirm=False,success=False)
             # フォームデータを使用してScoreモデルのインスタンスを作成し、データベースに登録
             score = Score(
                 student_num=score_form.student_num.data,
@@ -122,14 +133,17 @@ def attend():
     # 検索が行われていない場合、全部の結果を表示
     return render_template("/teacher_seiseki/attend.html", attend=attend, results=results)
 
+# 成績の削除を行う処理の実装
 @seiseki.route("/delete/<int:score_id>", methods=["POST"])
 def delete(score_id):
+    # 変数scoreでScoreテーブルのscore_idを取得
     score = Score.query.get(score_id)
-    print(score.score_id)
+    # ほぼidが存在するので消去する流れになる
     if score:
         db.session.delete(score)
         db.session.commit()
-        flash("削除しました","success")
+    # この処理はほぼ使われないだろうが一応書いておく
     else:
         flash("該当箇所が見つかりませんでした","error")
+    # 他の画面には行かず、メニュー画面を表示する
     return redirect(url_for("teacher.seiseki.search"))
