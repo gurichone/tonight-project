@@ -8,4 +8,4 @@ class ProfileImageForm(FlaskForm):
         DataRequired(), 
         FileAllowed(['jpg', 'jpeg', 'png'], '画像ファイルのみアップロードできます。')
     ])
-    submit = SubmitField('アップロード')
+    submit = SubmitField('編集完了')

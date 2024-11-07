@@ -16,8 +16,8 @@
             </a>
 
             <!-- アカウント情報 -->
-            <a href="#" class="menu-icon">
-                <img src="{{ url_for('static', filename='#') }}" alt="アカウント情報">
+            <a href="{{ url_for('teacher.profile.profile')}}" class="menu-icon">
+                <img src="{{ url_for('static', filename=teacher.icon_path if teacher.icon_path else 'images/default_icon.png') }}" alt="アカウント情報">
                 <p class="icon-text">アカウント情報</p>
             </a>
         </div>

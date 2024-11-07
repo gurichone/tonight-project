@@ -46,6 +46,7 @@ def edit_profile_image():
         db.session.commit()
         flash('プロフィール画像が更新されました。', 'success')
         
+        # アカウント情報ページへ遷移
         return redirect(url_for('teacher.profile.profile'))
 
     return render_template('teacher_profile/edit_profile_image.html', form=form)

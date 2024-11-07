@@ -2,7 +2,8 @@
 {% block title %}アカウント情報{% endblock %}
 {% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
 {% block content %}
-
+<!-- auth/views.pyのlogout関数を実行 -->
+<a href="{{ url_for('auth.logout') }}" class="nav-link">ログアウト</a>
 <h2>アカウント情報</h2>
 <div class="profile-container">
     <div class="profile-image">
@@ -32,7 +33,5 @@
             <!-- ここにパスワード変更ボタンを実装 -->
         </tr>
     </table>
-        <!-- auth/views.pyのlogout関数を実行 -->
-        <a href="{{ url_for('auth.logout') }}" class="nav-link">ログアウト</a>
 </div>
 {% endblock %}
