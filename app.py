@@ -24,6 +24,9 @@ def create_app(config_name="local"):
     from teacher import views as teacher_views
     app.register_blueprint(teacher_views.teacher, url_prefix="/teacher")
 
+    from student import views as student_views
+    app.register_blueprint(student_views.student, url_prefix="/student")
+
     from gemini import views as gemini_views # gemini/views.pyをgemini_viewsという名前で使用
     app.register_blueprint(gemini_views.gemini, url_prefix="/gemini") # gemini_viewsのgeminiとurl"/gemini"を紐づけ
     
