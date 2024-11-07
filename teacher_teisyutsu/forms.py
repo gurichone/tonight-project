@@ -9,6 +9,9 @@ class SubmissionForms(FlaskForm): #ユーザー新規作成とユーザー編集
     # イベントを入力するフィールドを作成
     subject = SelectField(
         "科目名", # フォームに表示される文字を指定
+        validators=[
+            DataRequired(message="入力は必須です。"),  # 入力必須の設定
+        ],
     )
     type = SelectField(
         "実施内容", # フォームに表示される文字を指定
@@ -26,7 +29,9 @@ class CreateSubmissionForms(FlaskForm):
     )
     subject = SelectField(
         "科目名", # フォームに表示される文字を指定
-        validators=[],
+        validators=[
+             DataRequired(message="入力は必須です。"), 
+        ],
         coerce=int
     )
     type = SelectField(
@@ -50,11 +55,15 @@ class CreateSubmissionForms(FlaskForm):
     )
     question = TextAreaField(
         "問題文", # フォームに表示される文字を指定
-        validators=[],
+        validators=[
+             DataRequired(message="入力は必須です。"), 
+        ],
     )
     testcase = TextAreaField(
         "テストケース",
-        validators=[],
+        validators=[
+             DataRequired(message="入力は必須です。"), 
+        ],
     )
     submit = SubmitField("確定") # フォームの送信ボタンを作成
 
