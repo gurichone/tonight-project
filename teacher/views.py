@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for
 from app import db
 
-#Blueprint currydar_app
-#アプリを生成する
 teacher = Blueprint(
     "teacher",
     __name__,
