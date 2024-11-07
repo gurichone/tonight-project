@@ -56,13 +56,11 @@ class CreateSubmissionForms(FlaskForm):
     question = TextAreaField(
         "問題文", # フォームに表示される文字を指定
         validators=[
-             DataRequired(message="入力は必須です。"), 
         ],
     )
     testcase = TextAreaField(
         "テストケース",
         validators=[
-             DataRequired(message="入力は必須です。"), 
         ],
     )
     submit = SubmitField("確定") # フォームの送信ボタンを作成

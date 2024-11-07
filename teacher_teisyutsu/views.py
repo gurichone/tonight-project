@@ -1,11 +1,13 @@
-from flask import Blueprint, render_template, redirect, url_for, session
+from flask import Blueprint, render_template, redirect, url_for, session, current_app
 from flask_login import current_user, login_required
 from wtforms.validators import ReadOnly
 from app import db
 from teacher_teisyutsu.forms import SubmissionForms, CreateSubmissionForms
 from teacher_teisyutsu.models import Submission, Personal_Submission
-from auth.models import Subject, Course, Teacher, Student
-
+from auth.models import Subject, Course, Teacher, Student, CourseSubject, ClassNum
+import os
+import shutil
+from pathlib import Path
 
 teisyutsu = Blueprint(
     "teisyutsu",
@@ -21,8 +23,9 @@ def t_teisyutsu():
         return render_template("teacher/gohb.html")
     form = SubmissionForms()
     # 科目の選択肢をデータベースから取得
-    subjects = db.session.query(Subject).all()
-    form.subject.choices=[(0, "指定なし")]+[(s.subject_id, s.subject_name)for s in subjects]
+    course =db.session.query(ClassNum).filter_by(class_num=current_user.class_num).first()
+    subjects = db.session.query(Subject, CourseSubject).join(CourseSubject, CourseSubject.subject_id==Subject.subject_id).filter_by(course_id=course.course_id).all()
+    form.subject.choices=[(0, "指定なし")]+[(s.Subject.subject_id, s.Subject.subject_name)for s in subjects]
     if form.validate_on_submit():
         # filter_byにformの入力内容を追加
         submissions = db.session.query(Submission, Subject).join(Submission,Submission.subject_id==Subject.subject_id).filter_by(class_num = current_user.class_num)
@@ -44,8 +47,9 @@ def t_teisyutsu_add():
         return render_template("teacher/gohb.html")
     form1 = CreateSubmissionForms()
     # 科目の選択肢をデータベースから取得
-    subjects = db.session.query(Subject).all()
-    form1.subject.choices=[(s.subject_id, s.subject_name)for s in subjects]
+    course =db.session.query(ClassNum).filter_by(class_num=current_user.class_num).first()
+    subjects = db.session.query(Subject, CourseSubject).join(CourseSubject, CourseSubject.subject_id==Subject.subject_id).filter_by(course_id=course.course_id).all()
+    form1.subject.choices=[(s.Subject.subject_id, s.Subject.subject_name)for s in subjects]
     if form1.validate_on_submit():
         # もう一つのフォームにデータを移す(入力内容確認の準備)
         form2 = CreateSubmissionForms()
@@ -68,8 +72,9 @@ def t_teisyutsu_confirmation():
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
     form2 = CreateSubmissionForms()
-    subjects = db.session.query(Subject).all()
-    form2.subject.choices=[(s.subject_id, s.subject_name)for s in subjects]
+    course =db.session.query(ClassNum).filter_by(class_num=current_user.class_num).first()
+    subjects = db.session.query(Subject, CourseSubject).join(CourseSubject, CourseSubject.subject_id==Subject.subject_id).filter_by(course_id=course.course_id).all()
+    form2.subject.choices=[(s.Subject.subject_id, s.Subject.subject_name)for s in subjects]
     if form2.validate_on_submit():
         # データベースに保存
         submission = Submission(
@@ -94,6 +99,7 @@ def t_teisyutsu_confirmation():
         personal = list()
         # 個人のデータを保存
         for i in add_id:
+            os.mkdir(Path(current_app.config["SUBMIT_FOLDER"], str(i)))
             for s in students:
                 personal.append(Personal_Submission(
                     submission_id=i,
@@ -116,8 +122,9 @@ def t_teisyutsu_edit(submission_id):
     session["submission"]=submission_id
     form1 = CreateSubmissionForms()
     submission=db.session.query(Submission).filter_by(submission_id=submission_id).first()
-    subjects = db.session.query(Subject).all()
-    subjects=[(s.subject_id, s.subject_name)for s in subjects]
+    course =db.session.query(ClassNum).filter_by(class_num=current_user.class_num).first()
+    subjects = db.session.query(Subject, CourseSubject).join(CourseSubject, CourseSubject.subject_id==Subject.subject_id).filter_by(course_id=course.course_id).all()
+    subjects=[(s.Subject.subject_id, s.Subject.subject_name)for s in subjects]
     for i in range(len(subjects)):
         if subjects[i][0] == submission.subject_id:
             subjects[0], subjects[i] = subjects[i], subjects[0]
@@ -196,4 +203,5 @@ def t_teisyutsu_delete_done():
     db.session.query(Personal_Submission).filter_by(submission_id=submission).delete()
     db.session.query(Submission).filter_by(submission_id=submission).delete()
     db.session.commit()
+    shutil.rmtree(Path(current_app.config["SUBMIT_FOLDER"], str(submission)))
     return render_template("teacher_teisyutsu/delete_done.html")

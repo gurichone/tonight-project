@@ -17,6 +17,7 @@ class LocalConfig(BaseConfig):
     # 画像アップロード先にmedia/imagesを指定する
     UPLOAD_FOLDER = "codes"
     JUPYTER_FOLDER = "jupyter"
+    SUBMIT_FOLDER = "submit"
 
 
 # BaseConfigクラスを継承してTestingConfigクラスを作成する
@@ -27,6 +28,7 @@ class TestingConfig(BaseConfig):
     # 画像アップロード先にmedia/imagesを指定する
     UPLOAD_FOLDER = str(Path(basedir,"codes"))
     JUPYTER_FOLDER = str(Path(basedir,"jupyter"))
+    SUBMIT_FOLDER = str(Path(basedir,"submit"))
 
 
 # config辞書にマッピングする

@@ -1,0 +1,27 @@
+{% extends "teacher/base.html" %}
+
+{% block modorulink %}<a href="{{ url_for('student.menu.s_menu') }}">戻る</a>{% endblock %}
+
+{% block content %}
+<div>
+    <h1>提出物一覧</h1>
+    <div>
+        <div id="button"></div>
+        <table>
+            {% for sub in submission %}
+            <tr>
+                <td>{{ sub.Submission.submission_name }}</td>
+                <td>
+                    {% if sub.Personal_Submission.submitted %}
+                    <div id="stu_sub_true">✓</div>
+                    {% else %}
+                    <div id="stu_sub_false"></div>
+                    {% endif %}
+                </td>
+                <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}">提出</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "teacher/base.html" %}
+
+{% block modorulink %}<a href="{{ url_for('student.teisyutsu.s_teisyutsu_index') }}">戻る</a>{% endblock %}
+
+{% block content %}
+<div>
+    <h2>提出が完了しました</h2>
+    <a href="{{ url_for('student.teisyutsu.s_teisyutsu_index') }}">提出物一覧に戻る</a>
+</div>
+{% endblock %}

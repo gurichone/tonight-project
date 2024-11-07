@@ -1,0 +1,28 @@
+{% extends "teacher/base.html" %}
+
+{% block modorulink %}<a href="{{ url_for('student.teisyutsu.s_teisyutsu_index') }}">戻る</a>{% endblock %}
+
+{% block content %}
+<div>
+    <h1>提出物一覧</h1>
+    <div>
+        <form action="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=submission_id) }}" method="post" enctype="multipart/form-data" novalidate="novalidate">
+            <!-- csrf対策。とりあえず書いておく -->
+            {{ form.csrf_token }}
+            <div>
+                <label>
+                    <span> {{ form.file }} </span>
+                </label>
+            </div>
+            <!-- フォームの入力に誤りがある場合はエラーを順に表示 -->
+            {% for error in form.file.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            <hr />
+            <div>
+                <label> {{ form.submit }} </label>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
