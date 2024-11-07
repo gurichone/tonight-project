@@ -40,6 +40,8 @@ def t_teisyutsu():
 @teisyutsu.route("/add", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu_add():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     form1 = CreateSubmissionForms()
     # 科目の選択肢をデータベースから取得
     subjects = db.session.query(Subject).all()
@@ -63,6 +65,8 @@ def t_teisyutsu_add():
 @teisyutsu.route("/confirmation", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu_confirmation():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     form2 = CreateSubmissionForms()
     subjects = db.session.query(Subject).all()
     form2.subject.choices=[(s.subject_id, s.subject_name)for s in subjects]
@@ -107,6 +111,8 @@ def t_teisyutsu_confirmation():
 @teisyutsu.route("/edit/<submission_id>", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu_edit(submission_id):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     session["submission"]=submission_id
     form1 = CreateSubmissionForms()
     submission=db.session.query(Submission).filter_by(submission_id=submission_id).first()
@@ -147,6 +153,8 @@ def t_teisyutsu_edit(submission_id):
 @teisyutsu.route("/confirm_edit", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu_confirm_edit():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     form2 = CreateSubmissionForms()
     subjects = db.session.query(Subject).all()
     form2.subject.choices=[(s.subject_id, s.subject_name)for s in subjects]
@@ -173,6 +181,8 @@ def t_teisyutsu_confirm_edit():
 @teisyutsu.route("/delete/<submission_id>", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu_delete(submission_id):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     submission = db.session.query(Submission).filter_by(submission_id=submission_id).first()
     session["submission"] = submission.submission_id
     return render_template("teacher_teisyutsu/delete.html", submission=submission.submission_name)
@@ -180,6 +190,8 @@ def t_teisyutsu_delete(submission_id):
 @teisyutsu.route("/delete_done", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu_delete_done():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     submission=session["submission"]
     db.session.query(Personal_Submission).filter_by(submission_id=submission).delete()
     db.session.query(Submission).filter_by(submission_id=submission).delete()
