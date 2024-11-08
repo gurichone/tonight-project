@@ -10,7 +10,7 @@
 
 <div class="profile-container">
     <div class="profile-image">
-        <!-- flashメッセージを表示 -->
+        <!-- 画像の変更がわかるflashメッセージを表示 -->
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flashes">
@@ -20,9 +20,9 @@
             </div>
         {% endif %}
     {% endwith %}    
-        <!-- 画像パスの修正 -->
-        <img src="{{ url_for('teacher.profile.upload_file', filename=teacher.icon_path.split('uploads/icon/')[1] if teacher.icon_path else 'icon/default/default_icon.png') }}" alt="プロフィール画像">
-        <button onclick="window.location.href='{{ url_for('teacher.profile.edit_profile_image') }}'">画像を編集</button>
+    <!-- ユーザーがアイコンを設定してない場合はデフォルトアイコンを表示 -->
+    <img src="{{ url_for('teacher.profile.upload_file', filename=teacher.icon_path.split('uploads/icon/')[1] if teacher.icon_path else 'icon/default/default_icon.png') }}" alt="プロフィール画像">
+    <button onclick="window.location.href='{{ url_for('teacher.profile.edit_profile_image') }}'">画像を編集</button>
     </div>
     <table>
         <tr>

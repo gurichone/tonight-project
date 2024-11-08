@@ -19,6 +19,11 @@ prof = Blueprint(
 def profile():
     # ログインしている教員の情報を取得
     teacher = current_user
+        
+    # ユーザーがアイコンを設定していない場合はデフォルトのパスを使用
+    if not teacher.icon_path or not os.path.exists(os.path.join(current_app.root_path, teacher.icon_path)):
+        teacher.icon_path = 'uploads/icon/default/default_icon.png'
+        
     return render_template('teacher_profile/profile.html', teacher=teacher)
 
 @prof.route('/edit_profile_image', methods=['GET', 'POST'])
