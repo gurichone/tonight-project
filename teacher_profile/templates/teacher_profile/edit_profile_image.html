@@ -13,4 +13,7 @@
         {{ form.submit }}
     </div>
 </form>
+<form action="{{ url_for('teacher.profile.reset_profile_image') }}" method="POST">
+    <button type="submit">デフォルトアイコンに戻す</button>
+</form>
 {% endblock %}

@@ -17,7 +17,7 @@
 
             <!-- アカウント情報 -->
             <a href="{{ url_for('teacher.profile.profile')}}" class="menu-icon">
-                <img src="{{ url_for('static', filename=teacher.icon_path if teacher.icon_path else 'images/default_icon.png') }}" alt="アカウント情報">
+                <img src="{{ url_for('teacher.profile.upload_file', filename=teacher.icon_path.split('uploads/icon/')[1] if teacher.icon_path else 'icon/default/default_icon.png') }}" alt="プロフィール画像">
                 <p class="icon-text">アカウント情報</p>
             </a>
         </div>
