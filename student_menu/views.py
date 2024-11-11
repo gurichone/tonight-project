@@ -12,4 +12,4 @@ menu = Blueprint(
 
 @menu.route("/")
 def s_menu():
-    return "menu"
+    return render_template('student_menu/menu.html')
