@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>時間割表</title>
+    <script>
+        function updateTable() {
+            const selectedYear = document.getElementById("year-filter").value;
+            const selectedMonth = document.getElementById("month-filter").value;
+
+            document.querySelectorAll("tbody tr").forEach(row => {
+                const year = row.querySelector("td[data-type='year']").innerText;
+                const month = row.querySelector("td[data-type='month']").innerText.replace("月", "");
+
+                const yearMatch = selectedYear === "" || selectedYear === year;
+                const monthMatch = selectedMonth === "" || selectedMonth === month;
+
+                row.style.display = (yearMatch && monthMatch) ? "" : "none";
+            });
+        }
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('your-image-url.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            color: black;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 10px;
+            margin: 20px 0;
+            background-color: rgba(225, 225, 225, 0.8);
+        }
+        th {
+            border: 1px solid black;
+            padding: 10px;
+            background-color: #cacaca;
+            color: white;
+        }
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            background-color: white;
+            color: black;
+        }
+        .header-cell {
+            background-color: #000000;
+            color: white;
+        }
+        select {
+            background-color: #000000;
+            color: white;
+            border: 1px solid black;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">時間割表</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th class="header-cell">
+                    <label for="year-filter">年:</label>
+                    <select id="year-filter" onchange="updateTable()">
+                        <option value="">すべて</option>
+                        {% for y in range(2020, 2030) %}
+                            <option value="{{ y }}">{{ y }}</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th class="header-cell">
+                    <label for="month-filter">月:</label>
+                    <select id="month-filter" onchange="updateTable()">
+                        <option value="">すべて</option>
+                        {% for m in range(1, 13) %}
+                            <option value="{{ m }}">{{ m }}月</option>
+                        {% endfor %}
+                    </select>
+                </th>
+                <th class="header-cell">日</th>
+                <th class="header-cell">曜日</th>
+                <th>1時間目</th>
+                <th>2時間目</th>
+                <th>3時間目</th>
+                <th>備考</th>
+                <th>イベント</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in data %}
+            <tr>
+                <td data-type="year">{{ entry.year }}</td>
+                <td data-type="month">{{ entry.month }}月</td>
+                <td data-type="day">{{ entry.day }}日</td>
+                <td>{{ entry.weekday }}</td>
+                <td>{{ entry.period1 }}</td>
+                <td>{{ entry.period2 }}</td>
+                <td>{{ entry.period3 }}</td>
+                <td>{{ entry.notes }}</td>
+                <td>{{ entry.event }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
