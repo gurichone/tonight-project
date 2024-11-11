@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業数一覧</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;  /* 画面全体の背景色を白に設定 */
+            display: flex;
+            justify-content: center;  /* 横方向に中央揃え */
+            align-items: center;  /* 縦方向に中央揃え */
+            height: 100vh;  /* 画面全体の高さを占める */
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .container {
+            width: 80%;  /* 表の幅を画面の80%に設定 */
+            background-color: #f4f4f4;  /* 表の背景色を薄い灰色に */
+            padding: 20px;
+            border-radius: 10px;  /* 角を丸くする */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  /* 影を追加して浮き上がる感じを出す */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .button-container {
+            margin: 20px 0;
+            text-align: right;
+        }
+        .button-container a {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button-container a:hover {
+            background-color: #45a049;
+        }
+        .back-button-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+        .back-button-container a {
+            padding: 8px 15px;
+            background-color: #008CBA;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button-container a:hover {
+            background-color: #007b8c;
+        }
+        .action-button {
+            display: inline-block;
+            width: auto;
+            padding: 6px 12px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        .edit-button {
+            background-color: #ffa500;
+        }
+        .edit-button:hover {
+            background-color: #e68900;
+        }
+        .delete-button {
+            background-color: #f44336;
+            border: none;
+        }
+        .delete-button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>授業数一覧</h1>
+
+    <div class="button-container">
+        <a href="{{ url_for('teacher.jikanwari.show_class_count') }}">授業数登録</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>授業名</th>
+                <th>コマ数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.periods }}</td>
+                <td>
+                    <a href="{{ url_for('teacher.jikanwari.edit_class_count', subject_id=subject.id) }}" class="action-button edit-button">編集</a>
+                    <form action="{{ url_for('teacher.jikanwari.delete_class_count', subject_id=subject.id) }}" method="GET" style="display:inline;">
+                        <button type="submit" class="action-button delete-button">削除</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="back-button-container">
+        <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">時間割に戻る</a>
+    </div>
+</div>
+
+</body>
+</html>

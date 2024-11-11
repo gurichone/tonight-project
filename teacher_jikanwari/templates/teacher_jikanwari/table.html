@@ -73,8 +73,9 @@
     <h1 style="text-align: center;">時間割表</h1>
 
     <div style="text-align: right; margin: 20px;">
-        <a href="{{ url_for('teacher.jikanwari.show_add_entry') }}">授業を追加</a>
-        <a href="{{ url_for('teacher.jikanwari.lesson_count') }}">授業数登録</a>
+        <a href="{{ url_for('teacher.jikanwari.add_entry') }}">授業を追加</a>
+        <a href="{{ url_for('teacher.jikanwari.class_list') }}" style="margin-left: 10px;">授業数一覧</a>
+
     </div>
 
     <table>
@@ -121,7 +122,8 @@
                 <td>{{ entry.notes }}</td>
                 <td>{{ entry.event }}</td>
                 <td style="text-align: center;">
-                    <a href="{{ url_for('teacher.jikanwari.edit_entry', id=entry.id) }}">編集</a>
+                    <a href="{{ url_for('teacher.jikanwari.add_entry') }}">編集</a>
+
                     <a href="{{ url_for('teacher.jikanwari.delete_confirmation', id=entry.id) }}">削除</a>
                 </td>
             </tr>

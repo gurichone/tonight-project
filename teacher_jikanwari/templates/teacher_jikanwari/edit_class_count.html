@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>授業数編集</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        form {
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            width: 100%;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .error-message {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .back-button-container {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+        }
+        .back-button-container a {
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button-container a:hover {
+            background-color: #007b8c;
+        }
+    </style>
+</head>
+<body>
+
+<h1>授業数編集</h1>
+
+<!-- エラーメッセージがあれば表示 -->
+{% if error_message %}
+    <div class="error-message">
+        {{ error_message }}
+    </div>
+{% endif %}
+
+<form method="POST" action="{{ url_for('teacher.jikanwari.edit_class_count', subject_id=subject.id) }}">
+    <label for="subject_name">科目名:</label>
+    <input type="text" id="subject_name" name="subject_name" value="{{ subject.name }}" required><br><br>
+
+    <label for="periods">コマ数:</label>
+    <select id="periods" name="periods" required>
+        {% for i in range(1, 101) %}
+            <option value="{{ i }}" {% if i == subject.periods %} selected {% endif %}>{{ i }} コマ</option>
+        {% endfor %}
+    </select><br><br>
+
+    <button type="submit">保存</button>
+</form>
+
+<!-- 戻るボタンを左下に配置 -->
+<div class="back-button-container">
+    <a href="{{ url_for('teacher.jikanwari.class_list') }}">戻る</a>
+</div>
+
+</body>
+</html>

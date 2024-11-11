@@ -1,4 +1,3 @@
-# models.py
 from app import db
 
 class Timetable(db.Model):
@@ -13,3 +12,9 @@ class Timetable(db.Model):
     period3 = db.Column(db.String(50))
     notes = db.Column(db.String(200))
     event = db.Column(db.String(100))
+
+class SubjectDetails(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    periods = db.Column(db.Integer, nullable=False)
+
