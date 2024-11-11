@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>教員メニュー</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}">
-</head>
-<body>
+{% extends "teacher/base.html" %}
+{% block title %}教員メニュー{% endblock %}
+{% block content %}
+
     <header>
         <!-- 通知とアカウント情報のアイコン -->
          <!-- 通知 -->
@@ -56,5 +52,4 @@
             </a></li>
         </ul>
     </div>
-</body>
-</html>
+{% endblock %}
