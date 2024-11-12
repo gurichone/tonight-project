@@ -32,7 +32,7 @@ def s_teisyutsu(submission_id):
         file = form.file.data
         #拡張子を抽出
         ext = Path(file.filename).suffix
-        code_uuid_file_name = submission_id + "/" + current_user.id + ext
+        code_uuid_file_name = submission_id + "/" + current_user.id + '_' + current_user.student_name + ext
 
         code_path =Path(
             current_app.config["SUBMIT_FOLDER"], code_uuid_file_name

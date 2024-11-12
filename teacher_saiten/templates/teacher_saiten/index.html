@@ -1,0 +1,33 @@
+{% extends "teacher/base.html" %}
+
+{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">戻る</a>{% endblock %}
+
+{% block content %}
+<div>
+    <ul>
+        <li>{{submission.Submission.submission_name}}</li>
+        <li>{{submission.Subject.subject_name}}</li>
+        <li>{{submission.Submission.submission_type}}</li>
+    </ul>
+    <a href="{{ url_for('teacher.saiten.manual') }}">ダウンロード</a>
+    <a href="{{ url_for('teacher.saiten.auto') }}">自動採点</a>
+</div>
+<div>
+    <table>
+        <tr><th>生徒番号</th><th>氏名</th><th>提出状況</th></tr>
+        {% for p in personal %}
+        <tr>
+            <td>{{ p.Student.id }}</td>
+            <td>{{ p.Student.student_name }}</td>
+            <td>
+                {% if p.Personal_Submission.submitted %}
+                <div id="submitted_true">✓</div>
+                {% else %}
+                <div id="submitted_none"></div>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -16,10 +16,10 @@
 <div>
     <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}">+</a>
     <table>
-        <tr><th>ファイル名</th><th>実施内容</th><th></th><th></th></tr>
+        <tr><th></th><th>ファイル名</th><th>実施内容</th><th></th><th></th></tr>
         {% for sub in submissions %}
         <tr>
-            <!-- <th><a href="">採点</a></th> -->
+            <th><a href="{{ url_for('teacher.saiten.t_saiten', submission_id=sub.Submission.submission_id) }}">採点</a></th>
             <td>{{ sub.Submission.submission_name}}</td>
             <td>{{ sub.Submission.submission_type}}</td>
             <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=sub.Submission.submission_id) }}">変更</a></td>

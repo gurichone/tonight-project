@@ -18,9 +18,78 @@
     <br>
     {{ form.question.label }}{{ form.question }}
     <br>
-    {{ form.testcase.label }}{{ form.testcase }}
+    {{ form.testcase.label }}<textarea id="testcase" name="testcase" readonly></textarea>
     <br>
     {{ form.submit }}
     </form>
+
+    <button id="add">追加</button>
+
+    <table id="testcaseTable">
+        <tr><th>入力</th><th>出力</th><th></th></tr>
+    </table>
 </div>
+
+<script>
+    let addButton = document.getElementById("add");
+    let testcase = document.getElementById("testcase");
+    let testcaseTable = document.getElementById("testcaseTable");
+    
+    function resetClassname() {
+        var inputElm = document.getElementsByClassName("input");
+        var outputElm = document.getElementsByClassName("output");
+        var deleteElm = document.getElementsByClassName("delete");
+        for (let i = 0; i < deleteElm.length; i++) {
+            inputElm[i].addEventListener("change", function(){inputChange(inputElm, outputElm)})
+            outputElm[i].addEventListener("change", function(){inputChange(inputElm, outputElm)})
+            deleteElm[i].onclick = () => {
+                deleteElm[i].parentNode.parentNode.remove();
+                inputChange(inputElm, outputElm)
+                resetClassname();
+            }
+        }
+    }
+    
+    
+    function addTestcase() {
+        var rowElm = document.createElement("tr");
+        rowElm.classList.add("tesacaseRow");
+        var data1Elm = document.createElement("td");
+        var data2Elm = document.createElement("td");
+        var data3Elm = document.createElement("td");
+        rowElm.appendChild(data1Elm);
+        rowElm.appendChild(data2Elm);
+        rowElm.appendChild(data3Elm);
+        var newInputElm = document.createElement("textarea");
+        var newOutputElm = document.createElement("textarea");
+        var newDeleteElm = document.createElement("button");
+        newDeleteElm.innerText = "削除";
+        newInputElm.classList.add("input");
+        newOutputElm.classList.add("output");
+        newDeleteElm.classList.add("delete");
+        data1Elm.appendChild(newInputElm);
+        data2Elm.appendChild(newOutputElm);
+        data3Elm.appendChild(newDeleteElm);
+        testcaseTable.appendChild(rowElm);
+    }
+    
+    function inputChange(inputElm, outputElm){
+        var testcaseText = ""
+        for (let i = 0; i < inputElm.length; i++){
+            if (inputElm[i].value || outputElm[i].value) {
+                testcaseText += "\n<<<start>>>\n";
+                testcaseText += inputElm[i].value;
+                testcaseText += "\n<<<change>>>\n";
+                testcaseText += outputElm[i].value;
+                testcaseText += "\n<<<end>>>\n"
+            }
+        }
+        testcase.value = testcaseText;
+    }
+    
+    addButton.addEventListener('click', function(){
+        addTestcase();
+        resetClassname();
+    })
+</script>
 {% endblock %}

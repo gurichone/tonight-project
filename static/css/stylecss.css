@@ -46,7 +46,7 @@ a.t-student img {
 }
 /* 共通部分 */
 
-#stu_sub_true {
+#submitted_true {
     width: 40px;
     height: 32px;
     border: solid 4px greenyellow;
@@ -58,9 +58,40 @@ a.t-student img {
     padding-bottom: 8px;
 }
 
-#stu_sub_false {
+#submitted_false {
+    width: 40px;
+    height: 32px;
+    border: solid 4px red;
+    border-radius: 40px;
+    background-color: red;
+    font-size: 32px;
+    text-align: center;
+    color: white;
+    padding-bottom: 8px;
+}
+
+#submitted_none {
     width: 40px;
     height: 40px;
     border: solid 4px gray;
     border-radius: 40px;
+}
+
+.toggle_switch_outer {
+    width: 40px;
+    height: 20px;
+    background-color: lightgray;
+    border-radius: 10px;
+    position: relative;
+}
+.toggle_switch_inner {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    position: absolute;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    left: 2px;
+    margin: auto;
 }

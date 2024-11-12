@@ -28,10 +28,10 @@
     </select>
     <br>
     {{ form.question.label }}
-    <input type="text" name="question" value="{{ form.question.data }}" readonly>
+    <textarea id="question" name="question" readonly>{{ form.question.data }}</textarea>
     <br>
     {{ form.testcase.label }}
-    <input type="text" name="testcase" value="{{ form.testcase.data }}" readonly>
+    <textarea id="testcase" name="testcase" readonly>{{ form.testcase.data }}</textarea>
     <br>
     {{ form.submit }}
     </form>
