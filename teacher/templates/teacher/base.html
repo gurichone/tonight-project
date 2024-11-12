@@ -12,9 +12,15 @@
 		<div id="bg_homebutton" onclick="changeDisplay()"><img src="{{ url_for('static', filename='images/bg_home.png') }}"></div>
 		<div id="bg_menu">
 			<ul>
-				<li>メニュー</li>
-				<li>出席登録</li>
-				<li>TODOリスト</li>
+				<li><a href="{{ url_for('teacher.menu.t_menu') }}" class="pull-item">メニュー</a></li>
+				<li><a href="{{ url_for('teacher.student.teacher_student') }}" class="pull-item">生徒管理</a></li>
+				<li><a href="#" class="menu-item">チャット</a></li>
+				<li><a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}" class="pull-item">時間割管理</a></li>
+				<li><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}" class="pull-item">提出物管理</a></li>
+				<Li><a href="{{ url_for('teacher.seiseki.search') }}" class="pull-item">成績管理</a></Li>
+				<li><a href="#" class="pull-item">お知らせ送信</a></li>
+				<li><a href="#" class="pull-icon">通知</a></li>
+				<li><a href="{{ url_for('teacher.profile.profile')}}" class="pull-icon">アカウント情報</a></li>
 			</ul>
 		</div>
 	</body>

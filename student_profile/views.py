@@ -70,9 +70,9 @@ def edit_profile_image():
         db.session.commit()
         
         flash('プロフィール画像が更新されました。', 'success')
-        return redirect(url_for('teacher.profile.profile'))
+        return redirect(url_for('student.profile.profile'))
 
-    return render_template('teacher_profile/edit_profile_image.html', form=form)
+    return render_template('student_profile/edit_profile_image.html', form=form)
 
 @prof.route('/uploads/icon/<path:filename>')
 def upload_file(filename):
@@ -98,5 +98,5 @@ def reset_profile_image():
     db.session.commit()
     
     flash('プロフィール画像がデフォルトに戻されました。', 'success')
-    return redirect(url_for('teacher.profile.profile'))
+    return redirect(url_for('student.profile.profile'))
 
