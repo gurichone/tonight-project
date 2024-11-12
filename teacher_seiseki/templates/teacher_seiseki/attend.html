@@ -1,57 +1,53 @@
-<!DOCTYPE html>
-<html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>出席確認</title>
-    </head>
-    <body>
-        <header>
-            <h2>出席確認</h2>
-        </header>
-        <!-- 出席日数を確認する際の情報の絞り込みを行う -->
-        <form action="{{ url_for('teacher.seiseki.attend') }}" method="POST" novalidate="novalidate">
-            {{ attend.csrf_token }}
-            <!-- 科目名を選ぶ -->
-            <label for="subject_name">科目名</label>
-            <select name="subject_name" id="subject_name">
-                {% for subject_name, label in attend.subject_name.choices %}
-                    <option value="{{ subject_name }}" {% if attend.subject_name.data == subject_name %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
-            <!-- クラス番号を選ぶ -->
-            <label for="class_num">クラス番号</label>
-            <select name="class_num" id="class_num">
-                {% for class_num, label in attend.class_num.choices %}
-                    <option value="{{ class_num }}" {% if attend.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
-            <!-- 生徒番号を入力 -->
-            {{ attend.student_name.label }} {{ attend.student_name }}
-            <!-- ボタンを押して検索 -->
-            {{ attend.submit }}
-        </form>
-        <!-- 検索結果を表示 -->
-        {% if results %}
-        <table>
-            <thead>
-                <tr>
-                    <th>科目名</th>
-                    <th>氏名</th>
-                    <th>日数</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for attend in results %}
-                <tr>
-                    <td>{{ attend.subject_name }}</td>
-                    <td>{{ attend.student_name }}</td>
-                    <td>{{ attend.attend_day }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-            <h2>一致する結果がありません</h2>
-        {% endif %}
-    </body>
-</html>
+{% extends "teacher/base.html" %}
+{% block title %}成績登録{% endblock %}
+
+{% block modorulink %}<a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>{% endblock %}
+{% block content %}
+    <h2>出席確認</h2>
+    <!-- 出席日数を確認する際の情報の絞り込みを行う -->
+    <form action="{{ url_for('teacher.seiseki.attend') }}" method="POST" novalidate="novalidate">
+        {{ attend.csrf_token }}
+        <!-- 科目名を選ぶ -->
+        <label for="subject_id">科目名</label>
+        <select name="subject_id" id="subject_id">
+            {% for subject_id, label in attend.subject_id.choices %}
+                <option value="{{ subject_id }}" {% if attend.subject_id.data == subject_id %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <!-- クラス番号を選ぶ -->
+        <label for="class_num">クラス番号</label>
+        <select name="class_num" id="class_num">
+            {% for class_num, label in attend.class_num.choices %}
+                <option value="{{ class_num }}" {% if attend.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <!-- 生徒番号を入力 -->
+        <label for="student_name">生徒名</label>
+        <input type="text" name="student_name" id="student_name" value="{{ attend.student_name.data or '' }}">
+        <!-- ボタンを押して検索 -->
+        {{ attend.submit }}
+    </form>
+    <!-- 検索結果を表示 -->
+    {% if results %}
+    <table>
+        <thead>
+            <tr>
+                <th>科目名</th>
+                <th>氏名</th>
+                <th>日数</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for attend in results %}
+            <tr>
+                <td>{{ attend.Subject.subject_name }}</td>
+                <td>{{ attend.Student.student_name }}</td>
+                <td>{{ attend.Score.attend_day }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <h2>一致する結果がありません</h2>
+    {% endif %}
+{% endblock %}

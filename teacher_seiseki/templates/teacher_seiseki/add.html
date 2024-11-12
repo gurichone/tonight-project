@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "teacher/base.html" %}
+{% block title %}成績登録{% endblock %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>成績登録</title>
-</head>
-
-<body>
+{% block modorulink %}<a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>{% endblock %}
+{% block content %}
     <h2>成績登録</h2>
     <!-- 登録が完了したら以下の内容を表示 -->
     {% if success %}
-    <p>登録が完了しました</p>
-    <a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>
+    <p>登録が完了しました</p>   
 
     <!-- 最初に入力フォームの表示を行う -->
     {% elif not confirm %}
@@ -28,19 +23,17 @@
                 </ul>
             {% endif %}
         {% endwith %}
-        <p>{{ score.student_num.label }} {{ score.student_num }}</p>
+        <p>{{ score.id.label }} {{ score.id }}</p>
         <!-- 各エラーが起きた際の処理(forms.py参照) -->
-        {% for error in score.student_num.errors %}
+        {% for error in score.id.errors %}
             <span style="color:red">{{ error }}</span>
         {% endfor %}
-        <p>{{ score.student_name.label }} {{ score.student_name }}</p>
-        {% for error in score.student_name.errors %}
+
+        <p>{{ score.subject_id.label }} {{ score.subject_id }}</p>
+        {% for error in score.subject_id.errors %}
             <span style="color:red">{{ error }}</span>
         {% endfor %}
-        <p>{{ score.subject_name.label }} {{ score.subject_name }}</p>
-        {% for error in score.subject_name.errors %}
-            <span style="color:red">{{ error }}</span>
-        {% endfor %}
+
         <p>{{ score.assessment_id.label }} {{ score.assessment_id }}</p>
         {% for error in score.assessment_id.errors %}
             <span style="color:red">{{ error }}</span>
@@ -50,25 +43,24 @@
 
     <!-- 入力が完了したら確認画面に遷移 -->
     {% else %}
-    <a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>
     <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
         {{ score.csrf_token }}
         <h3>以下の内容を登録しますか？</h3>
-        <p>生徒番号: {{ score.student_num }}</p>
-        <p>氏名: {{ score.student_name }}</p>
-        <p>科目名: {{ score.subject_name }}</p>
+        <p>生徒番号: {{ score.id }}</p>
+        <p>生徒名: {{ student_name }}</p>
+        <p>科目名: {{ score.subject_id }}</p>
         <p>評価: {{ score.assessment_id }}</p>
-        <input type="hidden" name="student_num" value="{{ score.student_num.data }}">
+        <input type="hidden" name="id" value="{{ score.id.data }}">
         <!-- 一応ここにも追加したけど必要なさそう -->
-        {% for error in score.student_num.errors %}
+        {% for error in score.id.errors %}
             <span style="color:red">{{ error }}</span>
         {% endfor %}
-        <input type="hidden" name="student_name" value="{{ score.student_name.data }}">
-        {% for error in score.student_name.eerrors %}
+        <input type="hidden" name="id" value="{{ score.id.data }}">
+        {% for error in score.id.eerrors %}
             <span style="color:red">{{ error }}</span>
         {% endfor %}
-        <input type="hidden" name="subject_name" value="{{ score.subject_name.data }}">
-        {% for error in score.subject_name.errors %}
+        <input type="hidden" name="subject_id" value="{{ score.subject_id.data }}">
+        {% for error in score.subject_id.errors %}
             <span style="color:red">{{ error }}</span>
         {% endfor %}
         <input type="hidden" name="assessment_id" value="{{ score.assessment_id.data }}">
@@ -78,6 +70,4 @@
         <button type="submit" name="action" value="add">確定</button>
     </form>
     {% endif %}
-</body>
-
-</html>
+{% endblock %}
