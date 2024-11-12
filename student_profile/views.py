@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, current_app, send_from_directory
 from flask_login import current_user, login_required
-from auth.models import Teacher
+from auth.models import School, Course
 from app import db
-from .forms import ProfileImageForm
+from teacher_profile.forms import ProfileImageForm
 import os
 from werkzeug.utils import secure_filename
 import time
@@ -16,15 +16,24 @@ prof = Blueprint(
 
 @prof.route('/')
 @login_required
-def profile():    
-    # ログインしている教員の情報を取得
-    teacher = current_user
-        
+def profile():
+    # ログインしている生徒の情報を取得
+    student = current_user
+
+     # 学校名とコース名を取得
+    school = School.query.filter_by(school_id=student.school_id).first()
+    course = Course.query.filter_by(course_id=student.course_id).first()
+
     # ユーザーがアイコンを設定していない場合はデフォルトのパスを使用
-    if not teacher.icon_path or not os.path.exists(os.path.join(current_app.root_path, teacher.icon_path)):
-        teacher.icon_path = 'uploads/icon/default/default_icon.png'
+    if not student.icon_path or not os.path.exists(os.path.join(current_app.root_path, student.icon_path)):
+        student.icon_path = 'uploads/icon/default/default_icon.png'
         
-    return render_template('teacher_profile/profile.html', teacher=teacher)
+    return render_template(
+        'student_profile/profile.html',
+        student=student,
+        school_name=school.school_name if school else "不明",
+        course_name=course.course_name if course else "不明"
+        )
 
 @prof.route('/edit_profile_image', methods=['GET', 'POST'])
 @login_required
@@ -34,7 +43,7 @@ def edit_profile_image():
         # アップロードディレクトリのパスを取得 (static外のuploads/iconフォルダ)
         upload_folder = os.path.join(current_app.root_path, 'uploads', 'icon', str(current_user.id))
         
-        # 教員IDごとのフォルダが存在しない場合は作成
+        # 生徒IDごとのフォルダが存在しない場合は作成
         if not os.path.exists(upload_folder):
             os.makedirs(upload_folder)
         

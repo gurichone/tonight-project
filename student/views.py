@@ -30,3 +30,6 @@ student.register_blueprint(student_jikanwari_views.jikanwari, url_prefix="/jikan
 
 from student_enquete import views as student_enquete_views
 student.register_blueprint(student_enquete_views.enquete, url_prefix="/enquete")
+
+from student_profile import views as student_profile_views
+student.register_blueprint(student_profile_views.prof, url_prefix="/profile")

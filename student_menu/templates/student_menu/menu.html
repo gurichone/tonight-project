@@ -4,12 +4,16 @@
 <header>
     <!-- 通知とアカウント情報のアイコン -->
     <!-- 通知 -->
-    <div class="teacher-session">
+    <div class="student-session">
         <a href="#" class="menu-icon">
             <img src="{{ url_for('static', filename='images/notice.png') }}" alt="通知">
             <p class="icon-text">通知</p>
         </a>
-        <!-- アカウント情報へのリンクを記述 -->
+        <!-- アカウント情報 -->
+        <a href="{{ url_for('student.profile.profile')}}" class="menu-icon">
+            <img src="{{ url_for('student.profile.upload_file', filename=student.icon_path.split('uploads/icon/')[1] if student.icon_path else 'icon/default/default_icon.png') }}" alt="プロフィール画像">
+            <p class="icon-text">アカウント情報</p>
+        </a>
     </div>
 </header>
 
@@ -17,32 +21,32 @@
     <ul>
         <!-- 出席登録 -->
         <li><a href="{{ url_for('student.syusseki.s_syusseki') }}" class="menu-item">
-            <img src="{{ url_for('static', filename='images/syussekitouroku.png') }}" alt="生徒管理">
+            <img src="{{ url_for('static', filename='images/syussekitouroku.png') }}" alt="出席登録">
         </a></li>
         
         <!-- TODOリスト -->
         <li><a href="{{ url_for('student.todo.s_todo') }}" class="menu-item">
-            <img src="{{ url_for('static', filename='images/todolist.png') }}" alt="チャット">
+            <img src="{{ url_for('static', filename='images/todolist.png') }}" alt="TODOリスト">
         </a></li>
 
         <!-- 授業確認 -->
         <li><a href="{{ url_for('student.jikanwari.s_jikanwari') }}" class="menu-item">
-            <img src="{{ url_for('static', filename='images/jyugyoukakunin.png') }}" alt="時間割管理">
+            <img src="{{ url_for('static', filename='images/jyugyoukakunin.png') }}" alt="授業確認">
         </a></li>
 
         <!-- 提出物確認 -->
         <li><a href="{{ url_for('student.teisyutsu.s_teisyutsu_index') }}" class="menu-item">
-            <img src="{{ url_for('static', filename='images/teisyutsukakunin.png') }}" alt="提出物管理">
+            <img src="{{ url_for('static', filename='images/teisyutsukakunin.png') }}" alt="提出物確認">
         </a></li>
 
         <!-- 成績確認 -->
         <li><a href="{{ url_for('student.seiseki.s_seiseki') }}" class="menu-item">
-            <img src="{{ url_for('static', filename='images/seisekikakunin.png') }}" alt="成績管理">
+            <img src="{{ url_for('static', filename='images/seisekikakunin.png') }}" alt="成績確認">
         </a></li>
 
         <!-- アンケート -->
         <li><a href="{{ url_for('student.enquete.s_enquete') }}" class="menu-item">
-            <img src="{{ url_for('static', filename='images/anke-to.png') }}" alt="お知らせ送信">
+            <img src="{{ url_for('static', filename='images/anke-to.png') }}" alt="アンケート">
         </a></li>
     </ul>
 </div>
