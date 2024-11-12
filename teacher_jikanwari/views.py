@@ -111,7 +111,7 @@ def delete_entry(id):
         db.session.commit()
 
     # 削除後、一覧画面にリダイレクト
-    return redirect(url_for('jikanwari.t_jikanwari'))  # 正しいエンドポイント名を使用
+    return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 正しいエンドポイント名を使用
 
 # クラス一覧表示
 @jikanwari.route('/class_list')
