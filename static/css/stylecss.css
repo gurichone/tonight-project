@@ -83,6 +83,11 @@ a.t-student img {
     background-color: lightgray;
     border-radius: 10px;
     position: relative;
+    cursor: pointer;
+    transition: background-color .2s ease-in-out;
+}
+.toggle_switch_outer.active {
+    background-color: #51E373;
 }
 .toggle_switch_inner {
     width: 17px;
@@ -94,4 +99,8 @@ a.t-student img {
     bottom: 0;
     left: 2px;
     margin: auto;
+    transition: left .3s ease-in-out;
+}
+.toggle_switch_inner.active {
+    left: 21px;
 }

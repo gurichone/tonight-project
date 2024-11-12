@@ -26,4 +26,14 @@
         </table>
     </div>
 </div>
+<script>
+    const switchOuter = document.querySelector(".toggle_switch_outer");
+    const toggleSwitch = document.querySelector(".toggle_switch_inner");
+
+    //クリックでacitveクラスを追加/削除
+    switchOuter.addEventListener("click", () => {
+        switchOuter.classList.toggle("active");
+        toggleSwitch.classList.toggle("active");
+    });
+</script>
 {% endblock %}
