@@ -10,7 +10,6 @@
 
     <!-- 最初に入力フォームの表示を行う -->
     {% elif not confirm %}
-    <a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>
     <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
         {{ score.csrf_token }}
         <!-- 既に登録した情報が存在する際にエラー文を表示する処理 -->
