@@ -1,81 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>時間割表</title>
-    <script>
-        function updateTable() {
-            const selectedYear = document.getElementById("year-filter").value;
-            const selectedMonth = document.getElementById("month-filter").value;
-
-            document.querySelectorAll("tbody tr").forEach(row => {
-                const year = row.querySelector("td[data-type='year']").innerText;
-                const month = row.querySelector("td[data-type='month']").innerText.replace("月", "");
-
-                const yearMatch = selectedYear === "" || selectedYear === year;
-                const monthMatch = selectedMonth === "" || selectedMonth === month;
-
-                row.style.display = (yearMatch && monthMatch) ? "" : "none";
-            });
-        }
-    </script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-image: url('your-image-url.jpg'); /* ここに画像のURLを設定 */
-            background-size: cover; /* 背景画像をカバーする */
-            background-repeat: no-repeat; /* 背景画像を繰り返さない */
-            background-position: center; /* 背景画像を中央に配置 */
-            color: black; /* テキストのデフォルト色を黒に設定 */
-        }
-        table {
-            width: 100%;
-            border-collapse: separate; /* 複数のセル間にスペースを持たせる */
-            border-spacing: 10px; /* セル間のスペースを設定 */
-            margin: 20px 0;
-            background-color: rgba(225, 225, 225, 0.8); /* 背景を白にして透明度を設定 */
-        }
-        th {
-            border: 1px solid black;
-            padding: 10px;
-            background-color: #cacaca; /* ヘッダーの背景色を灰色に */
-            color: white; /* ヘッダーの文字色を白に */
-        }
-        td {
-            border: 1px solid black;
-            padding: 10px;
-            background-color: white; /* セルの背景色を白に */
-            color: black; /* セルの文字色を黒に */
-        }
-        .header-cell {
-            background-color: #000000; /* 年、月、日、曜日のヘッダーの背景色 */
-            color: white; /* 年、月、日、曜日のヘッダーの文字色 */
-        }
-        select {
-            background-color: #000000; /* プルダウンメニューの背景色をヘッダーと同じに */
-            color: white; /* プルダウンメニューの文字色を白に */
-            border: 1px solid black; /* プルダウンメニューの境界線 */
-            padding: 5px; /* パディングを追加 */
-            border-radius: 5px; /* 角を丸くする */
-        }
-        a {
-            text-decoration: none;
-            color: black; /* リンクの文字色を黒に */
-            background-color: rgb(255, 255, 255); /* リンクの背景色を白に */
-            padding: 5px 10px; /* ボタンにパディングを追加 */
-            border-radius: 5px; /* ボタンに角を丸くする */
-            display: inline-block; /* ボタンをブロック表示 */
-        }
-    </style>
-</head>
-<body>
-    <h1 style="text-align: center;">時間割表</h1>
+{% extends "teacher/base.html" %}
+{% block title %}時間割表{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block content %}
+    <h1>時間割表</h1>
 
     <div style="text-align: right; margin: 20px;">
         <a href="{{ url_for('teacher.jikanwari.add_entry') }}">授業を追加</a>
-        <a href="{{ url_for('teacher.jikanwari.class_list') }}" style="margin-left: 10px;">授業数一覧</a>
-
+        <a href="{{ url_for('teacher.jikanwari.class_list') }}">授業数一覧</a>
     </div>
 
     <table>
@@ -112,9 +43,9 @@
         <tbody>
             {% for entry in data %}
             <tr>
-                <td data-type="year">{{ entry.year }}</td>
-                <td data-type="month">{{ entry.month }}月</td>
-                <td data-type="day">{{ entry.day }}日</td>
+                <td>{{ entry.year }}</td>
+                <td>{{ entry.month }}月</td>
+                <td>{{ entry.day }}日</td>
                 <td>{{ entry.weekday }}</td>
                 <td>{{ entry.period1 }}</td>
                 <td>{{ entry.period2 }}</td>
@@ -123,12 +54,15 @@
                 <td>{{ entry.event }}</td>
                 <td style="text-align: center;">
                     <a href="{{ url_for('teacher.jikanwari.add_entry') }}">編集</a>
-
                     <a href="{{ url_for('teacher.jikanwari.delete_confirmation', id=entry.id) }}">削除</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}
+
+{% block head %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stylecss.css') }}">
+{% endblock %}

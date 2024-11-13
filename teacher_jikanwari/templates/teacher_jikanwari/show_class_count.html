@@ -1,109 +1,32 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>授業数登録</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-        form {
-            width: 100%;
-            max-width: 400px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #f4f4f4;
-            border-radius: 5px;
-        }
-        label {
-            display: block;  /* 横並びを防ぐために、ブロック要素に設定 */
-            width: 100%;  /* 幅100%で全体を使う */
-            margin-bottom: 8px;
-            font-size: 16px;
-        }
-        input, select {
-            width: 100%;  /* 幅100%でフォームを整える */
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .error-message {
-            color: red;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .back-button-container {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-        }
-        .back-button-container a {
-            padding: 10px 20px;
-            background-color: #008CBA;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .back-button-container a:hover {
-            background-color: #007b8c;
-        }
-    </style>
-</head>
-<body>
+{% extends "teacher/base.html" %}
 
-<h1>授業数登録</h1>
+{% block title %}授業数登録{% endblock %}
 
-<!-- エラーメッセージがあれば表示 -->
-{% if error_message %}
-    <div class="error-message">
-        {{ error_message }}
-    </div>
-{% endif %}
+{% block modorulink %}
+<a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">戻る</a>
+{% endblock %}
 
-<form method="POST" action="{{ url_for('teacher.jikanwari.show_class_count') }}">
-    <label for="subject_name">科目名:</label>
-    <input type="text" id="subject_name" name="subject_name" required><br><br>
+{% block content %}
+    <h1>授業数登録</h1>
 
-    <label for="periods">コマ数:</label>
-    <select id="periods" name="periods" required>
-        <option value="">選択してください</option>
-        {% for i in range(1, 101) %}
-            <option value="{{ i }}">{{ i }} コマ</option>
-        {% endfor %}
-    </select><br><br>
+    {% if error_message %}
+        <div class="error-message">
+            {{ error_message }}
+        </div>
+    {% endif %}
 
-    <button type="submit">登録</button>
-</form>
+    <form method="POST" action="{{ url_for('teacher.jikanwari.show_class_count') }}">
+        <label for="subject_name">科目名:</label>
+        <input type="text" id="subject_name" name="subject_name" required><br><br>
 
-<!-- 戻るボタンを左下に配置 -->
-<div class="back-button-container">
-    <a href="{{ url_for('teacher.jikanwari.class_list') }}">戻る</a>
-</div>
+        <label for="periods">コマ数:</label>
+        <select id="periods" name="periods" required>
+            <option value="">選択してください</option>
+            {% for i in range(1, 101) %}
+                <option value="{{ i }}">{{ i }} コマ</option>
+            {% endfor %}
+        </select><br><br>
 
-</body>
-</html>
+        <button type="submit">登録</button>
+    </form>
+{% endblock %}

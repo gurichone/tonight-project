@@ -1,46 +1,51 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>削除確認</title>
-    <style>
-        body {
-            color: #000;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        h2 {
-            font-size: 20px;
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            border: none;
-        }
-        .delete-btn {
-            background-color: #ff0000;
-            color: #fff;
-        }
-        .cancel-btn {
-            background-color: #555;
-            color: #fff;
-        }
-    </style>
-</head>
-<body>
-    <h1>削除確認</h1>
-    <p>{{ entry.year }}年{{ entry.month }}月{{ entry.day }}日 のエントリーを削除しますか？</p>
-    <form action="{{ url_for('teacher.jikanwari.delete_entry', id=entry.id) }}" method="POST">
-        <button type="submit">削除する</button>
-        <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">キャンセル</a>
+{% extends "teacher/base.html" %}
+
+{% block title %}時間割編集{% endblock %}
+
+{% block modorulink %}
+<a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">戻る</a>
+{% endblock %}
+
+{% block content %}
+    <h1>時間割編集</h1>
+    <form action="{{ url_for('teacher.jikanwari.edit_entry', id=entry.id) }}" method="POST">
+        <label for="year">年:</label>
+        <select name="year">
+            {% for y in range(2020, 2031) %}
+                <option value="{{ y }}" {% if y == entry.year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="month">月:</label>
+        <select name="month">
+            {% for m in range(1, 13) %}
+                <option value="{{ m }}" {% if m == entry.month %}selected{% endif %}>{{ m }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="day">日:</label>
+        <select name="day">
+            {% for d in range(1, 32) %}
+                <option value="{{ d }}" {% if d == entry.day %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="period1">1時間目:</label>
+        <input type="text" id="period1" name="period1" value="{{ entry.period1 }}" required>
+
+        <label for="period2">2時間目:</label>
+        <input type="text" id="period2" name="period2" value="{{ entry.period2 }}" required>
+
+        <label for="period3">3時間目:</label>
+        <input type="text" id="period3" name="period3" value="{{ entry.period3 }}" required>
+
+        <label for="notes">備考:</label>
+        <input type="text" id="notes" name="notes" value="{{ entry.notes }}">
+
+        <label for="event">イベント:</label>
+        <input type="text" id="event" name="event" value="{{ entry.event }}">
+
+        <button type="submit">更新</button>
+        <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">時間割表に戻る</a>
     </form>
-</body>
-</html>
+{% endblock %}

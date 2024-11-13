@@ -1,81 +1,18 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <title>授業を追加</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-        }
+{% extends "teacher/base.html" %}
 
-        h1 {
-            text-align: center;
-        }
+{% block title %}授業を追加{% endblock %}
 
-        form {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+{% block modorulink %}
+    <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">戻る</a>
+{% endblock %}
 
-        label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-
-        select, input[type="text"], input[type="submit"] {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input[type="submit"] {
-            background-color: #5cb85c;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #4cae4c;
-        }
-    </style>
-    <script>
-        function updateWeekday() {
-            const year = document.getElementById('year').value;
-            const month = document.getElementById('month').value;
-            const day = document.getElementById('day').value;
-
-            if (year && month && day) {
-                const date = new Date(year, month - 1, day);
-                const weekdays = ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"];
-                const weekday = weekdays[date.getDay()];
-                document.getElementById('weekday').value = weekday;
-            }
-        }
-
-        function initializeWeekday() {
-            const year = document.getElementById('year').value;
-            const month = document.getElementById('month').value;
-            const day = document.getElementById('day').value;
-            updateWeekday();
-        }
-
-        window.onload = initializeWeekday;
-    </script>
-</head>
-<body>
+{% block content %}
     <h1>時間割追加</h1>
     
     {% if error %}
-        <div style="color: red; text-align: center; margin-bottom: 20px;">{{ error }}</div>
+        <div style="color: red; text-align: center; margin-bottom: 20px;">
+            {{ error }}
+        </div>
     {% endif %}
 
     <form action="{{ url_for('teacher.jikanwari.add_entry') }}" method="POST">
@@ -120,8 +57,4 @@
 
         <input type="submit" value="追加">
     </form>
-    <div style="text-align: center; margin-top: 10px;">
-        <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">時間割表に戻る</a>
-    </div>
-</body>
-</html>
+{% endblock %}
