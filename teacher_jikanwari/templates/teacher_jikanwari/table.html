@@ -30,8 +30,16 @@
                         {% endfor %}
                     </select>
                 </th>
-                <th class="header-cell">日</th>
-                <th class="header-cell">曜日</th>
+                <th class="header-cell">
+                    <label for="day-filter">日:</label>
+                    <select id="day-filter" onchange="updateTable()">
+                        <option value="">すべて</option>
+                    </select>
+                </th>
+                <th class="header-cell">
+                    <label for="weekday">曜日:</label>
+                    <span id="weekday"></span>
+                </th>
                 <th>1時間目</th>
                 <th>2時間目</th>
                 <th>3時間目</th>
@@ -54,15 +62,76 @@
                 <td>{{ entry.event }}</td>
                 <td style="text-align: center;">
                     <a href="{{ url_for('teacher.jikanwari.add_entry') }}">編集</a>
-                    <a href="{{ url_for('teacher.jikanwari.delete_confirmation', id=entry.id) }}">削除</a>
+                    <a href="{{ url_for('teacher.jikanwari.add_entry') }}">削除</a> <!-- 削除後、追加画面に遷移 -->
                 </td>
+                
             </tr>
             {% endfor %}
         </tbody>
     </table>
+
 {% endblock %}
 
 {% block head %}
     {{ super() }}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stylecss.css') }}">
+    <script>
+        // 年、月、日付から曜日を計算する関数
+        function getWeekday(year, month, day) {
+            const date = new Date(year, month - 1, day); // 月は0から始まるので-1
+            const weekdays = ["日", "月", "火", "水", "木", "金", "土"];
+            return weekdays[date.getDay()];
+        }
+
+        // 年と月を選択したときに日付と曜日を更新する関数
+        function updateTable() {
+            const year = document.getElementById('year-filter').value;
+            const month = document.getElementById('month-filter').value;
+            const dayFilter = document.getElementById('day-filter');
+
+            // 日付のプルダウンをリセット
+            dayFilter.innerHTML = '<option value="">すべて</option>';
+
+            if (year && month) {
+                const daysInMonth = new Date(year, month, 0).getDate();
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const option = document.createElement("option");
+                    option.value = day;
+                    option.textContent = day + '日';
+                    dayFilter.appendChild(option);
+                }
+            }
+
+            // 選択された日付で曜日を表示
+            const selectedDay = document.getElementById('day-filter').value;
+            if (selectedDay) {
+                const weekday = getWeekday(year, month, selectedDay);
+                document.getElementById('weekday').textContent = weekday;
+            } else {
+                document.getElementById('weekday').textContent = '';
+            }
+
+            // データのフィルタリング処理
+            filterData(year, month, dayFilter.value);
+        }
+
+        // データのフィルタリング
+        function filterData(year, month, day) {
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowYear = row.cells[0].textContent;
+                const rowMonth = row.cells[1].textContent.replace('月', '');
+                const rowDay = row.cells[2].textContent.replace('日', '');
+                
+                // フィルタ条件に一致しない行を非表示に
+                if ((year && rowYear !== year) || 
+                    (month && rowMonth !== month) || 
+                    (day && rowDay !== day)) {
+                    row.style.display = 'none';
+                } else {
+                    row.style.display = '';
+                }
+            });
+        }
+    </script>
 {% endblock %}

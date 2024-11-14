@@ -161,17 +161,38 @@ def delete_class_count(subject_id):
     return render_template('teacher_jikanwari/delete_class_count.html', subject=subject)
 
 # 編集画面の表示
-@jikanwari.route('/class/edit/<int:subject_id>', methods=['GET', 'POST'])
+@jikanwari.route('/edit_class_count/<int:subject_id>', methods=['GET', 'POST'])
 def edit_class_count(subject_id):
+    # subject_idでデータベースから対象の科目を取得
     subject = SubjectDetails.query.get(subject_id)
 
-    if request.method == 'POST':
-        # フォームからデータを取得
-        subject.name = request.form['name']
-        subject.periods = request.form['periods']
-        
-        # データベースを更新
-        db.session.commit()
-        return redirect(url_for('teacher.jikanwari.class_list'))  # 編集後、授業数一覧にリダイレクト
+    if subject is None:
+        return redirect(url_for('teacher.jikanwari.class_list'))  # 科目が見つからない場合、授業数一覧にリダイレクト
 
+    if request.method == 'POST':
+        # フォームからのデータを取得
+        subject_name = request.form.get('name')
+        periods = request.form.get('periods')
+
+        # バリデーション：科目名とコマ数が入力されているかを確認
+        if not subject_name or not periods:
+            error_message = "科目名とコマ数は必須です"
+            return render_template('teacher_jikanwari/edit_class_count.html', subject=subject, error_message=error_message)
+
+        try:
+            # データベースの科目情報を更新
+            subject.name = subject_name
+            subject.periods = int(periods)
+
+            # コミットしてデータベースを更新
+            db.session.commit()
+
+            return redirect(url_for('teacher.jikanwari.class_list'))  # 編集後、授業数一覧にリダイレクト
+
+        except Exception as e:
+            db.session.rollback()  # エラーが発生した場合、ロールバック
+            error_message = f"エラーが発生しました: {str(e)}"
+            return render_template('teacher_jikanwari/edit_class_count.html', subject=subject, error_message=error_message)
+
+    # GETリクエストの場合、編集フォームを表示
     return render_template('teacher_jikanwari/edit_class_count.html', subject=subject)

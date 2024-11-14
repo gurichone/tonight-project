@@ -3,7 +3,7 @@
 {% block title %}授業数編集{% endblock %}
 
 {% block modorulink %}
-<a href="{{ url_for('teacher.jikanwari.class_list') }}">授業数一覧</a>
+<a href="{{ url_for('teacher.jikanwari.class_list') }}">戻る</a>
 {% endblock %}
 
 {% block content %}
@@ -18,7 +18,7 @@
 
     <form method="POST" action="{{ url_for('teacher.jikanwari.edit_class_count', subject_id=subject.id) }}">
         <label for="subject_name">科目名:</label>
-        <input type="text" id="subject_name" name="subject_name" value="{{ subject.name }}" required><br><br>
+        <input type="text" id="subject_name" name="name" value="{{ subject.name }}" required><br><br>
 
         <label for="periods">コマ数:</label>
         <select id="periods" name="periods" required>
@@ -29,9 +29,4 @@
 
         <button type="submit">保存</button>
     </form>
-
-    <!-- 戻るボタンを左下に配置 -->
-    <div class="back-button-container">
-        <a href="{{ url_for('teacher.jikanwari.class_list') }}">戻る</a>
-    </div>
 {% endblock %}
