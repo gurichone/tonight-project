@@ -5,7 +5,7 @@ basedir = Path(__file__).parent # baseディレクトリの指定(appsフォル�
 class BaseConfig:
     SECRET_KEY = "2AZSMss3p5QPbcY2hBsJ"
     WTF_CSRF_SECRET_KEY = "AuwzyszU5sugKN7KZs6f"
-    OWM_API_KEY = "133181fd446d837a42413992c3e8b9e2"
+    GEMINI_API_KEY = "AIzaSyAx46slXSnBOfnkCFK3MlKNnmoDuziwrpU"
     SQLALCHEMY_ECHO=True
 
 

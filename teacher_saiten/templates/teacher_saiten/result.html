@@ -3,55 +3,70 @@
 {% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">戻る</a>{% endblock %}
 
 {% block content %}
-{% if jupyter %}
+
 {% for p in personal_lst %}
-
 <h3>{{p.Student.student_name}}({{p.Student.id}})</h3>
-{% if jupyter[p.Student.id]['result'] %}
-<table>
-    <tr>
-        <th>入力</th>
-        <th>標準出力</th>
-        <th>実行結果</th>
-        <th>正誤</th>
-    </tr>
-    {% for o in jupyter[p.Student.id]['result'] %}
-    <tr>
-        <td>
-            {% for input in o['input'] %}
-                {{input}}<br>
+{% if p.Personal_Submission.submitted %}
+    {% if jupyter %}
+        <table>
+            <tr>
+                <th>入力</th>
+                <th>標準出力</th>
+                <th>実行結果</th>
+                <th>正誤</th>
+            </tr>
+            {% for o in jupyter[p.Student.id]['result'] %}
+            <tr>
+                <td>
+                    {% for input in o['input'] %}
+                        {{input}}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for output in o['output'] %}
+                        {{output}}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for ans in o['ans'] %}
+                        {{ans}}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if o['ox'] %}
+                    〇
+                    {% else %}
+                    ×
+                    {% endif %}
+                </td>
+            </tr>
             {% endfor %}
-        </td>
-        <td>
-            {% for output in o['output'] %}
-                {{output}}<br>
-            {% endfor %}
-        </td>
-        <td>
-            {% for ans in o['ans'] %}
-                {{ans}}<br>
-            {% endfor %}
-        </td>
-        <td>
-            {% if o['ox'] %}
-            〇
-            {% else %}
-            ×
-            {% endif %}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-<p>{{jupyter[p.Student.id]['point']}}点</p>
-<div>
-    {% for code in jupyter[p.Student.id]['code'] %}
-    {{code}}<br>
-    {% endfor %}
-</div>
-{% else %}
-<p>未提出</p>
-{% endif %}
+        </table>
+        <p>{{jupyter[p.Student.id]['point']}}点</p>
+    {% endif %}
 
-{% endfor %}
+    {% if gemini %}
+        {% for a in gemini[p.Student.id]['result'] %}
+        {% if a.class == "head" %}
+            <h2>{{a.txt}}</h2>
+        {% elif a.class == "code" %}
+            <div style="background-color: black; color: white;">
+            <p>{{a.txt}}</p>
+        {% elif a.class == "endcode" %}
+            <p>{{a.txt}}</p>
+            </div>
+        {% else %}
+            <p>{{a.txt}}</p>
+        {% endif %}
+        {% endfor%}
+    {% endif %}
+
+    <div>
+        {{codes[p.Student.id]}}
+    </div>
+{% else %}
+    <p>未提出</p>
 {% endif %}
+{% endfor %}
+
 {% endblock %}

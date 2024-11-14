@@ -141,7 +141,6 @@ def t_teisyutsu_edit(submission_id):
         form2.scoring_type.choices=[form2.scoring_type.choices[form1.scoring_type.data]]
         form2.question.data=form1.question.data
         form2.testcase.data=form1.testcase.data
-        print(form2.testcase.data, form2.question.data)
         # 入力内容確認画面を表示
         return render_template("teacher_teisyutsu/edit_confirm.html", form=form2)
     # 編集画面
