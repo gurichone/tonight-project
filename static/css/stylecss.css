@@ -104,3 +104,32 @@ a.t-student img {
 .toggle_switch_inner.active {
     left: 21px;
 }
+
+/* テーブル全体のスタイル */
+.jikanwari-table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #333; /* ダークな背景色 */
+    color: #fff; /* 白文字 */
+}
+
+/* ヘッダー */
+.jikanwari-th {
+    padding: 10px;
+    background-color: #444; /* ダークな背景色 */
+    text-align: center;
+}
+
+/* 各セル */
+.jikanwari-td {
+    padding: 10px;
+    background-color: #555; /* セルの背景色 */
+    border: 1px solid #666; /* セルの境界線 */
+}
+
+/* 削除ボタン */
+.jikanwari-delete-button {
+    color: #ffcc00; /* ボタンの文字色 */
+    text-decoration: none;
+}
