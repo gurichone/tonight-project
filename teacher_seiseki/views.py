@@ -1,9 +1,12 @@
-from flask import Blueprint, render_template, redirect, url_for, request,flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash
 from app import db
 from teacher_seiseki.forms import SearchScore, AddScore, AttendScore
 from teacher_seiseki.models import Score
 from auth.models import Student, Subject
 from auth.models import Student
+from datetime import datetime
+from teacher_jikanwari.models import Timetable
+import hashlib
 
 seiseki = Blueprint(
     "seiseki",
@@ -150,4 +153,29 @@ def delete(score_id):
     else:
         flash("該当箇所が見つかりませんでした","error")
     # 他の画面には行かず、メニュー画面を表示する
+    return redirect(url_for("teacher.seiseki.search"))
+
+# 生徒の出席登録の際に発行するコードを先生側が用意するための処理の実装
+@seiseki.route("/issue_code",methods=["GET","POST"])
+def issue_code():
+    # datetime関数で日時を取得
+    now = datetime.now()
+    year, month, day = now.year, now.month, now.day
+
+    # 現在の日時に一致する時間割があるかどうかを検索
+    timetable = db.session.query(Timetable).filter_by(year=year, month=month, day=day).first()
+    # timetableが存在する場合の処理
+    if timetable:
+        if request.method == "POST":
+            # 選択を終えコード発行ボタンを押下するとコードを発行し表示する。
+            period = request.form.get("period")
+            code_data = f"{timetable.id}{now.strftime('%Y%m%d%H%M%S')}{period}"
+            code_hash = hashlib.sha256(code_data.encode()).hexdigest()[:6]
+
+            return render_template("teacher_seiseki/display_code.html", code=code_hash)
+        # 最初にTimetableから取得した授業一覧を表示する処理
+        periods = [("period1", timetable.period1), ("period2", timetable.period2), ("period3", timetable.period3)]
+        return render_template("teacher_seiseki/issue_code.html", periods=periods)
+    # 存在しない場合はエラー文を表示する
+    flash("本日、授業がないか登録されていません。","error")
     return redirect(url_for("teacher.seiseki.search"))

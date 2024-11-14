@@ -1,0 +1,17 @@
+{% extends "teacher/base.html" %}
+{% block title %}コード発行{% endblock %}
+
+{% block modorulink %}<a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>{% endblock %}
+{% block content %}
+    <h2>出席コード発行</h2>
+    <form method="post">
+        <!-- 時間割のうちあてはまるのを選択 -->
+        <label>時間割を選択してください:</label>
+        <select name="period">
+            {% for period, name in periods %}
+                <option value="{{ period }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">出席コード発行</button>
+    </form>
+{% endblock %}

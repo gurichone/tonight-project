@@ -1,5 +1,5 @@
 {% extends "teacher/base.html" %}
-{% block title %}成績{% endblock%}
+{% block title %}成績{% endblock %}
 
 {% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
 {% block content %}
@@ -60,4 +60,5 @@
     {% endif %}
     <form action="{{ url_for('teacher.seiseki.add') }}"><input type="submit" value="成績登録"></form>
     <form action="{{ url_for('teacher.seiseki.attend') }}"><input type="submit" value="出席確認"></form>
+    <a href="{{ url_for('teacher.seiseki.issue_code') }}"><input type="submit" value="出席コード発行"></a>
 {% endblock %}
