@@ -154,9 +154,27 @@ def t_teisyutsu_edit(submission_id):
         if form1.scoring_type.choices[i][0] == submission.scoring_type:
             form1.scoring_type.choices[0], form1.scoring_type.choices[i] = form1.scoring_type.choices[i], form1.scoring_type.choices[0]
     form1.question.data=submission.question
-    form1.testcase.data=submission.testcase
-
-    return render_template("teacher_teisyutsu/edit.html", form=form1, submission_id=submission_id)
+    testcase=list()
+    next=0
+    for t in submission.testcase.split("\r\n"):
+        if next == 0:
+            if t == "<<<start>>>":
+                next = 1
+                test = ["", ""]
+        elif next == 1:
+            if t == "<<<change>>>":
+                next = 2
+            else:
+                test[0]+=t+"\n"
+        elif next == 2:
+            if t == "<<<end>>>":
+                test = [test[0][0:-1], test[1][0:-1]]
+                testcase.append(test)
+                next = 0
+            else:
+                test[1]+=t+"\n"
+    print(testcase)
+    return render_template("teacher_teisyutsu/edit.html", form=form1, submission_id=submission_id, testcase=testcase)
 
 @teisyutsu.route("/confirm_edit", methods=["GET", "POST"])
 @login_required

@@ -9,7 +9,7 @@
         <div class="toggle_switch_outer">
             <div class="toggle_switch_inner"></div>
         </div>
-        <table>
+        <table id="stu_sub_table">
             {% for sub in submission %}
             <tr>
                 <td>{{ sub.Submission.submission_name }}</td>
@@ -29,11 +29,45 @@
 <script>
     const switchOuter = document.querySelector(".toggle_switch_outer");
     const toggleSwitch = document.querySelector(".toggle_switch_inner");
+    var subTable = document.getElementById("stu_sub_table");
+    var submitted = true
 
     //クリックでacitveクラスを追加/削除
     switchOuter.addEventListener("click", () => {
         switchOuter.classList.toggle("active");
         toggleSwitch.classList.toggle("active");
+        if (submitted) {
+            subTable.innerHTML = `
+            {% for sub in submission %}
+            {% if sub.Personal_Submission.submitted %}
+            {% else %}
+            <tr>
+                <td>{{ sub.Submission.submission_name }}</td>
+                <td>  <div id="submitted_none"></div></td>
+                <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}">提出</a></td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            `;
+            submitted = false
+        } else {
+            subTable.innerHTML = `
+            {% for sub in submission %}
+            <tr>
+                <td>{{ sub.Submission.submission_name }}</td>
+                <td>
+                    {% if sub.Personal_Submission.submitted %}
+                    <div id="submitted_true">✓</div>
+                    {% else %}
+                    <div id="submitted_none"></div>
+                    {% endif %}
+                </td>
+                <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}">提出</a></td>
+            </tr>
+            {% endfor %}
+            `;
+            submitted = true
+        }
     });
 </script>
 {% endblock %}

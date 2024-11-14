@@ -39,6 +39,7 @@
         var inputElm = document.getElementsByClassName("input");
         var outputElm = document.getElementsByClassName("output");
         var deleteElm = document.getElementsByClassName("delete");
+        inputChange(inputElm, outputElm)
         for (let i = 0; i < deleteElm.length; i++) {
             inputElm[i].addEventListener("change", function(){inputChange(inputElm, outputElm)})
             outputElm[i].addEventListener("change", function(){inputChange(inputElm, outputElm)})
@@ -51,7 +52,7 @@
     }
     
     
-    function addTestcase() {
+    function addTestcase(input_txt, output_txt) {
         var rowElm = document.createElement("tr");
         rowElm.classList.add("tesacaseRow");
         var data1Elm = document.createElement("td");
@@ -64,6 +65,8 @@
         var newOutputElm = document.createElement("textarea");
         var newDeleteElm = document.createElement("button");
         newDeleteElm.innerText = "削除";
+        newInputElm.innerText = input_txt;
+        newOutputElm.innerText = output_txt;
         newInputElm.classList.add("input");
         newOutputElm.classList.add("output");
         newDeleteElm.classList.add("delete");
@@ -86,9 +89,13 @@
         }
         testcase.value = testcaseText;
     }
-    
+    {% for t in testcase %}
+    addTestcase("{{t[0]}}", "{{t[1]}}");
+    resetClassname();
+    {% endfor %}
+
     addButton.addEventListener('click', function(){
-        addTestcase();
+        addTestcase("", "");
         resetClassname();
     })
 </script>
