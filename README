@@ -1,0 +1,3 @@
+# port XXX is in use のエラーが出た時
+lsof -i :XXX
+kill -9 [PIDの数字]
