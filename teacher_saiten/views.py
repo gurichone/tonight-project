@@ -85,7 +85,11 @@ def jupyter(testcase, lst, codes):
         else:
             result = False
             point = 0
-        output[l.Student.id] = {"result":result, "point":(point*100) // len(baseout)}
+        # 最後に得点と学生IDをいれるように変更
+        if len(baseout) > 0:
+            output[l.Student.id] = {"result":result, "point":(point*100) // len(baseout)}
+        else:
+            output[l.Student.id] = {"result":result, "point":0}
     return output
 
 
