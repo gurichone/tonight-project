@@ -207,3 +207,4 @@ def auto():
         if pl.Personal_Submission.submitted:
             codes[pl.Student.id]=codes[pl.Student.id].split("\n")
     return render_template("teacher_saiten/result.html", jupyter=jupyter_output, gemini=gemini_output, personal_lst=personal_lst, codes=codes, form=form, submission=submission)
+    # return render_template("teacher_saiten/index.html")
