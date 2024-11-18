@@ -34,9 +34,6 @@
         {% endfor %}
 
         <p>{{ score.assessment_id.label }} {{ score.assessment_id }}</p>
-        {% for error in score.assessment_id.errors %}
-            <span style="color:red">{{ error }}</span>
-        {% endfor %}
         <button type="submit" name="action" value="confirm">確認</button>
     </form>
 

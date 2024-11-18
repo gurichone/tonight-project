@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
 from app import db
-from teacher_seiseki.forms import SearchScore, AddScore, AttendScore
+from teacher_seiseki.forms import SearchScore, AddScore, AttendScore, EditScore
 from teacher_seiseki.models import Score
 from auth.models import Student, Subject
 from auth.models import Student
@@ -140,6 +140,37 @@ def attend():
     # 検索が行われていない場合、全部の結果を表示
     return render_template("/teacher_seiseki/attend.html", attend=attend, results=query.all())
 
+# 成績の編集を行うための処理を実装
+@seiseki.route("/edit/<int:score_id>", methods=["GET", "POST"])
+def edit(score_id):
+
+    # 成績を編集するフォームを作成(AddScoreの流用だが問題ない)
+    form = EditScore()
+    # score_idがまずあるかどうかの処理
+    score = Score.query.filter(Score.score_id == score_id).first()
+    if form.validate_on_submit():
+        # edit.html内で編集ボタンを押下した際の処理
+        score.assessment_id = form.assessment_id.data
+        score.attend_day = form.attend_day.data
+        db.session.commit()  # 変更を行い、更新
+        flash("成績が正常に更新されました。", "success")
+        return redirect(url_for("teacher.seiseki.search"))
+
+    # 編集ボタンを押下してページに遷移した際の処理、ここで編集を行う
+    student = Student.query.get(score.id)
+    subject = Subject.query.get(score.subject_id)
+
+    form.assessment_id.data = score.assessment_id
+    form.attend_day.data = score.attend_day
+
+    return render_template(
+        "teacher_seiseki/edit.html",
+        form=form,
+        student=student,
+        subject=subject,
+        score=score
+    )
+
 # 成績の削除を行う処理の実装
 @seiseki.route("/delete/<int:score_id>", methods=["POST"])
 def delete(score_id):
@@ -164,18 +195,21 @@ def issue_code():
 
     # 現在の日時に一致する時間割があるかどうかを検索
     timetable = db.session.query(Timetable).filter_by(year=year, month=month, day=day).first()
+
     # timetableが存在する場合の処理
     if timetable:
         if request.method == "POST":
+
             # 選択を終えコード発行ボタンを押下するとコードを発行し表示する。
             period = request.form.get("period")
             code_data = f"{timetable.id}{now.strftime('%Y%m%d%H%M%S')}{period}"
             code_hash = hashlib.sha256(code_data.encode()).hexdigest()[:6]
-
             return render_template("teacher_seiseki/display_code.html", code=code_hash)
+        
         # 最初にTimetableから取得した授業一覧を表示する処理
         periods = [("period1", timetable.period1), ("period2", timetable.period2), ("period3", timetable.period3)]
         return render_template("teacher_seiseki/issue_code.html", periods=periods)
+    
     # 存在しない場合はエラー文を表示する
     flash("本日、授業がないか登録されていません。","error")
     return redirect(url_for("teacher.seiseki.search"))

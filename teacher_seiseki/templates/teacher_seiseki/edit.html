@@ -1,0 +1,22 @@
+{% extends "teacher/base.html" %}
+{% block title %}編集{% endblock %}
+
+{% block modorulink %}<a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>{% endblock %}
+{% block content %}
+    <h2>成績編集</h2>
+    <p>生徒番号: {{ student.id }} | 科目: {{ subject.subject_name }}</p>
+
+    <form method="POST" action="{{ url_for('teacher.seiseki.edit', score_id=score.score_id) }}">
+        {{ form.csrf_token }}
+        
+        <div>
+            {{ form.assessment_id.label }}: {{ form.assessment_id }}
+        </div>
+        
+        <div>
+            {{ form.attend_day.label }}: {{ form.attend_day }}
+        </div>
+
+        <button type="submit">保存</button>
+    </form>
+{% endblock %}

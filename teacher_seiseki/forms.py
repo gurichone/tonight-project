@@ -37,9 +37,6 @@ class AddScore(FlaskForm):
         "評価",
         choices=[
             ("","--"),('A','A'),('B','B'),('C','C'),('D','D'),('E','E')
-        ],
-        validators=[
-            DataRequired(message="成績を付けてください。")
         ]
     )
 
@@ -54,3 +51,14 @@ class AttendScore(FlaskForm):
     student_name = StringField("氏名")
 
     submit = SubmitField("検索")
+
+# 成績の編集を行うためのフォームを作成
+class EditScore(FlaskForm):
+    assessment_id = SelectField(
+        "評価",
+        choices=[("A", "A"), ("B", "B"), ("C", "C"), ("D", "D"), ("E", "E")],
+    )
+
+    attend_day = IntegerField(
+        "出席回数"
+    )

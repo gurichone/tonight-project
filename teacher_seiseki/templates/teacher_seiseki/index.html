@@ -45,6 +45,12 @@
                 <td>{{ results.Student.student_name }}</td>
                 <td>{{ results.Score.assessment_id }}</td>
                 <td>
+                    <!-- 編集ボタン -->
+                    <form action="{{ url_for('teacher.seiseki.edit', score_id=results.Score.score_id) }}" method="GET">
+                        <button type="submit">編集</button>
+                    </form>
+                </td>
+                <td>
                     <!-- 消去する際はこのボタンを押すことで実行する -->
                     <form action="{{ url_for('teacher.seiseki.delete', score_id=results.Score.score_id) }}" method="POST">
                         <button type="submit" onclick="return confirm('削除してよろしいですか？')">削除</button>
