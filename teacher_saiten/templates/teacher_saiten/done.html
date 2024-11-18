@@ -1,0 +1,13 @@
+{% extends "teacher/base.html" %}
+
+{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">戻る</a>{% endblock %}
+
+{% block content %}
+    <h2>{{submission.Submission.submission_name}}</h2>
+    <table>
+        <tr><th>氏名</th><th>点数</th></tr>
+        {% for p in personal_submission %}
+        <tr><td>{{p.Student.student_name}}</td><td>{{p.Personal_Submission.point}}</td></tr>
+        {% endfor %}
+    </table>
+{% endblock %}

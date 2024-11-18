@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, session, current_app, send_file
 from flask_login import current_user, login_required
 from app import db
+from teacher_saiten.forms import PointForm
 from teacher_teisyutsu.models import Submission, Personal_Submission
 from auth.models import Subject, Student
 import shutil
@@ -84,15 +85,19 @@ def jupyter(testcase, lst, codes):
         else:
             result = False
             point = 0
-        output[l.Student.id] = {"result":result, "point":(point*100) // len(baseout)}
+        # 最後に得点と学生IDをいれるように変更
+        if len(baseout) > 0:
+            output[l.Student.id] = {"result":result, "point":(point*100) // len(baseout)}
+        else:
+            output[l.Student.id] = {"result":result, "point":0}
     return output
 
 
 def gemini(question, lst, codes):
     gemini_syntax = """
     という問題に対して以下のコードを書きましたpythonで書きました。
-    このコードを評価し、100点満点で点数をつけてください。
-    また100点だと言えるコードを出力してください。"""
+    このコードを評価し、100点満点で点数をつけて点数のみを出力して
+    """
     output = dict()
     # file_path = Path(current_app.config["UPLOAD_FOLDER"], code.code_path)
     # with open(file_path, encoding="utf-8") as f:
@@ -111,27 +116,30 @@ def gemini(question, lst, codes):
             # 応答をテキストとして取得（ここではresponse.textと仮定）
             assistant_response = response.text.split("\n")
 
-            # 文字列整理
-            ans = list()
-            codeflag = False
-            for a in assistant_response:
-                if len(a) == 0:
-                    continue
-                if codeflag and a[-3:] == "```":
-                    ans.append({"class":"endcode", "txt":a[:-3]})
-                elif a[0] == "*":
-                    if a[1] == "*":
-                        ans.append({"class":"head", "txt":a})
-                    else:
-                        ans.append({"class":"text", "txt":a})
-                elif a[0:3] == "```":
-                    codeflag = True
-                    ans.append({"class":"code", "txt":a[3:]})
-                else:
-                    ans.append({"class":"text", "txt":a})
+            # 文字列整理 
+            ans = ""
+            for a in assistant_response[0]:
+                if a in "0123456789":
+                    ans+=a
+            # codeflag = False
+            # for a in assistant_response:
+            #     if len(a) == 0:
+            #         continue
+            #     if codeflag and a[-3:] == "```":
+            #         ans.append({"class":"endcode", "txt":a[:-3]})
+            #     elif a[0] == "*":
+            #         if a[1] == "*":
+            #             ans.append({"class":"head", "txt":a})
+            #         else:
+            #             ans.append({"class":"text", "txt":a})
+            #     elif a[0:3] == "```":
+            #         codeflag = True
+            #         ans.append({"class":"code", "txt":a[3:]})
+            #     else:
+            #         ans.append({"class":"text", "txt":a})
         else:
-            ans = False
-        output[l.Student.id] = {"result":ans}
+            ans = "0"
+        output[l.Student.id] = {"result":int(ans)}
     return output
 
 saiten = Blueprint(
@@ -166,21 +174,41 @@ def manual():
 def auto():
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
-    jupyter_output = False
-    gemini_output = False
     submission = db.session.query(Submission, Subject).join(Submission, Submission.subject_id==Subject.subject_id).filter_by(submission_id=session["submission"]).first()
     personal_lst = db.session.query(Personal_Submission, Student).join(Personal_Submission, Personal_Submission.student_id==Student.id).filter_by(submission_id=session["submission"]).all()
+    form = PointForm([{"id":p.Student.id, "name":p.Student.student_name}for p in personal_lst])
+    if form.validate_on_submit():
+        for p in personal_lst:
+            p.Pesonal_Submission.point=form.fieldlist[p.student_id].data
+        db.session.add(personal_lst)
+        db.session.commit()
+        return render_template("teacher_saiten/done.html", personal_lst=personal_lst, submission=submission)
     codes = dict()
     for pl in personal_lst:
         if pl.Personal_Submission.submitted:
             file_path = Path(current_app.config["SUBMIT_FOLDER"], pl.Personal_Submission.file)
             with open(file_path, encoding="utf-8") as f:
                 codes[pl.Student.id] = f.read()
-    if submission.Submission.scoring_type == 1 or submission.Submission.scoring_type == 3:
+    if submission.Submission.scoring_type == 1:
         jupyter_output = jupyter(submission.Submission.testcase, personal_lst, codes)
-    if submission.Submission.scoring_type == 2 or submission.Submission.scoring_type == 3:
+        gemini_output = False
+        for p in personal_lst:
+            form.fieldlist[p.Student.id].data=jupyter_output[p.Student.id]["point"]
+    elif submission.Submission.scoring_type == 2:
+        jupyter_output = False
         gemini_output = gemini(submission.Submission.question, personal_lst, codes)
+        for p in personal_lst:
+            form.fieldlist[p.Student.id].data=gemini_output[p.Student.id]["result"]
+    elif submission.Submission.scoring_type == 3:
+        jupyter_output = jupyter(submission.Submission.testcase, personal_lst, codes)
+        gemini_output = gemini(submission.Submission.question, personal_lst, codes)
+        for p in personal_lst:
+            form.fieldlist[p.Student.id].data=(jupyter_output[p.Student.id]["point"]+gemini_output[p.Student.id]["result"])//2
+    else:
+        jupyter_output = False
+        gemini_output = False
     for pl in personal_lst:
         if pl.Personal_Submission.submitted:
             codes[pl.Student.id]=codes[pl.Student.id].split("\n")
-    return render_template("teacher_saiten/result.html", jupyter=jupyter_output, gemini=gemini_output, personal_lst=personal_lst, codes=codes)
+    return render_template("teacher_saiten/result.html", jupyter=jupyter_output, gemini=gemini_output, personal_lst=personal_lst, codes=codes, form=form, submission=submission)
+    # return render_template("teacher_saiten/index.html")
