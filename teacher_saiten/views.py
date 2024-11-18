@@ -61,7 +61,7 @@ def jupyter(testcase, lst, codes):
                 # 空のjupyter notebookに読み込んだコードを書きこむ
                 nb['cells'][0]['source'] += ("\n" + txt)
                 try:
-                    # 実行
+                        # 実行
                     ep = ExecutePreprocessor(timeout=500)
                     ep.preprocess(nb,resources={'metadata': {'path': '/'}})
                     # 実行後のjupyter notebookを保存
@@ -169,21 +169,28 @@ def manual():
     shutil.make_archive(filename, format="zip", root_dir=Path(current_app.config["SUBMIT_FOLDER"]), base_dir=Path(str(submission.Submission.submission_id)))
     return send_file(filename + ".zip")
 
-@saiten.route("/auto")
+@saiten.route("/auto", methods=["GET", "POST"])
 @login_required
 def auto():
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
     submission = db.session.query(Submission, Subject).join(Submission, Submission.subject_id==Subject.subject_id).filter_by(submission_id=session["submission"]).first()
     personal_lst = db.session.query(Personal_Submission, Student).join(Personal_Submission, Personal_Submission.student_id==Student.id).filter_by(submission_id=session["submission"]).all()
-    form = PointForm([{"id":p.Student.id, "name":p.Student.student_name}for p in personal_lst])
+    form = PointForm()
     if form.validate_on_submit():
-        for p in personal_lst:
-            p.Pesonal_Submission.point=form.fieldlist[p.student_id].data
-        db.session.add(personal_lst)
-        db.session.commit()
-        return render_template("teacher_saiten/done.html", personal_lst=personal_lst, submission=submission)
+        key = False
+        for f in form.fieldlist.data.split("\r\n"):
+            if key:
+                personal = db.session.query(Personal_Submission).filter_by(student_id=key).first()
+                personal.point = f
+                db.session.add(personal)
+                db.session.commit()
+                key = False
+            else:
+                key = f
+        return render_template("teacher_saiten/done.html", submission=submission)
     codes = dict()
+    points = dict()
     for pl in personal_lst:
         if pl.Personal_Submission.submitted:
             file_path = Path(current_app.config["SUBMIT_FOLDER"], pl.Personal_Submission.file)
@@ -193,22 +200,22 @@ def auto():
         jupyter_output = jupyter(submission.Submission.testcase, personal_lst, codes)
         gemini_output = False
         for p in personal_lst:
-            form.fieldlist[p.Student.id].data=jupyter_output[p.Student.id]["point"]
+            points[p.Student.id]=jupyter_output[p.Student.id]["point"]
     elif submission.Submission.scoring_type == 2:
         jupyter_output = False
         gemini_output = gemini(submission.Submission.question, personal_lst, codes)
         for p in personal_lst:
-            form.fieldlist[p.Student.id].data=gemini_output[p.Student.id]["result"]
+            points[p.Student.id]=gemini_output[p.Student.id]["result"]
     elif submission.Submission.scoring_type == 3:
         jupyter_output = jupyter(submission.Submission.testcase, personal_lst, codes)
         gemini_output = gemini(submission.Submission.question, personal_lst, codes)
         for p in personal_lst:
-            form.fieldlist[p.Student.id].data=(jupyter_output[p.Student.id]["point"]+gemini_output[p.Student.id]["result"])//2
+            points[p.Student.id]=(jupyter_output[p.Student.id]["point"]+gemini_output[p.Student.id]["result"])//2
     else:
         jupyter_output = False
         gemini_output = False
     for pl in personal_lst:
         if pl.Personal_Submission.submitted:
             codes[pl.Student.id]=codes[pl.Student.id].split("\n")
-    return render_template("teacher_saiten/result.html", jupyter=jupyter_output, gemini=gemini_output, personal_lst=personal_lst, codes=codes, form=form, submission=submission)
+    return render_template("teacher_saiten/result.html", jupyter=jupyter_output, gemini=gemini_output, personal_lst=personal_lst, codes=codes, form=form, points=points, submission=submission)
     # return render_template("teacher_saiten/index.html")

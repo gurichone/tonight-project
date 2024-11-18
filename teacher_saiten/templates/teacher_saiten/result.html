@@ -3,8 +3,6 @@
 {% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">戻る</a>{% endblock %}
 
 {% block content %}
-<form action="{{ url_for('teacher.saiten.auto') }}" method="POST">
-    {{ form.csrf_token }}
     {% for p in personal_lst %}
     <h2>{{p.Student.student_name}}({{p.Student.id}})</h2>
     {% if p.Personal_Submission.submitted %}
@@ -52,8 +50,9 @@
             <h3>gemini</h3>
             <p>{{ gemini[p.Student.id]['result'] }}点</p>
         {% endif %}
-        <div>
-            {{ form.fieldlist[p.Student.id].label }}{{ form.fieldlist[p.Student.id] }}
+        <div class="field">
+            <input class="hidden" type="hidden" value="{{p.Student.id}}">
+            <input class="number" type="number" value="{{points[p.Student.id]}}" min="0" max="100">
         </div>
         <div>
             <h3>コード</h3>
@@ -65,6 +64,31 @@
         <p>未提出</p>
     {% endif %}
     {% endfor %}
+<form action="{{ url_for('teacher.saiten.auto') }}" method="POST">
+    {{ form.csrf_token }}
+    <textarea style="display:none" id="fieldlist" name="fieldlist" readonly></textarea>
     {{ form.submit }}
 </form>
+<script>
+    var hiddenElm = document.getElementsByClassName("hidden");
+    var numberElm = document.getElementsByClassName("number");
+    var listElm = document.getElementById("fieldlist");
+    var firstpoint = "";
+    for (let i = 0; i < hiddenElm.length; i++){
+        firstpoint += hiddenElm[i].value + "\n" + numberElm[i].value + "\n";
+        hiddenElm[i].addEventListener("change", function(){inputChange(hiddenElm, numberElm)});
+        numberElm[i].addEventListener("change", function(){inputChange(hiddenElm, numberElm)});
+    }
+    listElm.value = firstpoint;
+
+    function inputChange(hiddenElm, numberElm){
+        var point = "";
+        for (let i = 0; i < hiddenElm.length; i++){
+            if (numberElm[i].value > 100) {numberElm[i].value = 100;}
+            if (numberElm[i].value < 0) {numberElm[i].value = 0;}
+            point += hiddenElm[i].value + "\n" + numberElm[i].value + "\n";
+        }
+        listElm.value = point;
+    }
+</script>
 {% endblock %}
