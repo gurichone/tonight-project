@@ -9,24 +9,6 @@
 </head>
 
 <body>
-    <!-- headerタグに変更とか？ -->
-    <div id="topbar" class="topbar">
-        <h2 class="pagetitle">🍛Currydar</h2>
-        <ul class="account">
-            {% if current_user.is_authenticated %}
-                <li class="nav-item">
-                    <span class="nav-link">{{ current_user.username }}</span>
-                </li>
-                <li class="nav-item">
-                    <!-- auth/views.pyのlogout関数を実行 -->
-                    <a href="{{ url_for('auth.logout') }}" class="nav-link">ログアウト</a>
-                </li>
-                <!-- ユーザが未ログインの時の処理 -->
-                {% else %}
-                <br><br>
-                {% endif %}
-        </ul>
-    </div>
     {% block content %}{% endblock %}
 </body>
 

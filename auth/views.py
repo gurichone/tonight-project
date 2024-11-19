@@ -93,7 +93,7 @@ def login():
             # ユーザ情報をセッションに登録
             login_user(teacher)
             # crud/templates/crud/index.htmlを表示
-            return redirect(url_for("auth.index"))
+            return redirect(url_for("teacher.menu.t_menu"))
 
         flash("メールアドレスかパスワードか不正です") # ログイン失敗メッセージを設定する
     
@@ -106,7 +106,7 @@ def login():
             # ユーザ情報をセッションに登録
             login_user(student)
             # crud/templates/crud/index.htmlを表示
-            return redirect(url_for("auth.index"))
+            return redirect(url_for("student.menu.s_menu"))
 
         flash("メールアドレスかパスワードか不正です") # ログイン失敗メッセージを設定する
 
