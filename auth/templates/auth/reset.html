@@ -1,0 +1,20 @@
+{% extends "auth/base.html" %}
+
+{% block title %}パスワードリセット{% endblock %}
+
+{% block content %}
+<a href="{{url_for('auth.login')}}">戻る</a>
+<h2>パスワードリセット</h2>
+<div>
+    <form method="post" action="{{ url_for('auth.reset')}}">
+        {{ form.csrf_token }}
+        {{ form.id.label }}{{ form.id }}
+        <br>
+        {{ form.mail.label }}{{ form.mail }}
+        <br>
+        <label>ワンタイムパスワードをメールで送信します。<br>メールアドレスを入力してください</label>
+        <br>
+        {{ form.submit }}
+    </form>
+</div>
+{% endblock %}

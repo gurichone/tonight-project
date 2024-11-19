@@ -93,3 +93,21 @@ class School(db.Model):
     __tablename__ = "school"
     school_id = db.Column(db.Integer, primary_key=True)
     school_name = db.Column(db.String)
+
+class OneTime(db.Model):
+    __tabletime__ = "onetime"
+    uu = db.Column(db.String, primary_key=True)
+    password_hash = db.Column(db.String, unique=True)
+    user_id = db.Column(db.String, unique=True)
+    time = db.Column(db.DateTime)
+
+    @property
+    def password(self):
+        raise AttributeError("読み込み不可")
+    
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+    
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)

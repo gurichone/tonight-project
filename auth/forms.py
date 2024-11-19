@@ -95,7 +95,6 @@ class StudentSignUpForm(FlaskForm):
 
 # LoginFormを作成。フォームを作成する際はとりあえずカッコの中にFlaskFormを書いておく（フォーム作成に必要な機能を使えるようになる）
 class StudentLoginForm(FlaskForm):
-    # emailの入力欄を作成
     student_id = StringField(
         "生徒番号",
         validators=[
@@ -105,3 +104,45 @@ class StudentLoginForm(FlaskForm):
     )
     student_password = PasswordField("パスワード", validators=[DataRequired("パスワードは必須です。")]) # パスワードを入力必須に設定
     submit = SubmitField("ログイン")
+
+class EmailForm(FlaskForm):
+    id = StringField(
+        "生徒番号または教員番号",
+        validators=[
+            DataRequired("生徒番号は必須です。"), # 入力必須の設定
+            Length(6, 7, "6~7文字で入力してください。"), # 生徒番号は7桁
+        ],
+    )
+    mail = StringField(
+        "メールアドレス",
+        validators=[
+            DataRequired("メールアドレスは必須です。"), # 入力必須の設定
+            Email("メールアドレスの形式で入力してください。"), # emailの形式で入力するよう設定
+        ],
+    )
+    submit = SubmitField("送信")
+
+class OneTimeForm(FlaskForm):
+    onetime = StringField(
+        "ワンタイムパスワード",
+        validators=[
+            DataRequired("ワンタイムパスワードを入力してください"), # 入力必須の設定
+            Length(6, 6, "6文字で入力してください。"), # 生徒番号は7桁
+        ],
+    )
+    submit = SubmitField("確定")
+
+class NewPwForm(FlaskForm):
+    password1 = PasswordField(
+        "新しいパスワード",
+        validators=[
+            DataRequired("パスワードは必須です。") # 入力必須の設定
+        ],
+    )
+    password2 = PasswordField(
+        "再確認",
+        validators=[
+            DataRequired("パスワードは必須です。") # 入力必須の設定
+        ],
+    )
+    submit = SubmitField("確定")

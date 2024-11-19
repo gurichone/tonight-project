@@ -1,9 +1,12 @@
-from app import db # app.pyのdbをインポート
-from auth.forms import TeacherLoginForm, TeacherSignUpForm, StudentLoginForm, StudentSignUpForm # auth/forms.pyのTeacherLoginForm, TeacherSignUpForm, StudentLoginForm, StudentSignUpFormクラスを使えるようにする
-from auth.models import Teacher, Student, School, ClassNum, Course # auth/models.pyのTeacher, Student, School, ClassNum, Courseクラス(データベース)を使えるようにする
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from app import db, mail # app.pyのdbをインポート
+from .forms import TeacherLoginForm, TeacherSignUpForm, StudentLoginForm, StudentSignUpForm, EmailForm, OneTimeForm, NewPwForm # auth/forms.pyのTeacherLoginForm, TeacherSignUpForm, StudentLoginForm, StudentSignUpFormクラスを使えるようにする
+from .models import Teacher, Student, School, ClassNum, Course, OneTime # auth/models.pyのTeacher, Student, School, ClassNum, Courseクラス(データベース)を使えるようにする
+from flask import Blueprint, flash, redirect, render_template, request, url_for, session
 from flask_login import login_user, logout_user, current_user, login_required
+from flask_mail import Message
 import datetime
+import uuid
+import hashlib
 
 # authアプリを生成。テンプレートを保存するフォルダ名にtemplates、スタティックを保存するフォルダ名にstaticを指定
 # htmlファイルを探すときは自動的にauth/templatesの中を参照するようになる
@@ -127,3 +130,77 @@ def delete():
     aaa = db.session.query(Student  ).delete()
     db.session.commit()
     return "なにもなくなった"
+
+def send_email(to, subject, template, **kwargs):
+    msg = Message(subject, recipients=[to])
+    msg.body = render_template("auth/" + template + ".txt", **kwargs)
+    msg.html = render_template("auth/" + template + ".html", **kwargs)
+    mail.send(msg)
+
+@auth.route("/reset", methods=["GET", "POST"])
+def reset():
+    form = EmailForm()
+    if form.validate_on_submit():
+        if len(form.id.data) == 6:
+            teacher = db.session.query(Teacher).filter_by(id=form.id.data, teacher_email=form.mail.data).first()
+            if teacher:
+                user_id=teacher.id
+                username=teacher.teacher_name
+        if len(form.id.data) == 7:
+            student = db.session.query(Student).filter_by(id=form.id.data, student_email=form.mail.data).first()
+            if student:
+                user_id=student.id
+                username=student.student_name
+        if user_id:
+            db.session.query(OneTime).filter_by(user_id=user_id).delete()
+            db.session.commit()
+            uu=str(uuid.uuid4())
+            now=datetime.datetime.now()
+            pw=user_id+str(now)
+            pw_hash=hashlib.sha256(pw.encode()).hexdigest()
+            onetime=OneTime(
+                uu=uu,
+                password=pw_hash[:6],
+                user_id=user_id,
+                time=now,
+            )
+            db.session.add(onetime)
+            db.session.commit()
+            session["onetime"] = uu
+            send_email(form.mail.data, "EduEaseワンタイムパスワード", "onetime_email", username=username, password=pw_hash[:6])
+        return redirect(url_for('auth.onetime'))
+    return render_template("auth/reset.html", form=form)
+
+@auth.route("/onetime", methods=["GET", "POST"])
+def onetime():
+    form = OneTimeForm()
+    if form.validate_on_submit():
+        onetime=db.session.query(OneTime).filter_by(uu=session["onetime"]).first()
+        if onetime is not None and onetime.verify_password(form.onetime.data):
+            td = datetime.datetime.now() - onetime.time
+            if td.total_seconds() < 600:
+                session.pop("onetime", None)
+                session["user_id"]=onetime.user_id
+                return redirect(url_for("auth.newpw"))
+    return render_template("auth/onetime.html", form=form)
+
+@auth.route("/newpw", methods=["GET", "POST"])
+def newpw():
+    form = NewPwForm()
+    if form.validate_on_submit():
+        print(form.password1.data, "--------------------", form.password2.data)
+        if form.password1.data == form.password2.data:
+            user_id=session["user_id"]
+            if len(user_id) == 6:
+                teacher = db.session.query(Teacher).filter_by(id=user_id).first()
+                teacher.password=form.password1.data
+                db.session.add(teacher)
+                db.session.commit()
+            if len(user_id) == 7:
+                student = db.session.query(Student).filter_by(id=user_id).first()
+                student.password=form.password1.data
+                db.session.add(student)
+                db.session.commit()
+            session.pop("user_id", None)
+            return render_template("auth/reset_done.html")
+    return render_template("auth/newpw.html", form=form)

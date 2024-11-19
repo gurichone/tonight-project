@@ -7,6 +7,13 @@ class BaseConfig:
     WTF_CSRF_SECRET_KEY = "AuwzyszU5sugKN7KZs6f"
     GEMINI_API_KEY = "AIzaSyAx46slXSnBOfnkCFK3MlKNnmoDuziwrpU"
     SQLALCHEMY_ECHO=True
+    
+    MAIL_SERVER="smtp.gmail.com"
+    MAIL_PORT=587
+    MAIL_USE_TLS=True
+    MAIL_USERNAME="kotatsu.10y@gmail.com"
+    MAIL_PASSWORD="sloz ekrj abzy vrhv"
+    MAIL_DEFAULT_SENDER="Flaskbook <kotatsu.10y@gmail.com>"
 
 
 # BaseConfigクラスを継承してLocalConfigクラスを作成する

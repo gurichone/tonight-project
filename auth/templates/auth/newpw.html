@@ -1,0 +1,17 @@
+{% extends "auth/base.html" %}
+
+{% block title %}パスワードリセット{% endblock %}
+
+{% block content %}
+<h2>パスワードリセット</h2>
+<div>
+    <form method="post" action="{{ url_for('auth.newpw')}}">
+        {{ form.csrf_token }}
+        {{ form.password1.label }}{{ form.password1 }}
+        <br>
+        {{ form.password2.label }}{{ form.password2 }}
+        <br>
+        {{ form.submit }}
+    </form>
+</div>
+{% endblock %}

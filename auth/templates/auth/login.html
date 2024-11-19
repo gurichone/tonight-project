@@ -27,6 +27,8 @@
                 <br>
                 {{ teacherform.teacher_password(placeholder="パスワード") }}
                 <br>
+                <a href="{{ url_for('auth.reset') }}">パスワードを忘れた方はこちら</a>
+                <br>
                 {{ teacherform.submit }}
             </form>
         </section>
@@ -47,6 +49,8 @@
                 {{ studentform.student_id(placeholder="生徒番号") }}
                 <br>
                 {{ studentform.student_password(placeholder="パスワード") }}
+                <br>
+                <a href="{{ url_for('auth.reset') }}">パスワードを忘れた方はこちら</a>
                 <br>
                 {{ studentform.submit }}
             </form>

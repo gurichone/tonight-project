@@ -1,0 +1,9 @@
+{% extends "auth/base.html" %}
+
+{% block title %}パスワードリセット{% endblock %}
+
+{% block content %}
+
+<h2>パスワード変更が完了しました</h2>
+<a href="{{url_for('auth.login')}}">ログイン</a>
+{% endblock %}
