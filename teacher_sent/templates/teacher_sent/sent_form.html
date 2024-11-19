@@ -1,0 +1,31 @@
+{% extends "teacher/base.html" %}
+{% block title %}お知らせ送信{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block content %}
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.address.label }}
+        {{ form.address }}
+        {% for error in form.address.errors %}
+            <span class="error">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.title.label }}
+        {{ form.title }}
+        {% for error in form.title.errors %}
+            <span class="error">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div>
+        {{ form.discription.label }}
+        {{ form.discription }}
+        {% for error in form.discription.errors %}
+            <span class="error">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <button type="submit">{{ form.submit.label }}</button>
+</form>
+{% endblock %}

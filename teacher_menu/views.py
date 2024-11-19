@@ -13,6 +13,8 @@ menu = Blueprint(
 @menu.route("/")
 @login_required
 def t_menu():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     # ログインしている教員の情報を取得
     teacher = current_user
             

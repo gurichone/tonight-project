@@ -16,12 +16,15 @@ student = Blueprint(
 def teacher_student():
     # 教員か生徒かの判別
     if len(current_user.id) != 6:
-        return "fu** you"
+        return render_template("teacher/gohb.html")
     # 生徒管理メニューを表示
     return render_template("teacher_student/list_menu.html")
 
 @student.route("/student_list", methods=["GET", "POST"])
+@login_required
 def student_list():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     # フォームインスタンスの作成
     stu_list = StudentSearch()
     
@@ -85,7 +88,10 @@ def student_list():
     )
 
 @student.route("/student/<string:id>")
+@login_required
 def student_detail(id):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     # Studentクラスの全フィールドを取得
     student = Student.query.filter_by(id=id).first_or_404()
     
@@ -101,12 +107,12 @@ def student_detail(id):
     )
 
 @student.route("/class_list")
+@login_required
 def class_list():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     # ログイン中の教員アカウントIDをセッションから取得
     teacher_id = current_user.id
-
-    # # ログイン中のアカウントがまだ取得できないのでここに直接記述
-    # teacher_id = '111111'
 
     # 教員情報を取得し、担当クラス番号を取得
     teacher = Teacher.query.get(teacher_id)
@@ -125,7 +131,10 @@ def class_list():
 
 # 生徒削除確認ページ
 @student.route("/student/delete_confirm/<string:id>")
+@login_required
 def delete_confirm(id):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     student = Student.query.get(id)
     if not student:
         return "いないよそんな人", 404
@@ -133,7 +142,10 @@ def delete_confirm(id):
 
 # 生徒削除処理
 @student.route("/student/delete/<string:id>", methods=["POST"])
+@login_required
 def delete_student(id):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     student = Student.query.get(id)
     if not student:
         return "もうおらんで", 404
@@ -147,5 +159,8 @@ def delete_student(id):
 
 # 削除完了ページ
 @student.route("/student/delete_success")
+@login_required
 def delete_success():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     return render_template("teacher_student/delete_success.html")
