@@ -181,7 +181,7 @@ def auto():
         key = False
         for f in form.fieldlist.data.split("\r\n"):
             if key:
-                personal = db.session.query(Personal_Submission).filter_by(student_id=key).first()
+                personal = db.session.query(Personal_Submission).filter_by(student_id=key, submission_id=session["submission"]).first()
                 personal.point = f
                 db.session.add(personal)
                 db.session.commit()
