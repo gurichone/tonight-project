@@ -1,9 +1,9 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, request, flash, session
+from flask_login import current_user, login_required
 from app import db
 from teacher_seiseki.forms import SearchScore, AddScore, AttendScore, EditScore
 from teacher_seiseki.models import Score
-from auth.models import Student, Subject
-from auth.models import Student
+from auth.models import Student, Subject, Teacher
 from datetime import datetime
 from teacher_jikanwari.models import Timetable
 import hashlib
@@ -17,7 +17,10 @@ seiseki = Blueprint(
 
 # 教員のメニュー画面にある成績ボタンを押すと生徒の成績を検索する欄が出てくる
 @seiseki.route("/", methods=["GET", "POST"])
+@login_required
 def search():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
 
     # フォームインスタンスの作成
     score = SearchScore()
@@ -32,6 +35,18 @@ def search():
     
     # ベースクエリの定義
     query = db.session.query(Score, Subject, Student).join(Subject, Score.subject_id == Subject.subject_id).join(Student, Score.id == Student.id)
+
+    # 下記のコードでデータベースに情報を無作為に追加できる
+    # print("joinつかうやつ", query.all())
+    # mori = db.session.query(Score).filter_by(class_num="1-71").first()
+    # mori.id="2384849"
+    # db.session.add(mori)
+    # haru = db.session.query(Score).filter_by(class_num="1-72").first()
+    # haru.id="2384850"
+    # db.session.add(haru)
+    # db.session.commit()
+    
+
     # 検索ボタンを押すとフィルタリング
     if score.validate_on_submit():
         subject_name = Subject.subject_name
@@ -52,7 +67,10 @@ def search():
 
 # 成績画面の成績登録ボタンをクリックすると追加する画面を表示
 @seiseki.route("/add", methods=["GET", "POST"])
+@login_required
 def add():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     # フォームインスタンスを作成
     score_form = AddScore()
 
@@ -106,7 +124,10 @@ def add():
 
 # 出席日数を確認する画面を表示する
 @seiseki.route("/attend", methods=["GET", "POST"])
+@login_required
 def attend():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     # フォームインスタンスの作成
     attend = AttendScore()
     
@@ -142,7 +163,10 @@ def attend():
 
 # 成績の編集を行うための処理を実装
 @seiseki.route("/edit/<int:score_id>", methods=["GET", "POST"])
+@login_required
 def edit(score_id):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
 
     # 成績を編集するフォームを作成(AddScoreの流用だが問題ない)
     form = EditScore()
@@ -153,8 +177,7 @@ def edit(score_id):
         score.assessment_id = form.assessment_id.data
         score.attend_day = form.attend_day.data
         db.session.commit()  # 変更を行い、更新
-        flash("成績が正常に更新されました。", "success")
-        return redirect(url_for("teacher.seiseki.search"))
+        return render_template("teacher_seiseki/edit_complete.html",form=form)
 
     # 編集ボタンを押下してページに遷移した際の処理、ここで編集を行う
     student = Student.query.get(score.id)
@@ -173,7 +196,10 @@ def edit(score_id):
 
 # 成績の削除を行う処理の実装
 @seiseki.route("/delete/<int:score_id>", methods=["POST"])
+@login_required
 def delete(score_id):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     # 変数scoreでScoreテーブルのscore_idを取得
     score = Score.query.get(score_id)
     # ほぼidが存在するので消去する流れになる
@@ -188,7 +214,10 @@ def delete(score_id):
 
 # 生徒の出席登録の際に発行するコードを先生側が用意するための処理の実装
 @seiseki.route("/issue_code",methods=["GET","POST"])
+@login_required
 def issue_code():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
     # datetime関数で日時を取得
     now = datetime.now()
     year, month, day = now.year, now.month, now.day
@@ -202,8 +231,13 @@ def issue_code():
 
             # 選択を終えコード発行ボタンを押下するとコードを発行し表示する。
             period = request.form.get("period")
-            code_data = f"{timetable.id}{now.strftime('%Y%m%d%H%M%S')}{period}"
+            code_data = f"{timetable.id}{now.strftime('%Y%m%d')}{period}" + "jn;zsbvuo;bbh;rlznnzibvnbrnl.fbk;lnk.szv;bab"
             code_hash = hashlib.sha256(code_data.encode()).hexdigest()[:6]
+
+            # 一時的に発行したコードを保存（生徒が後で確認できるようにする）
+            session['attendance_code'] = code_hash
+            session['code_timestamp'] = datetime.now().timestamp()  # 時刻も保存
+
             return render_template("teacher_seiseki/display_code.html", code=code_hash)
         
         # 最初にTimetableから取得した授業一覧を表示する処理

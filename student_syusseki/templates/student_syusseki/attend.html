@@ -1,0 +1,30 @@
+{% extends "student/base.html" %}
+{% block title %}出席登録{% endblock %}
+
+{% block content %}
+    <h1>出席登録</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flashes">
+                {% for category, message in messages %}
+                    <li class="flash {{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('student.syusseki.s_syusseki') }}" method="POST">
+        <div class="form-group">
+            <label for="student_id">生徒ID</label>
+            <input type="text" id="student_id" name="student_id" required>
+        </div>
+
+        <div class="form-group">
+            <label for="attendance_code">出席コード</label>
+            <input type="text" id="attendance_code" name="attendance_code" required>
+        </div>
+
+        <button type="submit">出席登録</button>
+    </form>
+{% endblock %}
