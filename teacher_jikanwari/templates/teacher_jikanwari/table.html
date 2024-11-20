@@ -60,9 +60,24 @@
             <th class="jikanwari-th">イベント</th>
         </tr>
     </thead>
-    <tbody id="calendar-body">
+    <!-- <tbody id="calendar-body"> -->
         <!-- ここにJavaScriptで日付と曜日が表示される -->
-    </tbody>
+    <!-- </tbody> -->
+     <!-- <tbody> -->
+        {% for entry in entries %}
+        <tr>
+        <th class="jikanwari-td">{{ entry.year }}</th> <!-- 年の列 -->
+        <th class="jikanwari-td">{{ entry.month }}</th> <!-- 月の列 -->
+        <th class="jikanwari-td">{{ entry.day }}</th>
+        <th class="jikanwari-td">{{ entry.weekday }}</th>
+        <th class="jikanwari-td">{{ entry.period1 }}</th>
+        <th class="jikanwari-td">{{ entry.period2 }}</th>
+        <th class="jikanwari-td">{{ entry.period3 }}</th>
+        <th class="jikanwari-td">{{ entry.note }}</th>
+        <th class="jikanwari-td">{{ entry.event }}</th>
+        </tr>
+        {% endfor %}
+     <!-- </tbody> -->
 </table>
 
 <script>
