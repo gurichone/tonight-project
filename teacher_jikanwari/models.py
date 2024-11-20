@@ -13,6 +13,7 @@ class Timetable(db.Model):
     notes = db.Column(db.String(200))
     event = db.Column(db.String(100))
 
+
 class SubjectDetails(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)

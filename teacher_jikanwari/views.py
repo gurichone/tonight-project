@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, flash
 import calendar
 from app import db
 from .models import Timetable
 from teacher_jikanwari.models import SubjectDetails
+from teacher_jikanwari.models import Timetable
 
 # Blueprintの作成
 jikanwari = Blueprint(
@@ -13,14 +14,39 @@ jikanwari = Blueprint(
 )
 
 # 指定IDのエントリを取得する関数
-def get_entry_by_id(id):
-    return Timetable.query.get(id)
+def get_entry_by_id(entry_id):
+    return Timetable.query.get(entry_id)
 
-# タイムテーブルの表示ルート
+# 年と月を指定してデータを取得する関数
+def get_entries_from_database(year, month):
+    return Timetable.query.filter_by(year=year, month=month).all()
+
+def get_entry_by_date(year, month, day):
+    return Timetable.query.filter_by(year=year, month=month, day=day).first()
+
+# 年と月を指定してJikanwariエントリを取得する関数
+def get_jikanwari_entries(year, month):
+    return Timetable.query.filter_by(year=year, month=month).all()
+
+# 指定された年月の時間割を表示するルート
 @jikanwari.route('/', methods=['GET'])
 def t_jikanwari():
+    selected_year = request.args.get('year', 2024, type=int)
+    selected_month = request.args.get('month', 1, type=int)
+
+    # 年月を指定してJikanwariエントリを取得
+    entries = get_jikanwari_entries(selected_year, selected_month)
+
+    # テンプレートに渡して時間割を表示
+    return render_template('teacher_jikanwari/table.html', 
+                           entries=entries,
+                           selected_year=selected_year,
+                           selected_month=selected_month)
+
+@jikanwari.route('/add_entry', methods=['GET', 'POST'])
+def add_entry():
     selected_year = request.args.get('year', default=2024, type=int)
-    selected_month = request.args.get('month', default=11, type=int)
+    selected_month = request.args.get('month', default=1, type=int)
 
     # 月の日数を取得
     number_of_days = calendar.monthrange(selected_year, selected_month)[1]
@@ -37,92 +63,100 @@ def t_jikanwari():
             'weekday': weekdays[weekday]
         })
 
-    return render_template('teacher_jikanwari/table.html',
-                           selected_year=selected_year,
-                           selected_month=selected_month,
-                           number_of_days_in_month=number_of_days,
-                           weekdays=weekdays,
-                           dates_and_weekdays=dates_and_weekdays)
-# エントリ追加ルート（POSTメソッド）
-@jikanwari.route('/teacher/jikanwari/add_entry', methods=['GET', 'POST'])
-def add_entry():
+    # ここでテンプレートを返す
+    if request.method == 'GET':
+        return render_template('teacher_jikanwari/add_entry.html', 
+                               selected_year=selected_year,
+                               selected_month=selected_month, 
+                               dates_and_weekdays=dates_and_weekdays)
+
+    # POST処理が続く
     if request.method == 'POST':
-        year = int(request.form['year'])
-        month = int(request.form['month'])
-        day = int(request.form['day'])
-        weekday = request.form['weekday']
+        for day in range(1, number_of_days + 1):
+            period1 = request.form.get(f'period1_{day}')
+            period2 = request.form.get(f'period2_{day}')
+            period3 = request.form.get(f'period3_{day}')
+            notes = request.form.get(f'notes_{day}')
+            event = request.form.get(f'event_{day}')
 
-        # 同じ日付のエントリが存在するか確認
-        existing_entry = Timetable.query.filter_by(year=year, month=month, day=day, weekday=weekday).first()
+            existing_entry = Timetable.query.filter_by(year=selected_year, month=selected_month, day=day).first()
 
-        if existing_entry:
-            error_message = "この日付のエントリは既に存在します。別の日付を選択してください。"
-            return render_template('teacher_jikanwari/add_entry.html', error=error_message)
+            weekday = calendar.weekday(selected_year, selected_month, day)
+            weekday_name = weekdays[weekday]
 
-        new_entry = Timetable(
-            year=year,
-            month=month,
-            day=day,
-            weekday=weekday,
-            period1=request.form['period1'],
-            period2=request.form['period2'],
-            period3=request.form['period3'],
-            notes=request.form['notes'],
-            event=request.form['event']
-        )
-        db.session.add(new_entry)
-        db.session.commit()
-
-        # 追加後、一覧画面にリダイレクト
-        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 修正後
-
-
-    return render_template('teacher_jikanwari/add_entry.html')
-
-# エントリ編集ルート（GET/POSTメソッド）
-@jikanwari.route('/teacher/jikanwari/edit_entry/<int:id>', methods=['GET', 'POST'])
-def edit_entry(id):
-    entry = get_entry_by_id(id)
-    if not entry:
-        return redirect(url_for('jikanwari.t_jikanwari'))  # 修正箇所
-
-    if request.method == 'POST':
-        entry.year = int(request.form['year'])
-        entry.month = int(request.form['month'])
-        entry.day = int(request.form['day'])
-        entry.weekday = request.form['weekday']
-        entry.period1 = request.form['period1']
-        entry.period2 = request.form['period2']
-        entry.period3 = request.form['period3']
-        entry.notes = request.form['notes']
-        entry.event = request.form['event']
+            if existing_entry:
+                existing_entry.period1 = period1
+                existing_entry.period2 = period2
+                existing_entry.period3 = period3
+                existing_entry.notes = notes
+                existing_entry.event = event
+            else:
+                new_entry = Timetable(
+                    year=selected_year,
+                    month=selected_month,
+                    day=day,
+                    weekday=weekday_name,
+                    period1=period1,
+                    period2=period2,
+                    period3=period3,
+                    notes=notes,
+                    event=event
+                )
+                db.session.add(new_entry)
 
         db.session.commit()
 
-        # 更新後、一覧画面にリダイレクト
-        return redirect(url_for('jikanwari.t_jikanwari'))  # 修正箇所
+        # フォーム送信後はリダイレクト
+        return redirect(url_for('teacher.jikanwari.t_timetable', year=selected_year, month=selected_month))
 
-    return render_template('teacher_jikanwari/edit_entry.html', entry=entry)
 
-# エントリ削除確認と削除処理の統合ルート
-@jikanwari.route('/delete_confirmation/<int:id>', methods=['GET', 'POST'])
-def delete_confirmation(id):
-    entry = Timetable.query.get(id)
 
-    if not entry:
-        # エントリが存在しない場合は一覧画面にリダイレクト
-        return redirect(url_for('jikanwari.t_jikanwari'))  # 修正箇所
 
-    if request.method == 'POST':
-        # POSTリクエストの場合、エントリを削除
-        db.session.delete(entry)
-        db.session.commit()
+# 時間割エントリの保存
+@jikanwari.route('/save_timetable', methods=['POST'])
+def save_timetable():
+    selected_year = request.form['year']
+    selected_month = request.form['month']
+    
+    # 年月に基づいてデータを取得
+    dates_and_weekdays = Timetable.query.filter_by(year=selected_year, month=selected_month).all()
 
-        # 削除後、一覧画面にリダイレクト
-        return redirect(url_for('jikanwari.t_jikanwari'))  # 修正箇所
+    for date in dates_and_weekdays:
+        period1 = request.form.get(f'entries[{date.day}][period1]')
+        period2 = request.form.get(f'entries[{date.day}][period2]')
+        period3 = request.form.get(f'entries[{date.day}][period3]')
+        notes = request.form.get(f'entries[{date.day}][notes]')
+        event = request.form.get(f'entries[{date.day}][event]')
 
-    # GETリクエストの場合、削除確認画面を表示
-    return render_template('teacher_jikanwari/delete_confirmation.html', entry=entry)
+        entry = Timetable.query.filter_by(day=date.day, month=selected_month, year=selected_year).first()
+
+        if entry:
+            # 既存のエントリを更新
+            entry.period1 = period1
+            entry.period2 = period2
+            entry.period3 = period3
+            entry.notes = notes
+            entry.event = event
+        else:
+            # 新しいエントリを作成
+            new_entry = Timetable(
+                year=selected_year,
+                month=selected_month,
+                day=date.day,
+                weekday=date.weekday,
+                period1=period1,
+                period2=period2,
+                period3=period3,
+                notes=notes,
+                event=event
+            )
+            db.session.add(new_entry)
+
+    # すべての変更をデータベースに保存
+    db.session.commit()
+
+    # 時間割にリダイレクト
+    return redirect(url_for('jikanwari.t_timetable', year=selected_year, month=selected_month))
 
 
 # クラス一覧表示
@@ -134,13 +168,13 @@ def class_list():
 # クラス数の表示
 @jikanwari.route('/show_class_count', methods=['GET', 'POST'])
 def show_class_count():
-    error_message = None  # エラーメッセージを格納する変数
+    error_message = None
 
     if request.method == 'POST':
         subject_name = request.form['subject_name']
         periods = int(request.form['periods'])
 
-        # 既に同じ名前の科目が存在するかチェック
+        # 既存の科目名があるかチェック
         existing_subject = SubjectDetails.query.filter_by(name=subject_name).first()
 
         if existing_subject:
@@ -148,63 +182,42 @@ def show_class_count():
         elif periods <= 15:
             error_message = "コマ数は15コマ以上でなければなりません。"
         else:
-            # コマ数が15コマ以上で、かつ同じ科目名がない場合、データベースに新しい授業情報を保存
+            # 新しい科目をデータベースに追加
             new_subject = SubjectDetails(name=subject_name, periods=periods)
             db.session.add(new_subject)
             db.session.commit()
 
-            # 登録後に授業数一覧画面へリダイレクト
-            return redirect(url_for('jikanwari.class_list'))  # 修正箇所
+            return redirect(url_for('jikanwari.class_list'))
 
     return render_template('teacher_jikanwari/show_class_count.html', error_message=error_message)
-
 
 # クラス削除確認画面
 @jikanwari.route('/class/delete_count/<int:subject_id>', methods=['GET', 'POST'])
 def delete_class_count(subject_id):
     subject = SubjectDetails.query.get(subject_id)
     if request.method == 'POST':
-        # 削除処理
         db.session.delete(subject)
         db.session.commit()
-        return redirect(url_for('jikanwari.class_list'))  # 修正箇所
+        return redirect(url_for('jikanwari.class_list'))
 
-    # GETリクエストの場合、削除確認画面を表示
     return render_template('teacher_jikanwari/delete_class_count.html', subject=subject)
 
 # 編集画面の表示
-@jikanwari.route('/edit_class_count/<int:subject_id>', methods=['GET', 'POST'])
-def edit_class_count(subject_id):
-    # subject_idでデータベースから対象の科目を取得
-    subject = SubjectDetails.query.get(subject_id)
-
-    if subject is None:
-        return redirect(url_for('jikanwari.class_list'))  # 修正箇所
+@jikanwari.route('/edit_entry/<int:id>', methods=['GET', 'POST'])
+def edit_entry(id):
+    entry = get_entry_by_id(id)
 
     if request.method == 'POST':
-        # フォームからのデータを取得
-        subject_name = request.form.get('name')
-        periods = request.form.get('periods')
+        entry.year = request.form['year']
+        entry.month = request.form['month']
+        entry.day = request.form['day']
+        entry.period1 = request.form['period1']
+        entry.period2 = request.form['period2']
+        entry.period3 = request.form['period3']
+        entry.notes = request.form['notes']
+        entry.event = request.form['event']
 
-        # バリデーション：科目名とコマ数が入力されているかを確認
-        if not subject_name or not periods:
-            error_message = "科目名とコマ数は必須です"
-            return render_template('teacher_jikanwari/edit_class_count.html', subject=subject, error_message=error_message)
+        db.session.commit()
+        return redirect(url_for('jikanwari.t_jikanwari', year=entry.year, month=entry.month))
 
-        try:
-            # データベースの科目情報を更新
-            subject.name = subject_name
-            subject.periods = int(periods)
-
-            # コミットしてデータベースを更新
-            db.session.commit()
-
-            return redirect(url_for('jikanwari.class_list'))  # 修正箇所
-
-        except Exception as e:
-            db.session.rollback()  # エラーが発生した場合、ロールバック
-            error_message = f"エラーが発生しました: {str(e)}"
-            return render_template('teacher_jikanwari/edit_class_count.html', subject=subject, error_message=error_message)
-
-    # GETリクエストの場合、編集フォームを表示
-    return render_template('teacher_jikanwari/edit_class_count.html', subject=subject)
+    return render_template('teacher_jikanwari/edit_entry.html', entry=entry)
