@@ -1,174 +1,153 @@
 {% extends "teacher/base.html" %}
 
 {% block title %}授業の追加{% endblock %}
-{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+
+{% block modorulink %}
+    <a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>
+{% endblock %}
+
 {% block content %}
+    <h1>授業の追加</h1>
 
-<h1>授業の追加</h1>
+    <!-- 年と月の選択 -->
+    <form method="POST" action="{{ url_for('teacher.jikanwari.save_timetable') }}">
+        <label for="year-select">年</label>
+        <select name="year" id="year-select">
+            <option value="2024" {% if selected_year == 2024 %}selected{% endif %}>2024</option>
+            <option value="2025" {% if selected_year == 2025 %}selected{% endif %}>2025</option>
+            <!-- 必要に応じて追加 -->
+        </select>
 
-<!-- 年と月の選択 -->
-<form method="POST" action="{{ url_for('teacher.jikanwari.save_timetable') }}">
+        <label for="month-select">月</label>
+        <select name="month" id="month-select">
+            <option value="1" {% if selected_month == 1 %}selected{% endif %}>1月</option>
+            <option value="2" {% if selected_month == 2 %}selected{% endif %}>2月</option>
+            <option value="3" {% if selected_month == 3 %}selected{% endif %}>3月</option>
+            <option value="4" {% if selected_month == 4 %}selected{% endif %}>4月</option>
+            <option value="5" {% if selected_month == 5 %}selected{% endif %}>5月</option>
+            <option value="6" {% if selected_month == 6 %}selected{% endif %}>6月</option>
+            <option value="7" {% if selected_month == 7 %}selected{% endif %}>7月</option>
+            <option value="8" {% if selected_month == 8 %}selected{% endif %}>8月</option>
+            <option value="9" {% if selected_month == 9 %}selected{% endif %}>9月</option>
+            <option value="10" {% if selected_month == 10 %}selected{% endif %}>10月</option>
+            <option value="11" {% if selected_month == 11 %}selected{% endif %}>11月</option>
+            <option value="12" {% if selected_month == 12 %}selected{% endif %}>12月</option>
+        </select>
 
-    <label for="year-select">年</label>
-    <select name="year" id="year-select">
-        <option value="2024" {% if selected_year == 2024 %}selected{% endif %}>2024</option>
-        <option value="2025" {% if selected_year == 2025 %}selected{% endif %}>2025</option>
-        <!-- 必要に応じて追加 -->
-    </select>
+        <!-- カレンダー表示 -->
+        <table class="jikanwari-table" id="calendar-table">
+            <thead>
+                <tr class="jikanwari-tr">
+                    <th class="jikanwari-th">年</th>
+                    <th class="jikanwari-th">月</th>
+                    <th class="jikanwari-th">日</th>
+                    <th class="jikanwari-th">曜日</th>
+                    <th class="jikanwari-th">1時間目</th>
+                    <th class="jikanwari-th">2時間目</th>
+                    <th class="jikanwari-th">3時間目</th>
+                    <th class="jikanwari-th">備考</th>
+                    <th class="jikanwari-th">イベント</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+                {% for entry in entries %}
+                    <tr>
+                        <td class="jikanwari-td">{{ entry.year }}</td>
+                        <td class="jikanwari-td">{{ entry.month }}</td>
+                        <td class="jikanwari-td">{{ entry.day }}</td>
+                        <td class="jikanwari-td">{{ entry.weekday }}</td>
+                        <td class="jikanwari-td">
+                            <input type="text" name="period1_{{ entry.id }}" value="{{ entry.period1 }}" placeholder="1時間目">
+                        </td>
+                        <td class="jikanwari-td">
+                            <input type="text" name="period2_{{ entry.id }}" value="{{ entry.period2 }}" placeholder="2時間目">
+                        </td>
+                        <td class="jikanwari-td">
+                            <input type="text" name="period3_{{ entry.id }}" value="{{ entry.period3 }}" placeholder="3時間目">
+                        </td>
+                        <td class="jikanwari-td">
+                            <input type="text" name="note_{{ entry.id }}" value="{{ entry.note }}" placeholder="備考">
+                        </td>
+                        <td class="jikanwari-td">
+                            <input type="text" name="event_{{ entry.id }}" value="{{ entry.event }}" placeholder="イベント">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-    <label for="month-select">月</label>
-    <select name="month" id="month-select">
-        <option value="1" {% if selected_month == 1 %}selected{% endif %}>1月</option>
-        <option value="2" {% if selected_month == 2 %}selected{% endif %}>2月</option>
-        <option value="3" {% if selected_month == 3 %}selected{% endif %}>3月</option>
-        <option value="4" {% if selected_month == 4 %}selected{% endif %}>4月</option>
-        <option value="5" {% if selected_month == 5 %}selected{% endif %}>5月</option>
-        <option value="6" {% if selected_month == 6 %}selected{% endif %}>6月</option>
-        <option value="7" {% if selected_month == 7 %}selected{% endif %}>7月</option>
-        <option value="8" {% if selected_month == 8 %}selected{% endif %}>8月</option>
-        <option value="9" {% if selected_month == 9 %}selected{% endif %}>9月</option>
-        <option value="10" {% if selected_month == 10 %}selected{% endif %}>10月</option>
-        <option value="11" {% if selected_month == 11 %}selected{% endif %}>11月</option>
-        <option value="12" {% if selected_month == 12 %}selected{% endif %}>12月</option>
-    </select>
-    
-    <!-- カレンダー表示 -->
-    <h3>{{ selected_year }}年 {{ selected_month }}月</h3> <!-- 選択した年と月を表示 -->
-    <table class="jikanwari-table" id="calendar-table">
-        <thead>
-            <tr class="jikanwari-tr">
-                <th class="jikanwari-th" colspan="2">年月</th> <!-- 年月のカラムを統合 -->
-                <th class="jikanwari-th">日付</th>
-                <th class="jikanwari-th">曜日</th>
-                <th class="jikanwari-th">1時間目</th>
-                <th class="jikanwari-th">2時間目</th>
-                <th class="jikanwari-th">3時間目</th>
-                <th class="jikanwari-th">備考</th>
-                <th class="jikanwari-th">イベント</th>
-            </tr>
-        </thead>
-        <tbody id="calendar-body">
-            <!-- ここにJavaScriptで日付と曜日が表示される -->
-        </tbody>
-    </table>
+        <button type="submit">保存</button>
+    </form>
 
-    <button type="submit">保存</button>
-</form>
-
-<script>
-    // 月ごとの日数を取得する関数
-    function getDaysInMonth(year, month) {
-        return new Date(year, month, 0).getDate(); // 月の最後の日付を取得
-    }
-
-    // 曜日を取得する関数
-    function getWeekday(day, year, month) {
-        const date = new Date(year, month - 1, day); // JavaScriptでは月が0から始まる
-        const weekdays = ['月', '火', '水', '木', '金', '土', '日'];
-        return weekdays[date.getDay()]; // 0=日曜日, 6=土曜日
-    }
-
-    // 選択された年と月に基づいてカレンダーを更新
-    function updateCalendar(year, month) {
-        const numberOfDays = getDaysInMonth(year, month);
-        const calendarBody = document.getElementById('calendar-body');
-        calendarBody.innerHTML = ''; // 既存のテーブル行をクリア
-
-        for (let day = 1; day <= numberOfDays; day++) {
-            const weekday = getWeekday(day, year, month);
-            const row = document.createElement('tr');
-            row.classList.add('jikanwari-tr');
-
-            const yearCell = document.createElement('td');
-            yearCell.classList.add('jikanwari-td');
-            yearCell.textContent = year; // 年を表示
-
-            const monthCell = document.createElement('td');
-            monthCell.classList.add('jikanwari-td');
-            monthCell.textContent = month; // 月を表示
-
-            const dayCell = document.createElement('td');
-            dayCell.classList.add('jikanwari-td');
-            dayCell.textContent = day;
-
-            const weekdayCell = document.createElement('td');
-            weekdayCell.classList.add('jikanwari-td');
-            weekdayCell.textContent = weekday;
-
-            // 1時間目、2時間目、3時間目、備考、イベントのセルをフォームに変更
-            const period1Cell = document.createElement('td');
-            period1Cell.classList.add('jikanwari-td');
-            const period1Input = document.createElement('input');
-            period1Input.type = 'text';
-            period1Input.name = `period1-${year}-${month}-${day}`;
-            period1Cell.appendChild(period1Input);
-
-            const period2Cell = document.createElement('td');
-            period2Cell.classList.add('jikanwari-td');
-            const period2Input = document.createElement('input');
-            period2Input.type = 'text';
-            period2Input.name = `period2-${year}-${month}-${day}`;
-            period2Cell.appendChild(period2Input);
-
-            const period3Cell = document.createElement('td');
-            period3Cell.classList.add('jikanwari-td');
-            const period3Input = document.createElement('input');
-            period3Input.type = 'text';
-            period3Input.name = `period3-${year}-${month}-${day}`;
-            period3Cell.appendChild(period3Input);
-
-            const notesCell = document.createElement('td');
-            notesCell.classList.add('jikanwari-td');
-            const notesInput = document.createElement('textarea');
-            notesInput.name = `notes-${year}-${month}-${day}`;
-            notesCell.appendChild(notesInput);
-
-            const eventCell = document.createElement('td');
-            eventCell.classList.add('jikanwari-td');
-            const eventInput = document.createElement('textarea');
-            eventInput.name = `event-${year}-${month}-${day}`;
-            eventCell.appendChild(eventInput);
-
-            // 行に追加
-            row.appendChild(yearCell);
-            row.appendChild(monthCell);
-            row.appendChild(dayCell);
-            row.appendChild(weekdayCell);
-            row.appendChild(period1Cell);
-            row.appendChild(period2Cell);
-            row.appendChild(period3Cell);
-            row.appendChild(notesCell);
-            row.appendChild(eventCell);
-
-            calendarBody.appendChild(row);
+    <script>
+        // 月ごとの日数を取得する関数
+        function getDaysInMonth(year, month) {
+            return new Date(year, month, 0).getDate(); // 月の最後の日付を取得
         }
 
-        // 年月を上部に表示
-        const monthTitle = document.getElementById('selected-month');
-        monthTitle.textContent = `${year}年${month}月`;
-    }
+        // 曜日を取得する関数
+        function getWeekday(day, year, month) {
+            const date = new Date(year, month - 1, day); // JavaScriptでは月が0から始まる
+            const weekdays = ['月', '火', '水', '木', '金', '土', '日'];
+            return weekdays[date.getDay()]; // 0=日曜日, 6=土曜日
+        }
 
-    // ページが読み込まれた時に、現在の選択を反映してカレンダーを更新
-    document.addEventListener('DOMContentLoaded', function () {
-        const yearSelect = document.getElementById('year-select');
-        const monthSelect = document.getElementById('month-select');
-        
-        let year = yearSelect.value;
-        let month = monthSelect.value;
+        // 年と月を基にカレンダーを更新する関数
+        function updateCalendar(year, month) {
+            const numberOfDays = getDaysInMonth(year, month);
+            const calendarBody = document.getElementById('calendar-body');
+            calendarBody.innerHTML = ''; // 既存のテーブル行をクリア
 
-        updateCalendar(year, month);
+            // 日付をループして行を追加
+            for (let day = 1; day <= numberOfDays; day++) {
+                const weekday = getWeekday(day, year, month);
+                const row = document.createElement('tr');
+                row.classList.add('jikanwari-tr');
 
-        // 年月が変更された時にカレンダーを更新
-        yearSelect.addEventListener('change', function () {
-            year = yearSelect.value;
-            updateCalendar(year, month);
+                // 年、月、日、曜日のセルを追加
+                row.innerHTML = `
+                    <td class="jikanwari-td">${year}</td>
+                    <td class="jikanwari-td">${month}</td>
+                    <td class="jikanwari-td">${day}</td>
+                    <td class="jikanwari-td">${weekday}</td>
+                    <td class="jikanwari-td">
+                        <input type="text" name="period1_${day}" placeholder="1時間目">
+                    </td>
+                    <td class="jikanwari-td">
+                        <input type="text" name="period2_${day}" placeholder="2時間目">
+                    </td>
+                    <td class="jikanwari-td">
+                        <input type="text" name="period3_${day}" placeholder="3時間目">
+                    </td>
+                    <td class="jikanwari-td">
+                        <input type="text" name="note_${day}" placeholder="備考">
+                    </td>
+                    <td class="jikanwari-td">
+                        <input type="text" name="event_${day}" placeholder="イベント">
+                    </td>
+                `;
+
+                calendarBody.appendChild(row);
+            }
+        }
+
+        // ページが読み込まれた時に、カレンダーを初期表示
+        document.addEventListener('DOMContentLoaded', function () {
+            const yearSelect = document.getElementById('year-select');
+            const monthSelect = document.getElementById('month-select');
+
+            // 初期カレンダーの更新
+            updateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+
+            // 年と月が変更されたらカレンダーを更新
+            yearSelect.addEventListener('change', function () {
+                updateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+            });
+
+            monthSelect.addEventListener('change', function () {
+                updateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+            });
         });
-
-        monthSelect.addEventListener('change', function () {
-            month = monthSelect.value;
-            updateCalendar(year, month);
-        });
-    });
-</script>
+    </script>
 
 {% endblock %}

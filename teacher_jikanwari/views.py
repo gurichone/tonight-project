@@ -36,6 +36,7 @@ def t_jikanwari():
 
     # 年月を指定してJikanwariエントリを取得
     entries = get_jikanwari_entries(selected_year, selected_month)
+
     # テンプレートに渡して時間割を表示
     return render_template('teacher_jikanwari/table.html', 
                            entries=entries,
@@ -62,15 +63,8 @@ def add_entry():
             'weekday': weekdays[weekday]
         })
 
-    # ここでテンプレートを返す
-    if request.method == 'GET':
-        return render_template('teacher_jikanwari/add_entry.html', 
-                               selected_year=selected_year,
-                               selected_month=selected_month, 
-                               dates_and_weekdays=dates_and_weekdays)
-
-    # POST処理が続く
     if request.method == 'POST':
+        # POSTリクエストが送られた場合、新しいエントリを追加
         for day in range(1, number_of_days + 1):
             period1 = request.form.get(f'period1_{day}')
             period2 = request.form.get(f'period2_{day}')
@@ -78,18 +72,21 @@ def add_entry():
             notes = request.form.get(f'notes_{day}')
             event = request.form.get(f'event_{day}')
 
+            # 既存のエントリをチェック
             existing_entry = Timetable.query.filter_by(year=selected_year, month=selected_month, day=day).first()
 
             weekday = calendar.weekday(selected_year, selected_month, day)
             weekday_name = weekdays[weekday]
 
             if existing_entry:
+                # 既存のエントリを更新
                 existing_entry.period1 = period1
                 existing_entry.period2 = period2
                 existing_entry.period3 = period3
                 existing_entry.notes = notes
                 existing_entry.event = event
             else:
+                # 新しいエントリを作成
                 new_entry = Timetable(
                     year=selected_year,
                     month=selected_month,
@@ -101,25 +98,26 @@ def add_entry():
                     notes=notes,
                     event=event
                 )
-                db.session.add(new_entry)
+                db.session.add(new_entry)  # 新しいエントリを追加
 
-        db.session.commit()
+        db.session.commit()  # 一度だけコミットしてデータベースに保存
 
-        # フォーム送信後はリダイレクト
-        return render_template('teacher_jikanwari/table.html', year=selected_year, month=selected_month)
+        # データ追加後は時間割のページにリダイレクト
+        return redirect(url_for('teacher.jikanwari.t_jikanwari'))
+
+    # GETリクエストの場合はフォームを表示
+    return render_template('teacher_jikanwari/add_entry.html', 
+                           selected_year=selected_year,
+                           selected_month=selected_month, 
+                           dates_and_weekdays=dates_and_weekdays)
 
 
-
-
-
-# 時間割エントリの保存
 @jikanwari.route('/save_timetable', methods=['POST'])
 def save_timetable():
     form = dict(request.form)
-    print(form, form['year'], form['month'])
     selected_year = form['year']
     selected_month = form['month']
-    
+
     # 年月に基づいてデータを取得
     dates_and_weekdays = Timetable.query.filter_by(year=selected_year, month=selected_month).all()
 
@@ -141,7 +139,7 @@ def save_timetable():
             entry.event = event
         else:
             # 新しいエントリを作成
-            entry = Timetable(
+            new_entry = Timetable(
                 year=selected_year,
                 month=selected_month,
                 day=date.day,
@@ -152,13 +150,13 @@ def save_timetable():
                 notes=notes,
                 event=event
             )
-        db.session.add(entry)
-        db.session.commit()
-    # すべての変更をデータベースに保存
-    
+            db.session.add(new_entry)
+
+    db.session.commit()  # すべての変更を保存
 
     # 時間割にリダイレクト
     return redirect(url_for("teacher.jikanwari.t_jikanwari"))
+
 
 
 # クラス一覧表示
