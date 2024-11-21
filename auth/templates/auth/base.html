@@ -5,10 +5,10 @@
     <meta charset="UTF-8" />
     <!-- base.htmlを読み込んだファイルで指定した内容を埋め込む -->
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css' ) }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}" />
 </head>
 
-<body>
+<body id="body">
     {% block content %}{% endblock %}
 </body>
 

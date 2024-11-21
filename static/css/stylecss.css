@@ -165,7 +165,7 @@ a.t-student img {
 .loginform-forms {
   display: flex;
   align-items: flex-start;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .loginform-form-wrapper {
@@ -213,12 +213,12 @@ a.t-student img {
   transition: all .3s ease-out;
 }
 
-.loginform-form-wrapper.is-active .loginform-switcher-login {
+.loginform-form-wrapper.is-active .loginform-switcher-teacher {
   color: #fff;
   transform: translateX(90px);
 }
 
-.loginform-form-wrapper.is-active .loginform-switcher-signup {
+.loginform-form-wrapper.is-active .loginform-switcher-student {
   color: #fff;
   transform: translateX(-90px);
 }
@@ -266,53 +266,53 @@ a.t-student img {
   transform-origin: top;
 }
 
-.loginform-form-login {
+.loginform-form-teacher {
   animation: hideLogin .3s ease-out forwards;
 }
 
-.loginform-form-wrapper.is-active .loginform-form-login {
+.loginform-form-wrapper.is-active .loginform-form-teacher {
   animation: showLogin .3s ease-in forwards;
 }
 
 @keyframes showLogin {
   0% {
-    background: #d7e7f1;
-    transform: translate(40%, 10px);
+    background: #606C75;
+    transform: translate(40%, 10px) scaleY(.8);
   }
   50% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scaleY(.8);
   }
   100% {
     background-color: #fff;
-    transform: translate(35%, -20px);
+    transform: translate(35%, -20px) scaleY(1);
   }
 }
 
 @keyframes hideLogin {
   0% {
     background-color: #fff;
-    transform: translate(35%, -20px);
+    transform: translate(35%, -20px) scaleY(1);
   }
   50% {
-    transform: translate(0, 0);
+    transform: translate(0, 0) scaleY(.8);
   }
   100% {
-    background: #d7e7f1;
-    transform: translate(40%, 10px);
+    background: #606C75;
+    transform: translate(40%, 10px) scaleY(.8);
   }
 }
 
-.loginform-form-signup {
+.loginform-form-student {
   animation: hideSignup .3s ease-out forwards;
 }
 
-.loginform-form-wrapper.is-active .loginform-form-signup {
+.loginform-form-wrapper.is-active .loginform-form-student {
   animation: showSignup .3s ease-in forwards;
 }
 
 @keyframes showSignup {
   0% {
-    background: #d7e7f1;
+    background: #606C75;
     transform: translate(-40%, 10px) scaleY(.8);
   }
   50% {
@@ -333,7 +333,7 @@ a.t-student img {
     transform: translate(0, 0) scaleY(.8);
   }
   100% {
-    background: #d7e7f1;
+    background: #606C75;
     transform: translate(-40%, 10px) scaleY(.8);
   }
 }
@@ -347,11 +347,11 @@ a.t-student img {
   transition: all .3s ease-out;
 }
 
-.loginform-form-login fieldset {
+.loginform-form-teacher fieldset {
   transform: translateX(-50%);
 }
 
-.loginform-form-signup fieldset {
+.loginform-form-student fieldset {
   transform: translateX(50%);
 }
 
@@ -361,35 +361,36 @@ a.t-student img {
   transition: opacity .4s ease-in, transform .35s ease-in;
 }
 
-.loginform-form legend {
+/* .loginform-form legend {
   position: absolute;
   overflow: hidden;
   width: 1px;
   height: 1px;
   clip: rect(0 0 0 0);
-}
+} */
 
 .loginform-input-block {
   margin-bottom: 20px;
 }
 
-.loginform-input-block label {
+/* .loginform-input-block label {
   font-size: 14px;
   color: #a1b4b4;
-}
+} */
 
 .loginform-input-block input {
-  display: block;
+  /* display: block; */
   width: 100%;
   margin-top: 8px;
   padding-right: 15px;
-  padding-left: 15px;
+  padding-left: 3px;
   font-size: 16px;
   line-height: 40px;
   color: #3b4465;
-  background: #eef9fe;
-  border: 1px solid #cddbef;
-  border-radius: 2px;
+  background:rgba(0,0,0,0.0);
+  border: none;
+  border-bottom: 1px solid #8899A6;
+  vertical-align: bottom;
 }
 
 .loginform-form [type='submit'] {
@@ -399,7 +400,7 @@ a.t-student img {
   margin: 30px auto 10px;
   font-size: 18px;
   line-height: 40px;
-  border-radius: 25px;
+  border-radius: 5px;
   border: none;
   transition: all .3s ease-out;
 }
@@ -410,17 +411,10 @@ a.t-student img {
   transition: all .4s ease-in;
 }
 
-.loginform-btn-login {
+.loginform-btn{
   color: #fbfdff;
-  background: #a7e245;
-  transform: translateX(-30%);
-}
-
-.loginform-btn-signup {
-  color: #a7e245;
-  background: #fbfdff;
-  box-shadow: inset 0 0 0 2px #a7e245;
-  transform: translateX(30%);
+  background: #606C75;
+  /* transform: translateX(-30%); */
 }
 
 /* ログインのやつ300行近くあるね、高級フォームだよ */

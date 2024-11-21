@@ -6,55 +6,65 @@
 
 <!-- base.htmlのblock contentの中にhtmlを埋め込む -->
 {% block content %}
-<div class="mx-auto dt-auth-main">
-    <div class="card dt-auth-login">
-        <br>
-        <h2 class="login-head">ログイン</h2>
-        <section>
-            <h3>教員</h3>
+
+<section class="loginform-forms-section">
+    <h1 class="login-head loginform-section-title">ログイン</h1>
+    <div class="loginform-forms">
+        <div class="loginform-form-wrapper is-active">
+            <button type="loginform-button" class="loginform-switcher loginform-switcher-teacher">
+                教員
+                <span class="loginform-underline"></span>
+            </button>
             <!-- フォーム入力後はauth/views.pyのlogin関数を実行 -->
-            <form method="post" class="login-form" action="{{ url_for('auth.login') }}">
-                <!-- flash関数で入力したメッセージを順に取得 -->
-                {% for message in get_flashed_messages() %}
-                <!-- メッセージを順に表示 -->
-                <span class="dt-auth-flash">{{ message }}</span>
-                {% endfor %}
+            <form method="post" class="login-form loginform-form loginform-form-teacher" action="{{ url_for('auth.login') }}">
+
                 <!-- csrf対策。とりあえずすべてのhtmlファイルに書いておく -->
                 {{ teacherform.csrf_token }}
                 <!-- auth/forms.pyのLoginFormクラスのemail、password、の情報を基にフォームを作成 -->
                 <!-- form.xxxの取得でforms.pyのxxxの情報を取得できる -->
-                {{ teacherform.teacher_id(placeholder="教員番号") }}
-                <br>
-                {{ teacherform.teacher_password(placeholder="パスワード") }}
-                <br>
+                <div class="loginform-input-block">
+                    {{ teacherform.teacher_id(id="loginform-teacher-id", placeholder="教員番号") }}
+                </div>
+                <div class="loginform-input-block">
+                    {{ teacherform.teacher_password(id="loginform-teacher-password", placeholder="パスワード") }}
+                </div>
                 <a href="{{ url_for('auth.reset') }}">パスワードを忘れた方はこちら</a>
-                <br>
-                {{ teacherform.submit }}
+                {{ teacherform.submit(class="loginform-btn") }}
             </form>
-        </section>
-
-        <section>
-            <h3>生徒</h3>
+        </div>
+        
+        <div class="loginform-form-wrapper">
+            <button type="button" class="loginform-switcher loginform-switcher-student">
+                生徒
+                <span class="loginform-underline"></span>
+            </button>
             <!-- フォーム入力後はauth/views.pyのlogin関数を実行 -->
-            <form method="post" class="login-form" action="{{ url_for('auth.login') }}">
-                <!-- flash関数で入力したメッセージを順に取得 -->
-                {% for message in get_flashed_messages() %}
-                <!-- メッセージを順に表示 -->
-                <span class="dt-auth-flash">{{ message }}</span>
-                {% endfor %}
+            <form method="post" class="login-form loginform-form loginform-form-student" action="{{ url_for('auth.login') }}">
                 <!-- csrf対策。とりあえずすべてのhtmlファイルに書いておく -->
                 {{ studentform.csrf_token }}
                 <!-- auth/forms.pyのLoginFormクラスのemail、password、の情報を基にフォームを作成 -->
                 <!-- form.xxxの取得でforms.pyのxxxの情報を取得できる -->
-                {{ studentform.student_id(placeholder="生徒番号") }}
-                <br>
-                {{ studentform.student_password(placeholder="パスワード") }}
-                <br>
+                <div class="loginform-input-block">
+                    {{ studentform.student_id(id="loginform-student-id", placeholder="生徒番号") }}
+                </div>
+                <div class="loginform-input-block">
+                    {{ studentform.student_password(id="loginform-student-password", placeholder="パスワード") }}
+                </div>
                 <a href="{{ url_for('auth.reset') }}">パスワードを忘れた方はこちら</a>
-                <br>
-                {{ studentform.submit }}
+                {{ studentform.submit(class="loginform-btn") }}
             </form>
-        </section>
+        </div>
     </div>
-</div>
+</section>
+
+<script>
+    const switchers = [...document.querySelectorAll('.loginform-switcher')]
+
+    switchers.forEach(item => {
+    item.addEventListener('click', function() {
+        switchers.forEach(item => item.parentElement.classList.remove('is-active'))
+        this.parentElement.classList.add('is-active')
+    })
+    })
+</script>
 {% endblock %}
