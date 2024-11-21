@@ -28,7 +28,8 @@ class TeacherSignUpForm(FlaskForm):
     teacher_password = PasswordField(
         "パスワード", 
         validators=[
-            DataRequired("パスワードは必須です。") # 入力必須の設定
+            DataRequired("パスワードは必須です。"), # 入力必須の設定
+            Length(8, 25, "8~25文字で入力してください。"),
         ]
     )
     teacher_class_num = SelectField(
@@ -76,7 +77,8 @@ class StudentSignUpForm(FlaskForm):
     student_password = PasswordField(
         "パスワード", 
         validators=[
-            DataRequired("パスワードは必須です。") # 入力必須の設定
+            DataRequired("パスワードは必須です。"), # 入力必須の設定
+            Length(8, 25, "8~25文字で入力してください。"),
         ]
     )
     student_entrollment_year = SelectField(
@@ -112,6 +114,7 @@ class EmailForm(FlaskForm):
             DataRequired("生徒番号は必須です。"), # 入力必須の設定
             Length(6, 7, "6~7文字で入力してください。"), # 生徒番号は7桁
         ],
+        render_kw={"placeholder": "生徒番号または、教員番号"}
     )
     mail = StringField(
         "メールアドレス",
@@ -119,8 +122,9 @@ class EmailForm(FlaskForm):
             DataRequired("メールアドレスは必須です。"), # 入力必須の設定
             Email("メールアドレスの形式で入力してください。"), # emailの形式で入力するよう設定
         ],
+        render_kw={"placeholder": "メールアドレス"}
     )
-    submit = SubmitField("送信")
+    submit = SubmitField("メールを送信")
 
 class OneTimeForm(FlaskForm):
     onetime = StringField(
@@ -129,6 +133,7 @@ class OneTimeForm(FlaskForm):
             DataRequired("ワンタイムパスワードを入力してください"), # 入力必須の設定
             Length(6, 6, "6文字で入力してください。"), # 生徒番号は7桁
         ],
+        render_kw={"placeholder": "ワンタイムパスワード"}
     )
     submit = SubmitField("確定")
 
@@ -136,13 +141,17 @@ class NewPwForm(FlaskForm):
     password1 = PasswordField(
         "新しいパスワード",
         validators=[
-            DataRequired("パスワードは必須です。") # 入力必須の設定
+            DataRequired("パスワードは必須です。"), # 入力必須の設定
+            Length(8, 25, "8~25文字で入力してください。"),
         ],
+        render_kw={"placeholder": "新しいパスワード"}
     )
     password2 = PasswordField(
         "再確認",
         validators=[
-            DataRequired("パスワードは必須です。") # 入力必須の設定
+            DataRequired("パスワードは必須です。"), # 入力必須の設定
+            Length(8, 25, "8~25文字で入力してください。"),
         ],
+        render_kw={"placeholder": "再確認"}
     )
     submit = SubmitField("確定")
