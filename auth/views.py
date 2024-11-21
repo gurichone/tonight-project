@@ -187,8 +187,8 @@ def onetime():
 @auth.route("/newpw", methods=["GET", "POST"])
 def newpw():
     form = NewPwForm()
+    message=False
     if form.validate_on_submit():
-        print(form.password1.data, "--------------------", form.password2.data)
         if form.password1.data == form.password2.data:
             user_id=session["user_id"]
             if len(user_id) == 6:
@@ -203,4 +203,6 @@ def newpw():
                 db.session.commit()
             session.pop("user_id", None)
             return render_template("auth/reset_done.html")
-    return render_template("auth/newpw.html", form=form)
+        else:
+            message="新しいパスワードの値が再確認で入力された値と違います"
+    return render_template("auth/newpw.html", form=form, message=message)

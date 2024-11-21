@@ -3,13 +3,16 @@
 {% block title %}パスワードリセット{% endblock %}
 
 {% block content %}
+<a href="{{ url_for('teacher.profile.profile') }}"></a>
 <h2>パスワードリセット</h2>
 <div>
     {% if message %}
-    <p>{{message}}</p>
+    <p>{{ message }}</p>
     {% endif %}
-    <form method="post" action="{{ url_for('auth.newpw')}}">
+    <form method="post" action="{{ url_for('student.profile.reset_password')}}">
         {{ form.csrf_token }}
+        {{ form.oldpassword.label }}{{ form.oldpassword }}
+        <br>
         {{ form.password1.label }}{{ form.password1 }}
         <br>
         {{ form.password2.label }}{{ form.password2 }}

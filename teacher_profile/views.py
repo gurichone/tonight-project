@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, flash,
 from flask_login import current_user, login_required
 from auth.models import Teacher
 from app import db
-from .forms import ProfileImageForm
+from .forms import ProfileImageForm, PasswordResetForm
 import os
 from werkzeug.utils import secure_filename
 import time
@@ -91,3 +91,23 @@ def reset_profile_image():
     flash('プロフィール画像がデフォルトに戻されました。', 'success')
     return redirect(url_for('teacher.profile.profile'))
 
+@prof.route('reset_password', methods=["GET", "POST"])
+@login_required
+def reset_password():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
+    form = PasswordResetForm()
+    message=False
+    if form.validate_on_submit():
+        teacher = db.session.query(Teacher).filter_by(id=current_user.id).first()
+        if teacher is not None and teacher.verify_password(form.oldpassword.data):
+            if form.password1.data == form.password2.data:
+                teacher.password=form.password1.data
+                db.session.add(teacher)
+                db.session.commit()
+                return render_template("teacher_profile/reset_done.html")
+            else:
+                message="新しいパスワードの値が再確認で入力された値と違います"
+        else:
+            message="現在のパスワードが違います"
+    return render_template("teacher_profile/reset.html", form=form, message=message)
