@@ -257,7 +257,6 @@ def issue_code():
     # セッションの期限切れチェックと削除処理
     if 'code_timestamp' in session:
         code_time = datetime.fromtimestamp(session['code_timestamp'])
-        print(session['code_timestamp'])
         if datetime.now() - code_time > timedelta(minutes=5):
             session.pop('attendance_code', None)
             session.pop('code_timestamp', None)

@@ -6,20 +6,19 @@
 
     <form action="{{ url_for('student.syusseki.s_syusseki') }}" method="POST">
         {{ form.csrf_token }}
-        <!-- エラー文の表示をflashで表現 -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flashes">
-                    {% for category, message in messages %}
-                        <li class="flash {{ category }}" style="color:red">{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+        
+        <!-- フォーム全体のエラーメッセージを表示 -->
+        {% if form.attendance_code.errors %}
+            <ul class="errors" style="color:red">
+                {% for error in form.attendance_code.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
         <div class="form-group">
             <label for="attendance_code">出席コード</label>
-            <input type="text" id="attendance_code" name="attendance_code" required>
+            {{ form.attendance_code(class="form-control", id="attendance_code") }}
         </div>
 
         <button type="submit">出席登録</button>
