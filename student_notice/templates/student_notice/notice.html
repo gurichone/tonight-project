@@ -1,0 +1,47 @@
+{% extends "teacher/base.html" %}
+
+{% block modorulink %}<a href="{{ url_for('student.menu.s_menu') }}">戻る</a>{% endblock %}
+
+{% block content %}
+<div>
+    <h1>通知一覧</h1>
+    <div>
+        <div id="notice_list"></div>
+        <div id="notice_text"></div>
+    </div>
+</div>
+<script>
+    function makeNoticeList(sender, title, first, id) {
+        listElm = document.getElementById("notice_list");
+        listElm.innerHTML+=`
+            <button id="notice_${id}" class="notice_button">
+                <p>${sender}</p>
+                <p>${title}</p>
+                <br>
+                <p>${first.slice(0, 6)}...</p>
+            </button>
+        `;
+    }
+    var noticeDict = {};
+    {% for n in notice %}
+    makeNoticeList("{{n.Teacher.teacher_name}}", "{{n.Information.title}}", "{{n.Information.discription}}", "{{n.Information.info_id}}");
+    noticeDict["{{n.Information.info_id}}"]=["{{n.Teacher.teacher_name}}", "{{n.Information.title}}", "{{n.Information.discription}}"];
+    {% endfor %}
+
+    var buttonElm = document.querySelectorAll(".notice_button");
+    var textElm = document.getElementById("notice_text");
+
+    for (let i = 0; i < buttonElm.length; i++) {
+        buttonElm[i].addEventListener('click', function(){
+            text=noticeDict[buttonElm[i].id.slice(-1)]
+            textElm.innerHTML = `
+                <h2>${text[0]}</h2>
+                <h3>${text[1]}</h3>
+                <div>
+                    ${text[2]}
+                </div>
+            `;
+        })
+    }
+</script>
+{% endblock %}
