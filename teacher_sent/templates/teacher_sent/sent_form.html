@@ -5,27 +5,34 @@
 
 <form method="POST">
     {{ form.hidden_tag() }}
+
+    <!-- 宛先 -->
     <div>
         {{ form.address.label }}
-        {{ form.address }}
         {% for error in form.address.errors %}
-            <span class="error">{{ error }}</span>
+            <div>{{ error }}</div>
         {% endfor %}
+        {{ form.address }}
     </div>
+
+    <!-- タイトル -->
     <div>
         {{ form.title.label }}
-        {{ form.title }}
         {% for error in form.title.errors %}
-            <span class="error">{{ error }}</span>
+            <div>{{ error }}</div>
         {% endfor %}
+        {{ form.title }}
     </div>
+
+    <!-- 本文 -->
     <div>
         {{ form.discription.label }}
-        {{ form.discription }}
         {% for error in form.discription.errors %}
-            <span class="error">{{ error }}</span>
+            <div>{{ error }}</div>
         {% endfor %}
+        {{ form.discription }}
     </div>
+    
     <button type="submit">{{ form.submit.label }}</button>
 </form>
 {% endblock %}

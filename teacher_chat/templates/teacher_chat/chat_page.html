@@ -1,0 +1,56 @@
+{% extends "teacher/base.html" %}
+{% block title %}チャット{% endblock %}
+{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block content %}
+
+    <h1>チャット</h1>
+
+    <!-- チャットリスト -->
+    <div style="width: 30%; float: left; border-right: 1px solid #ccc; padding: 10px;">
+        <h2>チャットリスト</h2>
+        <ul>
+            {% for teacher in teachers %}
+                <li>
+                    <a href="{{ url_for('teacher.chat.chat_page', teacher_id=teacher.id) }}"
+                       style="{% if teacher.id == selected_teacher_id %}font-weight: bold;{% endif %}">
+                        {{ teacher.teacher_name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- チャットルーム -->
+    <div style="width: 65%; float: right; padding: 10px;">
+        {% if selected_teacher_id %}
+            <h2>チャットルーム</h2>
+
+            <!-- メッセージリスト -->
+            <div style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;">
+                {% for message in messages %}
+                    <p>
+                        <strong>{{ message[2] }}:</strong> <!-- 教員名 -->
+                        {{ message[0] }} <!-- メッセージ内容 -->
+                        <small>({{ message[1].strftime('%Y-%m-%d %H:%M:%S') }})</small> <!-- 送信日時 -->
+                    </p>
+                {% endfor %}
+            </div>
+
+
+            <!-- メッセージ送信フォーム -->
+            <form method="POST" style="margin-top: 10px;">
+                {{ form.hidden_tag() }}
+                <div>
+                    {{ form.message.label }}
+                    {{ form.message(size=40) }}
+                    {% for error in form.message.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+                <button type="submit">{{ form.submit.label }}</button>
+            </form>
+        {% else %}
+            <h2>チャットルームを選択してください</h2>
+        {% endif %}
+    </div>
+{% endblock %}
