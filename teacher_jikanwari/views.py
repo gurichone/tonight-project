@@ -114,48 +114,65 @@ def add_entry():
 
 @jikanwari.route('/save_timetable', methods=['POST'])
 def save_timetable():
+    # フォームデータを取得
     form = dict(request.form)
-    selected_year = form['year']
-    selected_month = form['month']
+
+    # フォームデータを確認（コンソールに出力）
+    print(form)  # フォームデータの内容を確認
+
+    selected_year = int(form['year'])
+    selected_month = int(form['month'])
 
     # 年月に基づいてデータを取得
     dates_and_weekdays = Timetable.query.filter_by(year=selected_year, month=selected_month).all()
+    if dates_and_weekdays:
+        for date in dates_and_weekdays:
+            period1 = form["period1_"+str(date.day)]
+            period2 = form["period2_"+str(date.day)]
+            period3 = form["period3_"+str(date.day)]
+            notes = form["note_"+str(date.day)]
+            event = form["event_"+str(date.day)]
 
-    for date in dates_and_weekdays:
-        period1 = form["period1-{}-{}-{}".format(date.year, date.month, date.day)]
-        period2 = form["period2-{}-{}-{}".format(date.year, date.month, date.day)]
-        period3 = form["period3-{}-{}-{}".format(date.year, date.month, date.day)]
-        notes = form["notes-{}-{}-{}".format(date.year, date.month, date.day)]
-        event = form["event-{}-{}-{}".format(date.year, date.month, date.day)]
-
-        entry = Timetable.query.filter_by(day=date.day, month=selected_month, year=selected_year).first()
-
-        if entry:
-            # 既存のエントリを更新
+            entry = Timetable.query.filter_by(day=date.day, month=selected_month, year=selected_year).first()
+            
+            
+                # 既存のエントリを更新
             entry.period1 = period1
             entry.period2 = period2
             entry.period3 = period3
             entry.notes = notes
             entry.event = event
-        else:
+            
+            db.session.add(entry)
+            db.session.commit()  # すべての変更を保存
+    else:
+        days = calendar.monthrange(selected_year,selected_month)
+        # for i in range(1, 13):
+        #     print(selected_year,"年", i, "月は", calendar.monthrange(selected_year,i))
+        weekdays = ['月', '火', '水', '木', '金', '土', '日']
+        for day in range(days[0]+1, days[1]+1):
+            period1 = form["period1_"+str(day)]
+            period2 = form["period2_"+str(day)]
+            period3 = form["period3_"+str(day)]
+            notes = form["note_"+str(day)]
+            event = form["event_"+str(day)]
             # 新しいエントリを作成
-            new_entry = Timetable(
+            entry = Timetable(
                 year=selected_year,
                 month=selected_month,
-                day=date.day,
-                weekday=date.weekday,
+                day=day,
+                weekday=weekdays[calendar.weekday(selected_year, selected_month, day)],
                 period1=period1,
                 period2=period2,
                 period3=period3,
                 notes=notes,
                 event=event
             )
-            db.session.add(new_entry)
-
-    db.session.commit()  # すべての変更を保存
-
+            db.session.add(entry)
+            db.session.commit()
     # 時間割にリダイレクト
     return redirect(url_for("teacher.jikanwari.t_jikanwari"))
+
 
 
 
