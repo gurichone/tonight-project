@@ -73,7 +73,8 @@ def chat_page():
         messages_with_teachers = db.session.query(
             Chat.discription,
             Chat.chat_date,
-            Teacher.teacher_name
+            Teacher.teacher_name,
+            Chat.chat_id,
         ).join(Teacher, Chat.teacher_num == Teacher.id).filter(
             Chat.room_id == chatroom.room_id
         ).order_by(Chat.chat_date).all()

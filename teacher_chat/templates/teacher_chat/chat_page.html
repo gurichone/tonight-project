@@ -29,9 +29,9 @@
             <div style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;">
                 {% for message in messages %}
                     <p>
-                        <strong>{{ message[2] }}:</strong> <!-- 教員名 -->
-                        {{ message[0] }} <!-- メッセージ内容 -->
-                        <small>({{ message[1].strftime('%Y-%m-%d %H:%M:%S') }})</small> <!-- 送信日時 -->
+                        <strong>{{ message.teacher_name }}:</strong><br> <!-- 教員名 -->
+                        {{ message.discription }}<br> <!-- メッセージ内容 -->
+                        <small>({{ message.chat_date.strftime('%Y-%m-%d %H:%M:%S') }})</small> <!-- 送信日時 -->                        
                     </p>
                 {% endfor %}
             </div>
