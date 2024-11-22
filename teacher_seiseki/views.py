@@ -4,7 +4,7 @@ from app import db
 from teacher_seiseki.forms import SearchScore, AddScore, AttendScore, EditScore
 from teacher_seiseki.models import Score
 from auth.models import Student, Subject, Teacher
-from datetime import datetime
+from datetime import datetime,timedelta
 from teacher_jikanwari.models import Timetable
 import hashlib
 
@@ -60,7 +60,13 @@ def search():
         if score.student_name.data:
             query = query.filter(Student.student_name.like(f"%{score.student_name.data}%"))
 
-        return render_template("/teacher_seiseki/index.html", score=score, subject_name=subject_name, student_name=student_name, results=query.all())
+        return render_template(
+            "/teacher_seiseki/index.html",
+            score=score,
+            subject_name=subject_name,
+            student_name=student_name,
+            results=query.all()
+            )
 
     # 検索が行われていない場合、全部の結果を表示
     return render_template("/teacher_seiseki/index.html", score=score, results=query.all())
@@ -88,8 +94,13 @@ def add():
             # 受け取ったフォームデータをそのまま表示する確認画面に移動
             student = db.session.query(Student).filter_by(id=score_form.id.data).first()
             student_name = student.student_name if student else "不明です"
-            return render_template("teacher_seiseki/add.html", 
-                                   score=score_form, student_name=student_name, confirm=True, success=False)
+            return render_template(
+                "teacher_seiseki/add.html", 
+                score=score_form,
+                student_name=student_name,
+                confirm=True,
+                success=False
+                )
 
         elif action == 'add':
             # 重複チェックを実行
@@ -100,8 +111,12 @@ def add():
             # エラー文を表示
             if existing_score:
                 flash("同じ情報が既に登録されています。", "error")
-                return render_template("teacher_seiseki/add.html",
-                                       score=score_form,confirm=False,success=False)
+                return render_template(
+                    "teacher_seiseki/add.html",
+                    score=score_form,
+                    confirm=False,
+                    success=False
+                    )
             
             student = db.session.query(Student).filter_by(id=score_form.id.data).first()
             subject = db.session.query(Subject).filter_by(subject_id=score_form.subject_id.data).first()
@@ -116,11 +131,21 @@ def add():
             db.session.add(score)
             db.session.commit()
             # 登録完了画面を表示する
-            return render_template("teacher_seiseki/add.html", 
-                                   score=score_form, student=student,subject=subject, confirm=False, success=True)
+            return render_template(
+                "teacher_seiseki/add.html", 
+                score=score_form, 
+                student=student,
+                subject=subject,
+                confirm=False, 
+                success=True
+                )
     # 最初は登録する情報を入力する画面に移る
-    return render_template("teacher_seiseki/add.html", 
-                           score=score_form, confirm=False, success=False)
+    return render_template(
+        "teacher_seiseki/add.html", 
+        score=score_form, 
+        confirm=False, 
+        success=False
+        )
 
 # 出席日数を確認する画面を表示する
 @seiseki.route("/attend", methods=["GET", "POST"])
@@ -156,10 +181,20 @@ def attend():
             query = query.filter(Score.student_name.like(f"%{attend.student_name.data}%"))
 
         # フィルタリング結果を取得し、画面に表示
-        return render_template("/teacher_seiseki/attend.html", attend=attend, subject_name=subject_name, student_name=student_name, results=query.all())
+        return render_template(
+            "/teacher_seiseki/attend.html", 
+            attend=attend, 
+            subject_name=subject_name, 
+            student_name=student_name, 
+            results=query.all()
+            )
     
     # 検索が行われていない場合、全部の結果を表示
-    return render_template("/teacher_seiseki/attend.html", attend=attend, results=query.all())
+    return render_template(
+        "/teacher_seiseki/attend.html", 
+        attend=attend,
+        results=query.all()
+        )
 
 # 成績の編集を行うための処理を実装
 @seiseki.route("/edit/<int:score_id>", methods=["GET", "POST"])
@@ -218,6 +253,15 @@ def delete(score_id):
 def issue_code():
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
+    
+    # セッションの期限切れチェックと削除処理
+    if 'code_timestamp' in session:
+        code_time = datetime.fromtimestamp(session['code_timestamp'])
+        print(session['code_timestamp'])
+        if datetime.now() - code_time > timedelta(minutes=5):
+            session.pop('attendance_code', None)
+            session.pop('code_timestamp', None)
+
     # datetime関数で日時を取得
     now = datetime.now()
     year, month, day = now.year, now.month, now.day
