@@ -3,7 +3,7 @@
 {% block title %}パスワードリセット{% endblock %}
 
 {% block content %}
-<h2 class="title">パスワードリセット</h2>
+<h1 class="h1_title">パスワードリセット</h1>
 <div class="form_white">
     <form method="post" action="{{ url_for('auth.onetime')}}">
         {{ form.csrf_token }}
