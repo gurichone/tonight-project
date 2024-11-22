@@ -9,10 +9,10 @@
             <!-- 通知とアカウント情報のアイコン -->
             <!-- 通知 -->
             <div class="teacher-session">
-                <a href="#" class="menu-icon">
+                <!-- <a href="#" class="menu-icon">
                     <img src="{{ url_for('static', filename='images/notice.png') }}" alt="通知">
                     <p class="icon-text">通知</p>
-                </a>
+                </a> -->
 
                 <!-- アカウント情報 -->
                 <a href="{{ url_for('teacher.profile.profile')}}" class="menu-icon">
@@ -30,7 +30,7 @@
                 </a></li>
                 
                 <!-- チャット -->
-                <li><a href="#" class="menu-item">
+                <li><a href="{{ url_for('teacher.chat.chat_page') }}" class="menu-item">
                     <img src="{{ url_for('static', filename='images/chat.png') }}" alt="チャット">
                 </a></li>
 
