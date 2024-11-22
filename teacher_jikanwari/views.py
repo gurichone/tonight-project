@@ -63,13 +63,17 @@ def add_entry():
             'weekday': weekdays[weekday]
         })
 
+    # 選択された年と月のデータを取得
+    existing_entries = Timetable.query.filter_by(year=selected_year, month=selected_month).all()
+    existing_data = {entry.day: entry for entry in existing_entries}
+
     if request.method == 'POST':
         # POSTリクエストが送られた場合、新しいエントリを追加
         for day in range(1, number_of_days + 1):
             period1 = request.form.get(f'period1_{day}')
             period2 = request.form.get(f'period2_{day}')
             period3 = request.form.get(f'period3_{day}')
-            notes = request.form.get(f'notes_{day}')
+            notes = request.form.get(f'note_{day}')
             event = request.form.get(f'event_{day}')
 
             # 既存のエントリをチェック
@@ -99,8 +103,7 @@ def add_entry():
                     event=event
                 )
                 db.session.add(new_entry)  # 新しいエントリを追加
-
-        db.session.commit()  # 一度だけコミットしてデータベースに保存
+                db.session.commit()  # 一度だけコミットしてデータベースに保存
 
         # データ追加後は時間割のページにリダイレクト
         return redirect(url_for('teacher.jikanwari.t_jikanwari'))
@@ -109,7 +112,10 @@ def add_entry():
     return render_template('teacher_jikanwari/add_entry.html', 
                            selected_year=selected_year,
                            selected_month=selected_month, 
-                           dates_and_weekdays=dates_and_weekdays)
+                           dates_and_weekdays=dates_and_weekdays,
+                           existing_data=existing_data)
+
+
 
 
 @jikanwari.route('/save_timetable', methods=['POST'])
@@ -172,9 +178,6 @@ def save_timetable():
             db.session.commit()
     # 時間割にリダイレクト
     return redirect(url_for("teacher.jikanwari.t_jikanwari"))
-
-
-
 
 # クラス一覧表示
 @jikanwari.route('/class_list')
