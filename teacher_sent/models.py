@@ -5,6 +5,7 @@ class Information(db.Model):
     info_id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
     discription = db.Column(db.String)
+    sent_time = db.Column(db.DateTime)
     teacher_num = db.Column(db.String)
 
 

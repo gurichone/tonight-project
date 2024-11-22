@@ -3,18 +3,22 @@
 {% block title %}パスワードリセット{% endblock %}
 
 {% block content %}
-<a href="{{url_for('auth.login')}}">戻る</a>
-<h2>パスワードリセット</h2>
-<div>
+<div class="modorulink"><a href="{{url_for('auth.login')}}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a></div>
+<h1 id="title">パスワードリセット</h1>
+<div class="form_white">
     <form method="post" action="{{ url_for('auth.reset')}}">
         {{ form.csrf_token }}
-        {{ form.id.label }}{{ form.id }}
+        {{ form.id(class="form_input") }}
         <br>
-        {{ form.mail.label }}{{ form.mail }}
+        {{ form.mail(class="form_input") }}
         <br>
-        <label>ワンタイムパスワードをメールで送信します。<br>メールアドレスを入力してください</label>
+        <p class="form_p">ワンタイムパスワードをメールで送信します。<br>メールアドレスを入力してください</p>
         <br>
-        {{ form.submit }}
+        {{ form.submit(class="form_submit") }}
     </form>
 </div>
+<!-- <script>
+    const idElm = document.getElementById("id");
+    idElm.placeholder = "{{ form.id.label }}";
+</script> -->
 {% endblock %}

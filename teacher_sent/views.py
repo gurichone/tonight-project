@@ -4,6 +4,7 @@ from app import db
 from teacher_sent.forms import InformationForms
 from teacher_sent.models import Information, Get_Information
 from auth.models import Teacher, Student, ClassNum
+import datetime
 
 
 sent = Blueprint(
@@ -36,6 +37,7 @@ def teacher_sent():
         new_info = Information(
             title=title,
             discription=discription,
+            sent_time=datetime.datetime.now(),
             teacher_num=current_user.id,
         )
         db.session.add(new_info)

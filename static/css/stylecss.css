@@ -15,6 +15,13 @@ a.t-student img {
 }
 
 /* 共通部分 */
+/* html{
+  overflow: hidden;
+}
+body{
+  overflow: hidden;
+} */
+
 #body {
     margin: 0;
     padding: 0;
@@ -43,6 +50,91 @@ a.t-student img {
   right: 10px;
   background-color: aqua;
   display: none;
+}
+
+#h1_title {
+  /* font-family: sans-serif;
+    font-weight: 200; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    letter-spacing: 1px;
+    color: #fff;
+}
+#title_done {
+  margin-top: 100px;
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+#bg_homebutton {
+  position: fixed;
+  bottom: 8vh;
+  right: 10px;
+}
+
+.form_white {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.form_white form {
+  overflow: hidden;
+  min-width: 310px;
+  min-height: 190px;
+  margin-top: 30px;
+  padding: 60px 50px;
+  border-radius: 20px;
+  transform-origin: top;
+  background-color: #fff;
+}
+
+.form_white form .form_input{
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 1px solid #8899A6;
+  width: 100%;
+  margin-top: 8px;
+  padding-right: 15px;
+  padding-left: 3px;
+  font-size: 16px;
+  line-height: 1;
+  color: #3b4465;
+}
+.form_white form .form_input:focus {
+  outline: none;
+}
+.form_white form .form_p{
+  line-height: 1.1;
+  font-size: 8px;
+  text-align: center;
+}
+.form_white form .form_submit {
+  color: #fbfdff;
+  background: #606C75;
+  border: none;
+  border-radius: 5px;
+  width: 50%;
+  aspect-ratio: 7 / 2;
+  margin: 0 25%;
+}
+
+.modorulink {
+    position: fixed;
+    top: 8vh;
+    left: 70px;
+}
+.modorulink a img{
+    width: 17vh;
+    height: 5vh;
 }
 /* 共通部分 */
 
@@ -259,10 +351,10 @@ a.t-student img {
 
 .loginform-form {
   overflow: hidden;
-  min-width: 260px;
+  min-width: 320px;
   margin-top: 50px;
   padding: 30px 25px;
-  border-radius: 5px;
+  border-radius: 20px;
   transform-origin: top;
 }
 
@@ -385,12 +477,11 @@ a.t-student img {
   padding-right: 15px;
   padding-left: 3px;
   font-size: 16px;
-  line-height: 40px;
+  line-height: 1;
   color: #3b4465;
   background:rgba(0,0,0,0.0);
   border: none;
   border-bottom: 1px solid #8899A6;
-  vertical-align: bottom;
 }
 
 .loginform-form [type='submit'] {

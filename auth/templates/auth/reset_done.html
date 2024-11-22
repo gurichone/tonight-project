@@ -4,6 +4,6 @@
 
 {% block content %}
 
-<h2>パスワード変更が完了しました</h2>
-<a href="{{url_for('auth.login')}}">ログイン</a>
+<h2 id="title_done">パスワード変更が完了しました</h2>
+<a href="{{url_for('auth.login')}}" id="re_loginbutton"><img src="{{ url_for('static', filename='images/re_login.png') }}" alt="戻る"></a>
 {% endblock %}

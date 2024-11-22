@@ -3,15 +3,15 @@
 {% block title %}パスワードリセット{% endblock %}
 
 {% block content %}
-<h2>パスワードリセット</h2>
-<div>
+<h2 class="title">パスワードリセット</h2>
+<div class="form_white">
     <form method="post" action="{{ url_for('auth.onetime')}}">
         {{ form.csrf_token }}
-        {{ form.onetime.label }}{{ form.onetime }}
+        {{ form.onetime(class="form_input") }}
         <br>
-        <label>メールに届いたパスワードを入力してください。</label>
+        <p class="form_p">メールに届いたパスワードを入力してください。</p>
         <br>
-        {{ form.submit }}
+        {{ form.submit(class="form_submit") }}
     </form>
 </div>
 {% endblock %}

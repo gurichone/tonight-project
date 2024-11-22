@@ -122,7 +122,7 @@ def logout():
 @auth.route("/index")
 # @login_required
 def index():
-    return render_template("auth/index.html")
+    return render_template("auth/reset_done.html")
 
 @auth.route("/delete")
 def delete():
