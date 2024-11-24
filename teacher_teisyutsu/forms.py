@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SubmitField, SelectField, DateField, StringField
-from wtforms.validators import DataRequired, length, ReadOnly
+from wtforms.validators import DataRequired, Length, ReadOnly
 from flask_wtf.file import FileAllowed, FileField, FileRequired
 
 
@@ -24,6 +24,8 @@ class CreateSubmissionForms(FlaskForm):
         "提出物名", # フォームに表示される文字を指定
         validators=[
             DataRequired(message="入力は必須です。"),  # 入力必須の設定
+            Length(0, 30, "30文字以内で入力してください。"), # 教員番号は6桁
+            
         ],
     )
     subject = SelectField(

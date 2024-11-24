@@ -49,4 +49,5 @@ def s_teisyutsu(submission_id):
         db.session.commit()
 
         return render_template("student_teisyutsu/submit_done.html")
-    return render_template("student_teisyutsu/submit.html", form=form, submission_id=submission_id)
+    submission=db.session.query(Submission).filter_by(submission_id=submission_id).first()
+    return render_template("student_teisyutsu/submit.html", form=form, submission=submission)

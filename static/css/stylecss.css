@@ -15,6 +15,18 @@ a.t-student img {
 }
 
 /* 共通部分 */
+.grey{
+  background-color: #606C75;
+}
+.font_lightgrey{
+  color: #D9D9D9;
+}
+.white{
+  background-color: #fff;
+}
+.font_white{
+  color: #fff;
+}
 /* html{
   overflow: hidden;
 }
@@ -28,7 +40,7 @@ body{
     box-sizing: border-box;
     min-height: 100vh;
     background-image: url("../images/bg_left.png"), url("../images/bg_repeat.png"), url("../images/bg_EduEase_400.png"), url("../images/bg_black_right.png");
-    background-size: auto 95%, 100% 95%, auto 100%, 100% 100%;
+    background-size: auto 95%, 200% 95%, auto 100%, 100% 100%;
     background-repeat: no-repeat, no-repeat, repeat, repeat;
     background-position: 0 0, 30vh 0, 0 0, 0 0;
   }
@@ -61,10 +73,12 @@ body{
     align-items: center;
     font-size: 32px;
     letter-spacing: 1px;
-    color: #fff;
+    color: #ff0000;
+    margin: 0;
+    line-height: 100px;
 }
 #title_done {
-  margin-top: 100px;
+  margin-top: 130px;
   display: flex;
     flex-direction: column;
     justify-content: center;
@@ -73,11 +87,50 @@ body{
     letter-spacing: 1px;
     color: #fff;
 }
+#link_done {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+#link_done a{
+  color: #fff;
+  border-radius: 10px;
+  text-decoration: none;
+padding: 15px 40px;
+}
 
 #bg_homebutton {
   position: fixed;
   bottom: 8vh;
   right: 10px;
+}
+
+.list_out {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.list_in {
+  overflow: hidden;
+  min-width: 620px;
+  height: 250px;
+  margin-top: px;
+  padding: 40px 30px;
+  border-radius: 20px;
+  transform-origin: top;
+}
+
+.form_white form h2{
+  width: 100%;
+  margin-top: 8px;
+  padding-right: 15px;
+  padding-left: 3px;
+  text-align: center;
 }
 
 .form_white {
@@ -127,46 +180,68 @@ body{
   margin: 0 25%;
 }
 
+#file{
+  border-bottom: solid 1px black;
+  width: 100%;
+  margin-top: 8px;
+  padding-right: 15px;
+  padding-left: 3px;
+  font-size: 16px;
+}
+
+#file::file-selector-button {
+  border: none;
+  background-color: #fff;
+}
+#file::file-selector-button:hover{
+  font-weight: bold;
+}
+
 .modorulink {
-    position: fixed;
-    top: 8vh;
-    left: 70px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* align-items: center; */
+}
+.modorulink a {
+  overflow: hidden;
+  margin-left: 60px;
 }
 .modorulink a img{
-    width: 17vh;
-    height: 5vh;
+    width: 80px;
+    height: 25px;
 }
 /* 共通部分 */
 
 #submitted_true {
-    width: 40px;
-    height: 32px;
-    border: solid 4px greenyellow;
-    border-radius: 40px;
+    width: 30px;
+    height: 24px;
+    border: solid 3px greenyellow;
+    border-radius: 30px;
     background-color: greenyellow;
-    font-size: 32px;
+    font-size: 24px;
     text-align: center;
     color: white;
-    padding-bottom: 8px;
+    padding-bottom: 6px;
 }
 
 #submitted_false {
-    width: 40px;
-    height: 32px;
-    border: solid 4px red;
-    border-radius: 40px;
+    width: 30px;
+    height: 24px;
+    border: solid 3px red;
+    border-radius: 30px;
     background-color: red;
-    font-size: 32px;
+    font-size: 24px;
     text-align: center;
     color: white;
-    padding-bottom: 8px;
+    padding-bottom: 6px;
 }
 
 #submitted_none {
-    width: 40px;
-    height: 40px;
-    border: solid 4px gray;
-    border-radius: 40px;
+    width: 30px;
+    height: 30px;
+    border: solid 3px gray;
+    border-radius: 30px;
 }
 
 .toggle_switch_outer {
@@ -509,3 +584,77 @@ body{
 }
 
 /* ログインのやつ300行近くあるね、高級フォームだよ */
+
+/* 通知リスト関連 */
+
+#notice_list{
+  display: grid;
+  width: 300px;
+  height: 250px;
+  float: left;
+  overflow: auto;
+  border: solid 1px #8899A6;
+}
+.notice_button{
+  height: 50px;
+  font-size: 7px;
+  line-height: 10px;
+  display: block;
+  flex: 1;
+  border: solid 1px #8899A6;
+}
+.notice_button p{
+  text-align: left;
+  margin: 0 30px;
+}
+#notice_text_out{
+  width: 300px;
+  height: 250px;
+  float: left;
+  overflow: auto;
+}
+#notice_text_in{
+  color: #fff;
+  display: block;
+  flex: 1;
+  margin: 10px;
+}
+#notice_text_in h2{
+  font-weight: bold;
+  font-size: 20px;
+}
+#notice_text_in h3, #notice_text_in div{
+  font-size: 10px;
+}
+
+#stu_sub_table{
+  overflow: auto;
+  height: 250px;
+}
+
+#stu_sub_table table{
+  border-spacing: 0 10px;
+  display: block;
+  flex: 1;
+}
+
+
+#stu_sub_table td{
+  border-bottom: solid 1px black;
+  padding: 0;
+  width: 60px;
+
+}
+
+#stu_sub_table .sub_td_title{
+  width: 490px;
+  padding-left: 10px;
+  vertical-align: bottom;
+}
+#stu_sub_table td a{
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size: 8px;
+}

@@ -1,28 +1,20 @@
-{% extends "teacher/base.html" %}
+{% extends "student/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('student.teisyutsu.s_teisyutsu_index') }}">戻る</a>{% endblock %}
+{% block title %}提出{% endblock %}
+
+{% block h1 %}提出{% endblock %}
+
+{% block modorulink %}{{ url_for('student.teisyutsu.s_teisyutsu_index') }}{% endblock %}
 
 {% block content %}
-<div>
-    <h1>提出物一覧</h1>
-    <div>
-        <form action="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=submission_id) }}" method="post" enctype="multipart/form-data" novalidate="novalidate">
-            <!-- csrf対策。とりあえず書いておく -->
-            {{ form.csrf_token }}
-            <div>
-                <label>
-                    <span> {{ form.file }} </span>
-                </label>
-            </div>
-            <!-- フォームの入力に誤りがある場合はエラーを順に表示 -->
-            {% for error in form.file.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-            <hr />
-            <div>
-                <label> {{ form.submit }} </label>
-            </div>
-        </form>
-    </div>
+<div class="form_white">
+    <form action="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=submission.submission_id) }}" method="post" enctype="multipart/form-data" novalidate="novalidate">
+        <!-- csrf対策。とりあえず書いておく -->
+        {{ form.csrf_token }}
+        <h2>{{ submission.submission_name }}</h2>
+        {{ form.file }}
+        <p class="form_p">提出するファイルを選択してください</p>
+        {{ form.submit(class="form_submit") }}
+    </form>
 </div>
 {% endblock %}

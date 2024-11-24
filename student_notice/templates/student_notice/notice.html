@@ -1,24 +1,27 @@
-{% extends "teacher/base.html" %}
+{% extends "student/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('student.menu.s_menu') }}">戻る</a>{% endblock %}
+{% block title %}通知一覧{% endblock %}
+
+{% block h1 %}通知一覧{% endblock %}
+
+{% block modorulink %}{{ url_for('student.menu.s_menu') }}{% endblock %}
 
 {% block content %}
-<div>
-    <h1>通知一覧</h1>
-    <div>
+<div class="list_out">
+    <div class="list_in grey">
         <div id="notice_list"></div>
-        <div id="notice_text"></div>
+        <div id="notice_text_out"></div>
     </div>
 </div>
 <script>
     function makeNoticeList(sender, title, first, id) {
         listElm = document.getElementById("notice_list");
         listElm.innerHTML+=`
-            <button id="notice_${id}" class="notice_button">
+            <button id="notice_${id}" class="notice_button grey font_white">
                 <p>${sender}</p>
-                <p>${title}</p>
+                <p class="font_lightgrey">${title}</p>
                 <br>
-                <p>${first.slice(0, 6)}...</p>
+                <p class="font_lightgrey">${first.slice(0, 6)}...</p>
             </button>
         `;
     }
@@ -29,18 +32,22 @@
     {% endfor %}
 
     var buttonElm = document.querySelectorAll(".notice_button");
-    var textElm = document.getElementById("notice_text");
+    var textElm = document.getElementById("notice_text_out");
 
     for (let i = 0; i < buttonElm.length; i++) {
         buttonElm[i].addEventListener('click', function(){
             text=noticeDict[buttonElm[i].id.slice(-1)]
             textElm.innerHTML = `
-                <h2>${text[0]}</h2>
-                <h3>${text[1]}</h3>
-                <div>
-                    ${text[2]}
+                <div id="notice_text_in" class="grey font_white">
+                    <h2>${text[0]}</h2>
+                    <h3>${text[1]}</h3>
+                    <div>${text[2]}</div>
                 </div>
             `;
+            for (let j = 0; j < buttonElm.length; j++) {
+                buttonElm[j].style.backgroundColor = "#606C75"
+            }
+            buttonElm[i].style.backgroundColor = "#8899A6"
         })
     }
 </script>

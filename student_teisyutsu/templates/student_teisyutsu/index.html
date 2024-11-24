@@ -1,29 +1,34 @@
-{% extends "teacher/base.html" %}
+{% extends "student/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('student.menu.s_menu') }}">戻る</a>{% endblock %}
+{% block title %}{% endblock %}
+
+{% block h1 %}提出物一覧{% endblock %}
+
+{% block modorulink %}{{ url_for('student.menu.s_menu') }}{% endblock %}
 
 {% block content %}
-<div>
-    <h1>提出物一覧</h1>
-    <div>
+<div class="list_out">
+    <div class="list_in white">
         <div class="toggle_switch_outer">
             <div class="toggle_switch_inner"></div>
         </div>
-        <table id="stu_sub_table">
-            {% for sub in submission %}
-            <tr>
-                <td>{{ sub.Submission.submission_name }}</td>
-                <td>
-                    {% if sub.Personal_Submission.submitted %}
-                    <div id="submitted_true">✓</div>
-                    {% else %}
-                    <div id="submitted_none"></div>
-                    {% endif %}
-                </td>
-                <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}">提出</a></td>
-            </tr>
-            {% endfor %}
-        </table>
+        <div id="stu_sub_table">
+            <table>
+                {% for sub in submission %}
+                <tr>
+                    <td class="sub_td_title">{{ sub.Submission.submission_name }}</td>
+                    <td>
+                        {% if sub.Personal_Submission.submitted %}
+                        <div id="submitted_true">✓</div>
+                        {% else %}
+                        <div id="submitted_none"></div>
+                        {% endif %}
+                    </td>
+                    <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}" class="grey font_white">提出</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 <script>
@@ -38,23 +43,26 @@
         toggleSwitch.classList.toggle("active");
         if (submitted) {
             subTable.innerHTML = `
+            <table>
             {% for sub in submission %}
             {% if sub.Personal_Submission.submitted %}
             {% else %}
             <tr>
-                <td>{{ sub.Submission.submission_name }}</td>
+                <td class="sub_td_title">{{ sub.Submission.submission_name }}</td>
                 <td>  <div id="submitted_none"></div></td>
-                <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}">提出</a></td>
+                <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}" class="grey font_white">提出</a></td>
             </tr>
             {% endif %}
             {% endfor %}
+            </table>
             `;
             submitted = false
         } else {
             subTable.innerHTML = `
+            <table>
             {% for sub in submission %}
             <tr>
-                <td>{{ sub.Submission.submission_name }}</td>
+                <td class="sub_td_title">{{ sub.Submission.submission_name }}</td>
                 <td>
                     {% if sub.Personal_Submission.submitted %}
                     <div id="submitted_true">✓</div>
@@ -62,9 +70,10 @@
                     <div id="submitted_none"></div>
                     {% endif %}
                 </td>
-                <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}">提出</a></td>
+                <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}" class="grey font_white">提出</a></td>
             </tr>
             {% endfor %}
+            </table>
             `;
             submitted = true
         }
