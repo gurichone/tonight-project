@@ -11,7 +11,11 @@
             <div class="student-session">
                 <a href="{{ url_for('student.notice.s_notice')}}" class="menu-icon">
                     <img src="{{ url_for('static', filename='images/notice.png') }}" alt="通知">
+                    {% if new>0 %}
+                    <p class="icon-text">通知"new"</p>
+                    {% else %}
                     <p class="icon-text">通知</p>
+                    {% endif %}
                 </a>
                 <!-- アカウント情報 -->
                 <a href="{{ url_for('student.profile.profile')}}" class="menu-icon">
