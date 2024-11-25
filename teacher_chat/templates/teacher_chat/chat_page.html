@@ -1,6 +1,6 @@
 {% extends "teacher/base.html" %}
 {% block title %}チャット{% endblock %}
-{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 {% block content %}
 
     <h1>チャット</h1>

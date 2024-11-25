@@ -1,7 +1,7 @@
 {% extends "teacher/base.html" %}
 {% block title %}編集{% endblock %}
 
-{% block modorulink %}<a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
     <h2>成績編集</h2>
     <p>生徒番号: {{ student.id }} | 科目: {{ subject.subject_name }}</p>

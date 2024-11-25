@@ -1,6 +1,6 @@
 {% extends "teacher/base.html" %}
 {% block title %}お知らせ送信{% endblock %}
-{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 {% block content %}
 
 <form method="POST">

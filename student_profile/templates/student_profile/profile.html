@@ -1,6 +1,6 @@
 {% extends "student/base.html" %}
 {% block title %}アカウント情報{% endblock %}
-{% block modorulink %}<a href="{{ url_for('student.menu.s_menu') }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('student.menu.s_menu') }}{% endblock %}
 {% block content %}
 
 <!-- auth/views.pyのlogout関数を実行 -->

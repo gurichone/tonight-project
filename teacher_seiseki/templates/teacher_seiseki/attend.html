@@ -1,7 +1,7 @@
 {% extends "teacher/base.html" %}
 {% block title %}成績登録{% endblock %}
 
-{% block modorulink %}<a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
     <h2>出席確認</h2>
     <!-- 出席日数を確認する際の情報の絞り込みを行う -->

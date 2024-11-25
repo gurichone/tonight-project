@@ -627,6 +627,24 @@ padding: 15px 40px;
   font-size: 10px;
 }
 
+.list_table table{
+  border-spacing: 0 10px
+}
+.list_table td{
+  padding: 0;
+  width: 60px;
+}
+.list_table td a{
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 8px 16px;
+  text-decoration: none;
+  font-size: 8px;
+}
+
+#t_sub_table .t_sub_td_title{
+  width: 300px
+}
 #stu_sub_table{
   overflow: auto;
   height: 250px;
@@ -638,11 +656,12 @@ padding: 15px 40px;
   flex: 1;
 }
 
+#t_sub_td_title{
+  width
+}
 
 #stu_sub_table td{
   border-bottom: solid 1px black;
-  padding: 0;
-  width: 60px;
 
 }
 
@@ -650,11 +669,4 @@ padding: 15px 40px;
   width: 490px;
   padding-left: 10px;
   vertical-align: bottom;
-}
-#stu_sub_table td a{
-  font-weight: bold;
-  border-radius: 5px;
-  padding: 8px 16px;
-  text-decoration: none;
-  font-size: 8px;
 }

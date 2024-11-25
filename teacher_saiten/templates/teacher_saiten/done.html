@@ -1,6 +1,6 @@
 {% extends "teacher/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu') }}{% endblock %}
 
 {% block content %}
     <h2>採点完了：{{submission.Submission.submission_name}}</h2>

@@ -1,6 +1,10 @@
 {% extends "teacher/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block title %}提出物管理{% endblock %}
+
+{% block h1 %}提出物管理{% endblock %}
+
+{% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 
 {% block content %}
 <div>
@@ -13,19 +17,29 @@
     {{ form.submit }}
     </form>
 </div>
-<div>
-    <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}">+</a>
-    <table>
-        <tr><th></th><th>ファイル名</th><th>実施内容</th><th></th><th></th></tr>
-        {% for sub in submissions %}
-        <tr>
-            <th><a href="{{ url_for('teacher.saiten.t_saiten', submission_id=sub.Submission.submission_id) }}">採点</a></th>
-            <td>{{ sub.Submission.submission_name}}</td>
-            <td>{{ sub.Submission.submission_type}}</td>
-            <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=sub.Submission.submission_id) }}">変更</a></td>
-            <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_delete', submission_id=sub.Submission.submission_id) }}">削除</a></td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="list_out">
+    <div class="list_in grey">
+        <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}">+</a>
+        <div id="t_sub_table" class="list_table">
+            <table>
+                <tr><th></th><th>ファイル名</th><th>実施内容</th><th></th><th></th></tr>
+                {% for sub in submissions %}
+                <tr>
+                    <td><a href="{{ url_for('teacher.saiten.t_saiten', submission_id=sub.Submission.submission_id) }}" class="white">採点</a></td>
+                    <td class="t_sub_td_title">{{ sub.Submission.submission_name}}</td>
+                    {% if sub.Submission.submission_type==1 %}
+                    <td class="t_sub_td_type">効果測定</td>
+                    {% elif sub.Submission.submission_type==2 %}
+                    <td class="t_sub_td_type">演習問題</td>
+                    {% else %}
+                    <td class="t_sub_td_type">指定なし</td>
+                    {% endif %}
+                    <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=sub.Submission.submission_id) }}" class="white">変更</a></td>
+                    <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_delete', submission_id=sub.Submission.submission_id) }}" class="white">削除</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 </div>
 {% endblock %}

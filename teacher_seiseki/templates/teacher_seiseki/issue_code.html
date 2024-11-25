@@ -1,7 +1,7 @@
 {% extends "teacher/base.html" %}
 {% block title %}コード発行{% endblock %}
 
-{% block modorulink %}<a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
     <h2>出席コード発行</h2>
     <form method="post">

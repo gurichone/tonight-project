@@ -1,6 +1,6 @@
 {% extends "teacher/base.html" %}
 {% block title %}生徒削除確認{% endblock %}
-{% block modorulink %}<a href="{{ url_for('teacher.student.class_list') }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.student.class_list') }}{% endblock %}
 {% block content %}
 
 <h2>本当に削除しますか？</h2>

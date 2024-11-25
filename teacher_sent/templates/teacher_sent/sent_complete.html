@@ -1,6 +1,6 @@
 {% extends "teacher/base.html" %}
 {% block title %}生徒管理メニュー{% endblock %}
-{% block modorulink %}<a href="{{ url_for('teacher.sent.teacher_sent') }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.sent.teacher_sent') }}{% endblock %}
 {% block content %}
 
     <h1>送信が完了しました</h1>

@@ -1,6 +1,6 @@
 {% extends "teacher/base.html" %}
 {% block title %}{{ student.student_name }}の詳細{% endblock %}
-{% block modorulink %}<a href="{{ url_for('teacher.student.student_list') }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.student.student_list') }}{% endblock %}
 {% block content %}
 <h2>生徒詳細</h2>
 <h3>{{ student.student_name }}</h3>

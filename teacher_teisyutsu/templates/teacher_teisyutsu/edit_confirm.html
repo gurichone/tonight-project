@@ -1,6 +1,6 @@
 {% extends "teacher/base.html" %}
 
-{% block modorulink %}<a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=submission_id) }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=submission_id) }}{% endblock %}
 
 {% block content %}
 <div>
