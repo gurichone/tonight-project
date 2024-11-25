@@ -1,17 +1,44 @@
-from flask import Blueprint, render_template, redirect, url_for
-
+from flask import Blueprint, render_template, request, redirect, url_for, flash
+import calendar
 from app import db
-from .models import Timetable  # 時間割データを取得するためにモデルをインポート
+from .models import Timetable
+from teacher_jikanwari.models import SubjectDetails
+from teacher_jikanwari.models import Timetable
 
+# Blueprintの作成
 jikanwari = Blueprint(
-    "jikanwari",  # Blueprint名
+    "jikanwari",  # ブループリント名
     __name__,
     template_folder="templates",
-    static_folder="static"
+    static_folder="static",
 )
 
-@jikanwari.route("/")
+# 指定IDのエントリを取得する関数
+def get_entry_by_id(entry_id):
+    return Timetable.query.get(entry_id)
+
+# 年と月を指定してデータを取得する関数
+def get_entries_from_database(year, month):
+    return Timetable.query.filter_by(year=year, month=month).all()
+
+def get_entry_by_date(year, month, day):
+    return Timetable.query.filter_by(year=year, month=month, day=day).first()
+
+# 年と月を指定してJikanwariエントリを取得する関数
+def get_jikanwari_entries(year, month):
+    return Timetable.query.filter_by(year=year, month=month).all()
+
+# 指定された年月の時間割を表示するルート
+@jikanwari.route('/', methods=['GET'])
 def s_jikanwari():
-    # 時間割表のデータを取得
-    data = Timetable.query.all()  # 必要に応じてフィルタリング
-    return render_template("student_jikanwari/table.html", data=data)
+    selected_year = request.args.get('year', 2024, type=int)
+    selected_month = request.args.get('month', 1, type=int)
+
+    # 年月を指定してJikanwariエントリを取得
+    entries = get_jikanwari_entries(selected_year, selected_month)
+
+    # テンプレートに渡して時間割を表示
+    return render_template('student_jikanwari/table.html', 
+                           entries=entries,
+                           selected_year=selected_year,
+                           selected_month=selected_month)
