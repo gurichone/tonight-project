@@ -73,7 +73,7 @@ def add_entry():
             period1 = request.form.get(f'period1_{day}')
             period2 = request.form.get(f'period2_{day}')
             period3 = request.form.get(f'period3_{day}')
-            notes = request.form.get(f'note_{day}')
+            notes = request.form.get(f'notes_{day}')
             event = request.form.get(f'event_{day}')
 
             # 既存のエントリをチェック
@@ -136,7 +136,7 @@ def save_timetable():
             period1 = form["period1_"+str(date.day)]
             period2 = form["period2_"+str(date.day)]
             period3 = form["period3_"+str(date.day)]
-            notes = form["note_"+str(date.day)]
+            notes = form["notes_"+str(date.day)]
             event = form["event_"+str(date.day)]
 
             entry = Timetable.query.filter_by(day=date.day, month=selected_month, year=selected_year).first()
@@ -160,7 +160,7 @@ def save_timetable():
             period1 = form["period1_"+str(day)]
             period2 = form["period2_"+str(day)]
             period3 = form["period3_"+str(day)]
-            notes = form["note_"+str(day)]
+            notes = form["notes_"+str(day)]
             event = form["event_"+str(day)]
             # 新しいエントリを作成
             entry = Timetable(

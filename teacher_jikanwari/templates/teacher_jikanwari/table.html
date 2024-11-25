@@ -1,7 +1,7 @@
 {% extends "teacher/base.html" %}
 
 {% block title %}時間割表{% endblock %}
-{% block modorulink %}<a href="{{ url_for('teacher.menu.t_menu') }}">戻る</a>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 {% block content %}
 <h1>時間割表</h1>
 <link rel="stylesheet" href="/static/css/stylecss.css">
