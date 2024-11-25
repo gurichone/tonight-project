@@ -14,7 +14,7 @@ class SubmissionForms(FlaskForm): #ユーザー新規作成とユーザー編集
     )
     type = SelectField(
         "実施内容", # フォームに表示される文字を指定
-        choices=[(1, "効果測定"), (2, "演習問題")],
+        choices=[(0, "指定なし"), (1, "効果測定"), (2, "演習問題")],
         coerce=int
     )
     submit = SubmitField("確定") # フォームの送信ボタンを作成
@@ -37,7 +37,7 @@ class CreateSubmissionForms(FlaskForm):
     )
     type = SelectField(
         "実施内容", # フォームに表示される文字を指定
-        choices=[(0, "指定なし"), (1, "効果測定"), (2, "演習問題")],
+        choices=[(1, "効果測定"), (2, "演習問題")],
         validators=[],
         coerce=int
     )

@@ -7,25 +7,48 @@
 {% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 
 {% block content %}
-<div>
-    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}" method="POST">
+<div id="t_sub_search_form" class="search_form">
+    <form class="white" action="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}" method="POST">
     {{ form.csrf_token }}
+    <div>
     {{ form.subject.label }}{{ form.subject }}
-    <br>
+    </div>
+    <div>
     {{ form.type.label }}{{ form.type }}
-    <br>
-    {{ form.submit }}
+    </div>
+    <div>
+    <input id="submit" name="submit" type="submit" value="">
+    </div>
     </form>
 </div>
 <div class="list_out">
-    <div class="list_in grey">
-        <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}">+</a>
+    <div class="list_in grey font_white">
+        <div id="t_sub_label">
+            <div>
+            {% if subject %}
+            <p>科目:{{subject.subject_name}}</p>
+            {% else %}
+            <p>科目:指定なし</p>
+            {% endif %}
+            {% if type==1 %}
+            <p>実施内容:効果測定</p>
+            {% elif type==2 %}
+            <p>実施内容:演習問題</p>
+            {% else %}
+            <p>実施内容:指定なし</p>
+            {% endif %}
+            </div>
+            <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}" class="white font_grey">+</a>
+        </div>
         <div id="t_sub_table" class="list_table">
-            <table>
-                <tr><th></th><th>ファイル名</th><th>実施内容</th><th></th><th></th></tr>
+            <table class="t_sub_head">
+                <tr class="t_sub_thtr"><th></th><th class="t_sub_td_title">ファイル名</th><th class="t_sub_td_type">実施内容</th><th></th><th></th></tr>
+            </table>
+            <div>
+            <table class="t_sub_body">
                 {% for sub in submissions %}
                 <tr>
-                    <td><a href="{{ url_for('teacher.saiten.t_saiten', submission_id=sub.Submission.submission_id) }}" class="white">採点</a></td>
+                    <td><a href="{{ url_for('teacher.saiten.t_saiten', submission_id=sub.Submission.submission_id) }}" class="green font_grey">採点</a></td>
                     <td class="t_sub_td_title">{{ sub.Submission.submission_name}}</td>
                     {% if sub.Submission.submission_type==1 %}
                     <td class="t_sub_td_type">効果測定</td>
@@ -34,11 +57,12 @@
                     {% else %}
                     <td class="t_sub_td_type">指定なし</td>
                     {% endif %}
-                    <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=sub.Submission.submission_id) }}" class="white">変更</a></td>
-                    <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_delete', submission_id=sub.Submission.submission_id) }}" class="white">削除</a></td>
+                    <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=sub.Submission.submission_id) }}" class="white font_grey">変更</a></td>
+                    <td><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_delete', submission_id=sub.Submission.submission_id) }}" class="red font_white">削除</a></td>
                 </tr>
                 {% endfor %}
             </table>
+            </div>
         </div>
     </div>
 </div>

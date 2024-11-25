@@ -29,13 +29,13 @@ def t_teisyutsu():
     if form.validate_on_submit():
         # filter_byにformの入力内容を追加
         submissions = db.session.query(Submission, Subject).join(Submission,Submission.subject_id==Subject.subject_id).filter_by(class_num = current_user.class_num)
-        if form.subject.data:
+        if form.subject.data != "0":# なぜか片方はstr型になっている？？？？今後バグるかも
             submissions = submissions.filter_by(subject_id=form.subject.data)
-        if form.type.data:
+        if form.type.data != 0:
             submissions = submissions.filter_by(submission_type=form.type.data)
         submissions = submissions.all()
         # 選択した科目をsubjectとして送る
-        return render_template("teacher_teisyutsu/admin.html", submissions=submissions, form=form, subject=db.session.query(Subject).filter_by(subject_id = form.subject.data).first())
+        return render_template("teacher_teisyutsu/admin.html", submissions=submissions, form=form, subject=db.session.query(Subject).filter_by(subject_id = form.subject.data).first(), type=form.type.data)
     # ログインしているユーザーのクラスで絞る
     submissions = db.session.query(Submission, Subject).join(Submission,Submission.subject_id==Subject.subject_id).filter_by(class_num = current_user.class_num).all()
     return render_template("teacher_teisyutsu/admin.html", submissions=submissions, form=form)

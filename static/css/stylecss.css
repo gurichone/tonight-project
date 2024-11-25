@@ -18,6 +18,9 @@ a.t-student img {
 .grey{
   background-color: #606C75;
 }
+.font_grey{
+  color: #606C75;
+}
 .font_lightgrey{
   color: #D9D9D9;
 }
@@ -26,6 +29,12 @@ a.t-student img {
 }
 .font_white{
   color: #fff;
+}
+.green{
+  background-color: #B9E0A5;
+}
+.red{
+  background-color: #A30E00;
 }
 /* html{
   overflow: hidden;
@@ -118,13 +127,42 @@ padding: 15px 40px;
 .list_in {
   overflow: hidden;
   min-width: 620px;
-  height: 250px;
-  margin-top: px;
-  padding: 40px 30px;
+  margin-top: 10px;
+  padding: 10px 30px;
   border-radius: 20px;
   transform-origin: top;
 }
 
+.search_form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.search_form form{
+  min-width: 620px;
+  border-radius: 10px;
+  padding: 10px 30px 0;
+}
+.search_form div{
+  float: left;
+}
+
+.search_form #submit{
+  border: none;
+  background:rgba(0,0,0,0.0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+  background-image: url("../images/search.png");
+  height: 30px;
+  width: 30px;
+  background-size: contain;
+}
+#t_sub_search_form label{
+  margin-right: 20px;
+}
+#t_sub_search_form select{
+  margin-right: 40px;
+  width: 180px;
+}
 .form_white form h2{
   width: 100%;
   margin-top: 8px;
@@ -206,6 +244,8 @@ padding: 15px 40px;
 .modorulink a {
   overflow: hidden;
   margin-left: 60px;
+  width: 80px;
+  height: 25px;
 }
 .modorulink a img{
     width: 80px;
@@ -628,7 +668,10 @@ padding: 15px 40px;
 }
 
 .list_table table{
-  border-spacing: 0 10px
+  border-spacing: 0;
+}
+.list_table tr{
+  height: 40px;
 }
 .list_table td{
   padding: 0;
@@ -642,27 +685,70 @@ padding: 15px 40px;
   font-size: 8px;
 }
 
-#t_sub_table .t_sub_td_title{
-  width: 300px
+#t_sub_table div{
+  overflow: auto;
+  height: 180px;
 }
+#t_sub_table .t_sub_body{
+  display: block;
+  flex: 1;
+}
+#t_sub_table .t_sub_thtr{
+  height: 10px;
+}
+#t_sub_table th{
+  font-size: 12px;
+  width: 60px;
+}
+#t_sub_table td{
+  border-bottom: solid 1px white;
+}
+#t_sub_table .t_sub_td_title{
+  width: 320px;
+  vertical-align: bottom;
+}
+#t_sub_table .t_sub_td_type{
+  width: 100px;
+  text-align: center;
+  vertical-align: bottom;
+}
+#t_sub_label{
+  overflow: hidden;
+}
+#t_sub_label div {
+  float: left;
+}
+#t_sub_label p{
+  font-size: 10px;
+  margin: 0;
+}
+#t_sub_label a{
+  float: right;
+  text-decoration: none;
+  margin: 10px;
+  height: 24px;
+  width: 24px;
+  text-align: center;
+  border-radius: 3px;
+  font-weight: bold;
+}
+.stu_sub_taoggle{
+  margin-top: 30px;
+}
+
 #stu_sub_table{
   overflow: auto;
-  height: 250px;
+  height: 240px;
 }
 
 #stu_sub_table table{
-  border-spacing: 0 10px;
+  border-spacing: 0, 10px;
   display: block;
   flex: 1;
 }
 
-#t_sub_td_title{
-  width
-}
-
 #stu_sub_table td{
   border-bottom: solid 1px black;
-
 }
 
 #stu_sub_table .sub_td_title{
