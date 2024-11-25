@@ -3,15 +3,17 @@
 
 {% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
+<div color="form_white">
     <h2>出席コード発行</h2>
     <form method="post">
         <!-- 時間割のうちあてはまるのを選択 -->
         <label>時間割を選択してください:</label>
         <select name="period">
-            {% for period, name in periods %}
-                <option value="{{ period }}">{{ name }}</option>
+            {% for i, period, name in periods %}
+            <option value="{{ period }}">{{ i }}時限目: {{ name }}</option>
             {% endfor %}
         </select>
         <button type="submit">出席コード発行</button>
     </form>
+</div>
 {% endblock %}

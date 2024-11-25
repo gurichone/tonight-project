@@ -3,6 +3,7 @@
 
 {% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
+<div color="form_white">
     <h2>成績登録</h2>
     <!-- 登録が完了したら以下の内容を表示 -->
     {% if success %}
@@ -66,4 +67,5 @@
         <button type="submit" name="action" value="add">確定</button>
     </form>
     {% endif %}
+</div>
 {% endblock %}

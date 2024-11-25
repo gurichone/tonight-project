@@ -1,0 +1,41 @@
+{% extends "student/base.html" %}
+{% block title %}成績確認{% endblock %}
+
+{% block modorulink %}{{ url_for('student.menu.s_menu') }}{% endblock %}
+{% block h1 %}成績確認{% endblock %}
+{% block content %}
+<div color="form_white"></div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% if scores %}
+        <table>
+            <thead>
+                <tr>
+                    <th>科目名</th>
+                    <th>評価ID</th>
+                    <th>出席日数</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score, subject_name in scores %}
+                <tr>
+                    <td>{{ subject_name }}</td>
+                    <td>{{ score.assessment_id }}</td>
+                    <td>{{ score.attend_day }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>表示できるスコアはありません。</p>
+    {% endif %}
+</div>
+{% endblock %}

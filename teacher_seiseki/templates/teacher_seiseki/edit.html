@@ -3,6 +3,7 @@
 
 {% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
+<div class="form_white">
     <h2>成績編集</h2>
     <p>生徒番号: {{ student.id }} | 科目: {{ subject.subject_name }}</p>
 
@@ -22,4 +23,5 @@
 
         <button type="submit">保存</button>
     </form>
+</div>
 {% endblock %}

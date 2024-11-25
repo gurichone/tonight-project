@@ -284,7 +284,7 @@ def issue_code():
             return render_template("teacher_seiseki/display_code.html", code=code_hash)
         
         # 最初にTimetableから取得した授業一覧を表示する処理
-        periods = [("period1", timetable.period1), ("period2", timetable.period2), ("period3", timetable.period3)]
+        periods = [(1, "period1", timetable.period1), (2, "period2", timetable.period2), (3, "period3", timetable.period3)]
         return render_template("teacher_seiseki/issue_code.html", periods=periods)
     
     # 存在しない場合はエラー文を表示する
