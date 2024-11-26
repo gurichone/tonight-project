@@ -3,39 +3,32 @@
 {% block title %}授業数一覧{% endblock %}
 
 {% block modorulink %}
-href={{ url_for('teacher.jikanwari.t_jikanwari') }}
+href="{{ url_for('teacher.jikanwari.t_jikanwari') }}"
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>授業数一覧</h1>
+<div class="container">
+    <h1>授業数一覧</h1>
 
-        <div class="button-container">
-            <a href="{{ url_for('teacher.jikanwari.show_class_count') }}">授業数登録</a>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>授業名</th>
-                    <th>コマ数</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for subject in subjects %}
-                <tr>
-                    <td>{{ subject.name }}</td>
-                    <td>{{ subject.periods }}</td>
-                    <td>
-                        <a href="{{ url_for('teacher.jikanwari.edit_class_count', subject_id=subject.id) }}" class="action-button edit-button">編集</a>
-
-
-                        <a href="{{ url_for('teacher.jikanwari.delete_class_count', subject_id=subject.id) }}" class="action-button edjt-button"> 削除</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div>
+        <a href="{{ url_for('teacher.jikanwari.show_class_count') }}">授業数登録</a>
     </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>授業名</th>
+                <th>コマ数</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
+            <tr>
+                <td>{{ subject.name }}</td>  <!-- 授業名 -->
+                <td>{{ subject.periods }} コマ</td>  <!-- コマ数 -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}

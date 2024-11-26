@@ -2,6 +2,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from app import db 
 from admin.forms import CourseForm, SubjectForm, ClassNumForm, CourseSubjectForm, SchoolForm, StudentAddForm
 from auth.models import Teacher, Student, Subject, Course, ClassNum, CourseSubject, School
+from teacher_jikanwari.models import SubjectDetails
 import datetime
 
 admin = Blueprint("admin", __name__, template_folder="templates", static_folder="static")
@@ -48,6 +49,7 @@ def subject():
 def subject_delete():
     bbb = db.session.query(CourseSubject).delete()
     aaa = db.session.query(Subject).delete()
+    ccc = db.session.query(SubjectDetails).delete()
     db.session.commit()
     return render_template("admin/admin.html", message="けしたよ")
 

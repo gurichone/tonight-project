@@ -6,6 +6,8 @@ from app import db
 from .models import Timetable
 from teacher_jikanwari.models import SubjectDetails
 from teacher_jikanwari.models import Timetable
+from auth.models import Subject
+
 
 # Blueprintの作成
 jikanwari = Blueprint(
@@ -197,59 +199,35 @@ def save_timetable():
 # クラス一覧表示
 @jikanwari.route('/class_list')
 def class_list():
-    subjects = SubjectDetails.query.all()  # データベースから授業のデータを取得
+    subjects = SubjectDetails.query.all()  # SubjectDetailsテーブルから全てのデータを取得
     return render_template('teacher_jikanwari/class_list.html', subjects=subjects)
 
 
 # クラス数の表示
 @jikanwari.route('/show_class_count', methods=['GET', 'POST'])
 def show_class_count():
-    error_message = None
+    subjects = Subject.query.all()
 
     if request.method == 'POST':
-        subject_name = request.form['subject_name']
-        periods = int(request.form['periods'])
+        for subject in subjects:
+            subject_id = subject.subject_id
+            periods = request.form.get(f'periods_{subject_id}')
+            subject_name = subject.subject_name
 
-        # 既存の科目名があるかチェック
-        existing_subject = SubjectDetails.query.filter_by(name=subject_name).first()
+            if not subject_name:  # subject_nameが取得できない場合（Noneまたは空文字）
+                # 関連するSubjectDetailsを削除
+                db.session.query(SubjectDetails).filter_by(name=subject_name).delete()
+                db.session.commit()
+                continue  # 次のsubjectに進む
 
-        if existing_subject:
-            error_message = "この科目名は登録済みです"
-        elif periods <= 15:
-            error_message = "コマ数は15コマ以上でなければなりません。"
-        else:
-            # 新しい科目をデータベースに追加
-            new_subject = SubjectDetails(name=subject_name, periods=periods)
-            db.session.add(new_subject)
-            db.session.commit()
+            if periods:
+                # 新しいSubjectDetailsを作成
+                new_subject_detail = SubjectDetails(name=subject_name, periods=periods)
+                db.session.add(new_subject_detail)
+                db.session.commit()  # データベースに保存
 
-            return redirect(url_for('jikanwari.class_list'))
+        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 完了後にリダイレクト
 
-    return render_template('teacher_jikanwari/show_class_count.html', error_message=error_message)
-
-# クラス削除確認画面
-@jikanwari.route('/class/delete_count/<int:subject_id>', methods=['GET', 'POST'])
-def delete_class_count(subject_id):
-    subject = SubjectDetails.query.get(subject_id)
-    if request.method == 'POST':
-        db.session.delete(subject)
-        db.session.commit()
-        return redirect(url_for('jikanwari.class_list'))
-
-    return render_template('teacher_jikanwari/delete_class_count.html', subject=subject)
-
-# 編集画面の表示
-# 編集画面の表示 (新たに追加)
-@jikanwari.route('/edit_class_count/<int:subject_id>', methods=['GET', 'POST'])
-def edit_class_count(subject_id):
-    subject = SubjectDetails.query.get(subject_id)
-
-    if request.method == 'POST':
-        subject.name = request.form['name']
-        subject.periods = request.form['periods']
-        
-        db.session.commit()
-        return redirect(url_for('jikanwari.class_list'))
-
-    return render_template('teacher_jikanwari/edit_class_count.html', subject=subject)
+    # GETリクエストの場合
+    return render_template('teacher_jikanwari/show_class_count.html', subjects=subjects)
 
