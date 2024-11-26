@@ -36,6 +36,10 @@ a.t-student img {
 .red{
   background-color: #A30E00;
 }
+
+.hidden{
+  display: none;
+}
 /* html{
   overflow: hidden;
 }
@@ -142,7 +146,7 @@ padding: 15px 40px;
 .search_form form{
   min-width: 620px;
   border-radius: 10px;
-  padding: 10px 30px 0;
+  padding: 10px 30px 10px;
 }
 .search_form div{
   float: left;
@@ -157,9 +161,11 @@ padding: 15px 40px;
   background-size: contain;
 }
 #t_sub_search_form label{
+  margin-top: 10px;
   margin-right: 20px;
 }
 #t_sub_search_form select{
+  margin-top: 10px;
   margin-right: 40px;
   width: 180px;
 }
@@ -170,7 +176,6 @@ padding: 15px 40px;
   padding-left: 3px;
   text-align: center;
 }
-
 .form_white {
     display: flex;
     flex-direction: column;
@@ -250,6 +255,15 @@ padding: 15px 40px;
 .modorulink a img{
     width: 80px;
     height: 25px;
+}
+
+.scroll_palent{
+
+  overflow: auto;
+}
+.scroll_child{
+  display: block;
+  flex: 1;
 }
 /* 共通部分 */
 
@@ -732,7 +746,151 @@ padding: 15px 40px;
   border-radius: 3px;
   font-weight: bold;
 }
-.stu_sub_taoggle{
+
+#t_sub_add_out{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#t_sub_add_in{
+  width: 620px;
+  margin-top: 10px;
+  padding: 10px 30px;
+  border-radius: 20px;
+  transform-origin: top;
+}
+#question_button{
+  border: none;
+  width: 150px;
+  height: 30px;
+  border-radius: 5px 0 0 0;
+}
+#testcase_button{
+  border: none;
+  width: 150px;
+  height: 30px;
+  border-radius: 0 5px 0 0;
+}
+#t_sub_add_in .div_form{
+  float: left;
+  width: 300px;
+  margin-top: 20px;
+}
+#t_sub_add_in .t_sub_add_input{
+  height: 40px;
+  border-bottom: solid 1px black;
+}
+#t_sub_add_in .div_form input:focus{
+  outline: none;
+}
+#t_sub_add_in .div_form select:focus{
+  outline: none;
+}
+#t_sub_add_in .div_form input[type=text]{
+  width: 300px;
+  height: 100%;
+  border: none;
+  padding: 0;
+}
+#t_sub_add_in .div_form input[type=date]{
+  width: 200px;
+  height: 100%;
+  border: none;
+  padding: 0;
+}
+#t_sub_add_in .div_form input[type=submit]{
+  border: none;
+  border-radius: 5px;
+  width: 50%;
+  aspect-ratio: 7 / 2;
+  margin: 0 25%;
+}
+#t_sub_add_in .div_form label{
+  width: 100px;
+  display: inline-block;
+}
+#t_sub_add_in .div_form select{
+  width: 200px;
+  border: none;
+  height: 100%;
+}
+#t_sub_add_in .for_saiten_buttons{
+  float: right;
+  width: 300px;
+  margin-top: 20px;
+}
+#t_sub_add_in p{
+  font-size: 8px;
+}
+#t_sub_add_in #div_testcase{
+  float: right;
+  width: 290px;
+  height: 250px;
+  padding: 5px;
+  border-radius: 0 0 5px 5px;
+}
+#t_sub_add_in #div_question{
+  float: right;
+  width: 290px;
+  height: 250px;
+  padding: 5px;
+  border-radius: 0 0 5px 5px;
+}
+#t_sub_add_in #div_testcas table{
+  border-spacing: 0;
+}
+#t_sub_add_in #div_testcase th{
+  width: 110px;
+  padding: 0;
+}
+#t_sub_add_in #div_testcase .th_add{
+  width: 60px;
+}
+#t_sub_add_in #div_testcase .th_delete{
+  width: 60px;
+}
+#t_sub_add_in #add{
+  border: none;
+  border-radius: 5px;
+  width: 50px;
+  padding: 5px;
+  font-weight: bold;
+}
+#t_sub_add_in .delete{
+  border: none;
+  border-radius: 6px;
+  background-color: #A30E00;
+  color: #fff;
+  width: 50px;
+  padding: 6px;
+  margin-left: 5px;
+}
+#t_sub_add_in #div_testcase .div_table{
+  overflow: hidden;
+  width: 300px;
+}
+#t_sub_add_in #div_testcase .div_table .scroll_palent{
+  height: 200px;
+}
+#t_sub_add_in #div_testcase td{
+  width: 110px;
+  padding: 0;
+}
+#t_sub_add_in #div_testcase td textarea{
+  width: 100px;
+  height: 60px;
+  border-radius: 5px;
+}
+#t_sub_add_in #question{
+  width: 270px;
+  height: 180px;
+  border-radius: 5px;
+}
+
+
+
+#stu_sub_table .stu_sub_taoggle{
   margin-top: 30px;
 }
 
