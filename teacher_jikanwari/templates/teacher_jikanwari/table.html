@@ -8,10 +8,10 @@
 
 <!-- ボタンを右上に配置 -->
 <div style="text-align: right; margin-bottom: 20px;">
-    <!-- 授業数登録ボタン -->
-    <a href="{{ url_for('teacher.jikanwari.class_list') }}" class="button">授業数登録</a>
     <!-- 編集ボタン -->
     <a href="{{ url_for('teacher.jikanwari.add_entry') }}" class="button">編集</a>
+    <!-- 授業の一覧へのリンク -->
+    <a href="{{ url_for('teacher.jikanwari.class_list') }}" class="button">授業の一覧</a> <!-- ここを追加 -->
 </div>
 
 <!-- 年と月の選択 -->
@@ -62,7 +62,6 @@
         {% endfor %}
     </tbody>
 </table>
-
 
 <script>
     // 月ごとの日数を取得する関数

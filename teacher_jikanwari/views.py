@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 import calendar
+import sqlite3
+from calendar import monthrange, weekday
 from app import db
 from .models import Timetable
 from teacher_jikanwari.models import SubjectDetails
@@ -28,6 +30,14 @@ def get_entry_by_date(year, month, day):
 def get_jikanwari_entries(year, month):
     return Timetable.query.filter_by(year=year, month=month).all()
 
+def get_subjects():
+    connection = sqlite3.connect('local.sqlite')
+    cursor = connection.cursor()
+    cursor.execute("SELECT subject_name FROM subject")  # subject_nameが科目名を格納していると仮定
+    subjects = cursor.fetchall()
+    connection.close()
+    return [subject[0] for subject in subjects]
+
 # 指定された年月の時間割を表示するルート
 @jikanwari.route('/', methods=['GET'])
 def t_jikanwari():
@@ -45,6 +55,9 @@ def t_jikanwari():
 
 @jikanwari.route('/add_entry', methods=['GET', 'POST'])
 def add_entry():
+
+    subjects = get_subjects()
+
     selected_year = request.args.get('year', default=2024, type=int)
     selected_month = request.args.get('month', default=1, type=int)
 
@@ -110,6 +123,7 @@ def add_entry():
 
     # GETリクエストの場合はフォームを表示
     return render_template('teacher_jikanwari/add_entry.html', 
+                           subjects=subjects,
                            selected_year=selected_year,
                            selected_month=selected_month, 
                            dates_and_weekdays=dates_and_weekdays,
@@ -141,8 +155,7 @@ def save_timetable():
 
             entry = Timetable.query.filter_by(day=date.day, month=selected_month, year=selected_year).first()
             
-            
-                # 既存のエントリを更新
+            # 既存のエントリを更新
             entry.period1 = period1
             entry.period2 = period2
             entry.period3 = period3
@@ -152,22 +165,23 @@ def save_timetable():
             db.session.add(entry)
             db.session.commit()  # すべての変更を保存
     else:
-        days = calendar.monthrange(selected_year,selected_month)
-        # for i in range(1, 13):
-        #     print(selected_year,"年", i, "月は", calendar.monthrange(selected_year,i))
+        # その月の日数を取得
+        days_in_month = monthrange(selected_year, selected_month)[1]
         weekdays = ['月', '火', '水', '木', '金', '土', '日']
-        for day in range(days[0]+1, days[1]+1):
+
+        for day in range(1, days_in_month + 1):  # 1日からスタート
             period1 = form["period1_"+str(day)]
             period2 = form["period2_"+str(day)]
             period3 = form["period3_"+str(day)]
             notes = form["notes_"+str(day)]
             event = form["event_"+str(day)]
+            
             # 新しいエントリを作成
             entry = Timetable(
                 year=selected_year,
                 month=selected_month,
                 day=day,
-                weekday=weekdays[calendar.weekday(selected_year, selected_month, day)],
+                weekday=weekdays[weekday(selected_year, selected_month, day)],  # 曜日を計算
                 period1=period1,
                 period2=period2,
                 period3=period3,
@@ -176,14 +190,16 @@ def save_timetable():
             )
             db.session.add(entry)
             db.session.commit()
+
     # 時間割にリダイレクト
     return redirect(url_for("teacher.jikanwari.t_jikanwari"))
 
 # クラス一覧表示
 @jikanwari.route('/class_list')
 def class_list():
-    subjects = SubjectDetails.query.all()
+    subjects = SubjectDetails.query.all()  # データベースから授業のデータを取得
     return render_template('teacher_jikanwari/class_list.html', subjects=subjects)
+
 
 # クラス数の表示
 @jikanwari.route('/show_class_count', methods=['GET', 'POST'])
@@ -223,21 +239,17 @@ def delete_class_count(subject_id):
     return render_template('teacher_jikanwari/delete_class_count.html', subject=subject)
 
 # 編集画面の表示
-@jikanwari.route('/edit_entry/<int:id>', methods=['GET', 'POST'])
-def edit_entry(id):
-    entry = get_entry_by_id(id)
+# 編集画面の表示 (新たに追加)
+@jikanwari.route('/edit_class_count/<int:subject_id>', methods=['GET', 'POST'])
+def edit_class_count(subject_id):
+    subject = SubjectDetails.query.get(subject_id)
 
     if request.method == 'POST':
-        entry.year = request.form['year']
-        entry.month = request.form['month']
-        entry.day = request.form['day']
-        entry.period1 = request.form['period1']
-        entry.period2 = request.form['period2']
-        entry.period3 = request.form['period3']
-        entry.notes = request.form['notes']
-        entry.event = request.form['event']
-
+        subject.name = request.form['name']
+        subject.periods = request.form['periods']
+        
         db.session.commit()
-        return redirect(url_for('jikanwari.t_jikanwari', year=entry.year, month=entry.month))
+        return redirect(url_for('jikanwari.class_list'))
 
-    return render_template('teacher_jikanwari/edit_entry.html', entry=entry)
+    return render_template('teacher_jikanwari/edit_class_count.html', subject=subject)
+

@@ -3,7 +3,7 @@
 {% block title %}授業数一覧{% endblock %}
 
 {% block modorulink %}
-<a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}">戻る</a>
+href={{ url_for('teacher.jikanwari.t_jikanwari') }}
 {% endblock %}
 
 {% block content %}
@@ -29,6 +29,8 @@
                     <td>{{ subject.periods }}</td>
                     <td>
                         <a href="{{ url_for('teacher.jikanwari.edit_class_count', subject_id=subject.id) }}" class="action-button edit-button">編集</a>
+
+
                         <a href="{{ url_for('teacher.jikanwari.delete_class_count', subject_id=subject.id) }}" class="action-button edjt-button"> 削除</a>
                     </td>
                 </tr>

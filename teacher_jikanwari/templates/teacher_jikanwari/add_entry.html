@@ -58,13 +58,25 @@
                         <td class="jikanwari-td">{{ date.day }}</td>
                         <td class="jikanwari-td">{{ date.weekday }}</td>
                         <td class="jikanwari-td">
-                            <input type="text" name="period1_{{ date.day }}" value="{{ entry.period1 if entry else '' }}" placeholder="1時間目">
+                            <select name="period1_{{ date.day }}">
+                                {% for subject in subjects %}
+                                    <option value="{{ subject }}" {% if entry and entry.period1 == subject %}selected{% endif %}>{{ subject }}</option>
+                                {% endfor %}
+                            </select>
                         </td>
                         <td class="jikanwari-td">
-                            <input type="text" name="period2_{{ date.day }}" value="{{ entry.period2 if entry else '' }}" placeholder="2時間目">
+                            <select name="period2_{{ date.day }}">
+                                {% for subject in subjects %}
+                                    <option value="{{ subject }}" {% if entry and entry.period2 == subject %}selected{% endif %}>{{ subject }}</option>
+                                {% endfor %}
+                            </select>
                         </td>
                         <td class="jikanwari-td">
-                            <input type="text" name="period3_{{ date.day }}" value="{{ entry.period3 if entry else '' }}" placeholder="3時間目">
+                            <select name="period3_{{ date.day }}">
+                                {% for subject in subjects %}
+                                    <option value="{{ subject }}" {% if entry and entry.period3 == subject %}selected{% endif %}>{{ subject }}</option>
+                                {% endfor %}
+                            </select>
                         </td>
                         <td class="jikanwari-td">
                             <input type="text" name="notes_{{ date.day }}" value="{{ entry.notes if entry else '' }}" placeholder="備考">
