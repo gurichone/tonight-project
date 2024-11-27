@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, render_template, request, redirect, url_for, flash,session
 import calendar
 import sqlite3
 from calendar import monthrange, weekday
@@ -215,9 +215,10 @@ def show_class_count():
     subject_details = {detail.name: detail for detail in SubjectDetails.query.all()}  # SubjectDetailsを取得
 
     error_message = None  # 初期化する
-    form_data = {}
 
     if request.method == 'POST':
+        # フォームから取得したデータを一時的に保存
+        form_data = []
         for subject in subjects:
             subject_id = subject.subject_id
             periods = request.form.get(f'periods_{subject_id}')
@@ -237,8 +238,11 @@ def show_class_count():
                 error_message = f"{subject_name}のコマ数が単位数に合っていません。もう一度入力してください。"
                 break
 
-            # ユーザー入力内容をform_dataに格納
-            form_data[subject_name] = {'periods': periods, 'units': units}
+            form_data.append({
+                'subject_name': subject_name,
+                'periods': periods,
+                'units': units
+            })
 
         if error_message:
             # エラーがある場合はフォームを再表示
@@ -249,12 +253,9 @@ def show_class_count():
                 error_message=error_message
             )
 
-        # エラーがない場合は確認画面に遷移
-        return render_template(
-            'teacher_jikanwari/confirm_class_count.html',
-            subjects=subjects,
-            form_data=form_data
-        )
+        # セッションに保存して確認画面にリダイレクト
+        session['form_data'] = form_data
+        return redirect(url_for('teacher.jikanwari.confirm_class_count'))
 
     # GETリクエストの場合
     return render_template(
@@ -264,31 +265,39 @@ def show_class_count():
         error_message=error_message
     )
 
-@jikanwari.route('/save_class_count', methods=['POST'])
-def save_class_count():
-    form_data = request.form  # フォームデータを取得
+@jikanwari.route('/confirm_class_count', methods=['GET', 'POST'])
+def confirm_class_count():
+    form_data = session.get('form_data', [])
+    
+    if request.method == 'POST':
+        # データをDBに保存する
+        for data in form_data:
+            subject_name = data['subject_name']
+            periods = data['periods']
+            units = data['units']
+            
+            existing_detail = SubjectDetails.query.filter_by(name=subject_name).first()
+            if existing_detail:
+                existing_detail.periods = periods
+                existing_detail.units = units
+            else:
+                new_subject_detail = SubjectDetails(
+                    name=subject_name,
+                    periods=periods,
+                    units=units
+                )
+                db.session.add(new_subject_detail)
 
-    # ユーザーが入力したデータを保存
-    for subject_name, data in form_data.items():
-        periods = int(data['periods'])
-        units = int(data['units'])
+        # 保存した後、コミットして完了画面にリダイレクト
+        db.session.commit()
+        session.pop('form_data', None)  # セッションからデータを削除
+        return redirect(url_for('teacher.jikanwari.save_complete'))
 
-        existing_detail = SubjectDetails.query.filter_by(name=subject_name).first()
-        if existing_detail:
-            existing_detail.periods = periods
-            existing_detail.units = units
-        else:
-            new_subject_detail = SubjectDetails(
-                name=subject_name,
-                periods=periods,
-                units=units
-            )
-            db.session.add(new_subject_detail)
+    return render_template(
+        'teacher_jikanwari/confirm_class_count.html',
+        form_data=form_data
+    )
 
-            db.session.commit()
-    return redirect(url_for('teacher.jikanwari.register_complete'))
-
-@jikanwari.route('/register_complete')
-def register_complete():
-    return render_template('teacher_jikanwari/register_complete.html')
-
+@jikanwari.route('/save_complete')
+def save_complete():
+    return render_template('teacher_jikanwari/save_complete.html')

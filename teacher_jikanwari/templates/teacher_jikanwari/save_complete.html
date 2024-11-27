@@ -1,0 +1,10 @@
+{% extends "teacher/base.html" %}
+
+{% block title %}保存完了{% endblock %}
+
+{% block modorulink %}{{ url_for('teacher.jikanwari.confirm_class_count') }}{% endblock %}
+
+{% block content %}
+    <h1>登録が完了しました</h1>
+    <a href="{{ url_for('teacher.jikanwari.class_list') }}">授業数一覧に戻る</a>
+{% endblock %}
