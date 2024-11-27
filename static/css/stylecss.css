@@ -169,7 +169,7 @@ padding: 15px 40px;
   margin-right: 40px;
   width: 180px;
 }
-.form_white form h2{
+.form_white .form_white_form h2{
   width: 100%;
   margin-top: 8px;
   padding-right: 15px;
@@ -182,7 +182,7 @@ padding: 15px 40px;
     justify-content: center;
     align-items: center;
 }
-.form_white form {
+.form_white .form_white_form {
   overflow: hidden;
   min-width: 310px;
   min-height: 190px;
@@ -193,7 +193,7 @@ padding: 15px 40px;
   background-color: #fff;
 }
 
-.form_white form .form_input{
+.form_white .form_white_form .form_input{
   box-sizing: border-box;
   border: none;
   border-bottom: 1px solid #8899A6;
@@ -205,15 +205,15 @@ padding: 15px 40px;
   line-height: 1;
   color: #3b4465;
 }
-.form_white form .form_input:focus {
+.form_white .form_white_form .form_input:focus {
   outline: none;
 }
-.form_white form .form_p{
+.form_white .form_white_form .form_p{
   line-height: 1.1;
   font-size: 8px;
   text-align: center;
 }
-.form_white form .form_submit {
+.form_white .form_white_form .form_submit {
   color: #fbfdff;
   background: #606C75;
   border: none;
