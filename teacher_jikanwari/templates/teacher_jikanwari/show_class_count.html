@@ -2,9 +2,7 @@
 
 {% block title %}授業数登録{% endblock %}
 
-{% block modorulink %}
-    href="{{ url_for('teacher.jikanwari.t_jikanwari') }}"
-{% endblock %}
+{% block modorulink %}{{ url_for('teacher.jikanwari.class_list') }}{% endblock %}
 
 {% block content %}
     <h1>授業数登録</h1>

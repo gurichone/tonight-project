@@ -1,0 +1,10 @@
+{% extends "teacher/base.html" %}
+
+{% block title %}登録完了{% endblock %}
+
+{% block content %}
+    <div class="success-message">
+        <h1>登録が完了されました</h1>
+        <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}" class="back-to-timetable-btn">時間割表に戻る</a>
+    </div>
+{% endblock %}

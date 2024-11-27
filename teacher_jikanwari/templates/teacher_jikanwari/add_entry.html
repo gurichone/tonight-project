@@ -2,9 +2,7 @@
 
 {% block title %}授業の追加{% endblock %}
 
-{% block modorulink %}
-    href={{ url_for('teacher.jikanwari.t_jikanwari') }}
-{% endblock %}
+{% block modorulink %}{{ url_for('teacher.jikanwari.t_jikanwari') }}{% endblock %}
 
 {% block content %}
     <h1>授業の追加</h1>

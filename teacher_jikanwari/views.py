@@ -194,7 +194,12 @@ def save_timetable():
             db.session.commit()
 
     # 時間割にリダイレクト
-    return redirect(url_for("teacher.jikanwari.t_jikanwari"))
+    return redirect(url_for("teacher.jikanwari.success"))
+
+@jikanwari.route('/success')
+def success():
+    return render_template('teacher_jikanwari/success.html')
+
 
 # クラス一覧表示
 @jikanwari.route('/class_list')
