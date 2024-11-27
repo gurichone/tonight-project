@@ -215,6 +215,7 @@ def show_class_count():
     subject_details = {detail.name: detail for detail in SubjectDetails.query.all()}  # SubjectDetailsを取得
 
     error_message = None  # 初期化する
+    form_data = {}
 
     if request.method == 'POST':
         for subject in subjects:
@@ -236,18 +237,8 @@ def show_class_count():
                 error_message = f"{subject_name}のコマ数が単位数に合っていません。もう一度入力してください。"
                 break
 
-            # データを更新または新規作成
-            existing_detail = subject_details.get(subject_name)
-            if existing_detail:
-                existing_detail.periods = periods
-                existing_detail.units = units
-            else:
-                new_subject_detail = SubjectDetails(
-                    name=subject_name,
-                    periods=periods,
-                    units=units
-                )
-                db.session.add(new_subject_detail)
+            # ユーザー入力内容をform_dataに格納
+            form_data[subject_name] = {'periods': periods, 'units': units}
 
         if error_message:
             # エラーがある場合はフォームを再表示
@@ -258,9 +249,12 @@ def show_class_count():
                 error_message=error_message
             )
 
-        # 正常終了時にコミットを一括で実行
-        db.session.commit()
-        return redirect(url_for('teacher.jikanwari.class_list'))
+        # エラーがない場合は確認画面に遷移
+        return render_template(
+            'teacher_jikanwari/confirm_class_count.html',
+            subjects=subjects,
+            form_data=form_data
+        )
 
     # GETリクエストの場合
     return render_template(
@@ -269,3 +263,32 @@ def show_class_count():
         subject_details=subject_details,
         error_message=error_message
     )
+
+@jikanwari.route('/save_class_count', methods=['POST'])
+def save_class_count():
+    form_data = request.form  # フォームデータを取得
+
+    # ユーザーが入力したデータを保存
+    for subject_name, data in form_data.items():
+        periods = int(data['periods'])
+        units = int(data['units'])
+
+        existing_detail = SubjectDetails.query.filter_by(name=subject_name).first()
+        if existing_detail:
+            existing_detail.periods = periods
+            existing_detail.units = units
+        else:
+            new_subject_detail = SubjectDetails(
+                name=subject_name,
+                periods=periods,
+                units=units
+            )
+            db.session.add(new_subject_detail)
+
+            db.session.commit()
+    return redirect(url_for('teacher.jikanwari.register_complete'))
+
+@jikanwari.route('/register_complete')
+def register_complete():
+    return render_template('teacher_jikanwari/register_complete.html')
+

@@ -1,0 +1,32 @@
+{% extends "teacher/base.html" %}
+
+{% block title %}入力内容の確認{% endblock %}
+
+{% block modorulink %}{{ url_for('teacher.jikanwari.show_class_count') }}{% endblock %}
+
+{% block content %}
+    <h1>入力内容の確認</h1>
+    <form method="POST" action="{{ url_for('teacher.jikanwari.save_class_count') }}">
+        <table>
+            <thead>
+                <tr>
+                    <th>科目名</th>
+                    <th>コマ数</th>
+                    <th>単位数</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject_name, data in form_data.items() %}
+                    <tr>
+                        <td>{{ subject_name }}</td>
+                        <td>{{ data['periods'] }}コマ</td>
+                        <td>{{ data['units'] }}単位</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div>
+            <button type="submit">登録</button>
+        </div>
+    </form>
+{% endblock %}
