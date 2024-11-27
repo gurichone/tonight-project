@@ -19,6 +19,7 @@ href="{{ url_for('teacher.jikanwari.t_jikanwari') }}"
             <tr>
                 <th>授業名</th>
                 <th>コマ数</th>
+                <th>単位数</th>  <!-- 単位数の列を追加 -->
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@ href="{{ url_for('teacher.jikanwari.t_jikanwari') }}"
             <tr>
                 <td>{{ subject.name }}</td>  <!-- 授業名 -->
                 <td>{{ subject.periods }} コマ</td>  <!-- コマ数 -->
+                <td>{{ subject.units }} 単位</td>  <!-- 単位数 -->
             </tr>
             {% endfor %}
         </tbody>

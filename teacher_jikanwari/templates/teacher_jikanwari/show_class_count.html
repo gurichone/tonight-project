@@ -1,4 +1,3 @@
-<!-- templates/teacher/show_class_count.html -->
 {% extends "teacher/base.html" %}
 
 {% block title %}授業数登録{% endblock %}
@@ -11,9 +10,7 @@
     <h1>授業数登録</h1>
 
     {% if error_message %}
-        <div class="error-message">
-            {{ error_message }}
-        </div>
+    <p style="color: red;">{{ error_message }}</p>
     {% endif %}
 
     <form method="POST" action="{{ url_for('teacher.jikanwari.show_class_count') }}">
@@ -22,6 +19,7 @@
                 <tr>
                     <th>授業科目</th>
                     <th>コマ数</th>
+                    <th>単位数</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,8 +29,28 @@
                     <td>
                         <select name="periods_{{ subject.subject_id }}" required>
                             <option value="">選択してください</option>
-                            {% for i in range(1, 101) %}
-                                <option value="{{ i }}">{{ i }} コマ</option>
+                            {% for i in range(1, 11) %}
+                            <option value="{{ i * 15 }}"
+                                    {% if subject_details[subject.subject_name] 
+                                       and subject_details[subject.subject_name].periods == i * 15 %}
+                                    selected
+                                    {% endif %}>
+                                {{ i * 15 }} コマ
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select name="units_{{ subject.subject_id }}" required>
+                            <option value="">選択してください</option>
+                            {% for i in range(1, 11) %}
+                            <option value="{{ i }}"
+                                    {% if subject_details[subject.subject_name] 
+                                       and subject_details[subject.subject_name].units == i %}
+                                    selected
+                                    {% endif %}>
+                                {{ i }} 単位
+                            </option>
                             {% endfor %}
                         </select>
                     </td>
@@ -42,4 +60,30 @@
         </table>
         <button type="submit">登録</button>
     </form>
+    
+    <script>
+        // 単位数に応じてコマ数を15の倍数に設定するスクリプト
+        function updatePeriods(subjectId) {
+            const units = document.querySelector(`select[name="units_${subjectId}"]`).value;
+            const periodsSelect = document.querySelector(`select[name="periods_${subjectId}"]`);
+    
+            // コマ数をリセット
+            periodsSelect.innerHTML = '<option value="">選択してください</option>';
+    
+            if (units) {
+                const unitsInt = parseInt(units, 10);
+                const maxMultiplier = 10;  // 1～10倍の15の倍数を生成
+    
+                for (let i = 1; i <= maxMultiplier; i++) {
+                    const value = i * 15 * unitsInt;
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = `${value} コマ`;
+                    periodsSelect.appendChild(option);
+                }
+            }
+        }
+    </script>
+    
+    
 {% endblock %}

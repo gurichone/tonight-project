@@ -207,27 +207,60 @@ def class_list():
 @jikanwari.route('/show_class_count', methods=['GET', 'POST'])
 def show_class_count():
     subjects = Subject.query.all()
+    subject_details = {detail.name: detail for detail in SubjectDetails.query.all()}  # SubjectDetailsを取得
+
+    error_message = None  # 初期化する
 
     if request.method == 'POST':
         for subject in subjects:
             subject_id = subject.subject_id
             periods = request.form.get(f'periods_{subject_id}')
+            units = request.form.get(f'units_{subject_id}')
             subject_name = subject.subject_name
 
-            if not subject_name:  # subject_nameが取得できない場合（Noneまたは空文字）
-                # 関連するSubjectDetailsを削除
-                db.session.query(SubjectDetails).filter_by(name=subject_name).delete()
-                db.session.commit()
-                continue  # 次のsubjectに進む
+            # 入力がない場合のスキップ処理
+            if not periods or not units:
+                error_message = f"{subject_name}のデータを正しく入力してください。"
+                break
 
-            if periods:
-                # 新しいSubjectDetailsを作成
-                new_subject_detail = SubjectDetails(name=subject_name, periods=periods)
+            periods = int(periods)
+            units = int(units)
+
+            # 単位数とコマ数の整合性をチェック (1単位 = 15コマ)
+            if periods != units * 15:
+                error_message = f"{subject_name}のコマ数が単位数に合っていません。もう一度入力してください。"
+                break
+
+            # データを更新または新規作成
+            existing_detail = subject_details.get(subject_name)
+            if existing_detail:
+                existing_detail.periods = periods
+                existing_detail.units = units
+            else:
+                new_subject_detail = SubjectDetails(
+                    name=subject_name,
+                    periods=periods,
+                    units=units
+                )
                 db.session.add(new_subject_detail)
-                db.session.commit()  # データベースに保存
 
-        return redirect(url_for('teacher.jikanwari.t_jikanwari'))  # 完了後にリダイレクト
+        if error_message:
+            # エラーがある場合はフォームを再表示
+            return render_template(
+                'teacher_jikanwari/show_class_count.html',
+                subjects=subjects,
+                subject_details=subject_details,
+                error_message=error_message
+            )
+
+        # 正常終了時にコミットを一括で実行
+        db.session.commit()
+        return redirect(url_for('teacher.jikanwari.class_list'))
 
     # GETリクエストの場合
-    return render_template('teacher_jikanwari/show_class_count.html', subjects=subjects)
-
+    return render_template(
+        'teacher_jikanwari/show_class_count.html',
+        subjects=subjects,
+        subject_details=subject_details,
+        error_message=error_message
+    )

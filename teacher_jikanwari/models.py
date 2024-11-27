@@ -18,4 +18,5 @@ class SubjectDetails(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     periods = db.Column(db.Integer, nullable=False)
+    units = db.Column(db.Integer, nullable=False, default=1)
 
