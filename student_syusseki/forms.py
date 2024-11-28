@@ -3,6 +3,9 @@ from wtforms import StringField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Length
 from datetime import datetime, timedelta
 from flask import session
+from app import db
+from teacher_seiseki.models import Score
+from auth.models import Subject
 
 class AttendCheck(FlaskForm):
     attendance_code = StringField(
@@ -30,3 +33,11 @@ class AttendCheck(FlaskForm):
         # 入力されたコードが一致しない場合のエラーメッセージ
         if field.data != saved_code:
             raise ValidationError("コードが一致しません。")
+
+        subject = db.session.query(Subject).filter(Subject.subject_id == Score.subject_id).first()
+        if not subject:
+            raise ValidationError("選択した授業は登録されていません。")
+
+        score = db.session.query(Score).filter_by(subject_id=subject.subject_id).first()
+        if not score:
+            raise ValidationError("対応する科目の出席記録がありません。")

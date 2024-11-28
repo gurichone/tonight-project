@@ -3,10 +3,11 @@ from flask_login import current_user, login_required
 from app import db
 from teacher_seiseki.forms import SearchScore, AddScore, AttendScore, EditScore
 from teacher_seiseki.models import Score
-from auth.models import Student, Subject, Teacher
+from auth.models import Student, Subject
 from datetime import datetime,timedelta
 from teacher_jikanwari.models import Timetable
 import hashlib
+from sqlalchemy import or_
 
 seiseki = Blueprint(
     "seiseki",
@@ -247,8 +248,7 @@ def delete(score_id):
     # 他の画面には行かず、メニュー画面を表示する
     return redirect(url_for("teacher.seiseki.search"))
 
-# 生徒の出席登録の際に発行するコードを先生側が用意するための処理の実装
-@seiseki.route("/issue_code",methods=["GET","POST"])
+@seiseki.route("/issue_code", methods=["GET", "POST"])
 @login_required
 def issue_code():
     if len(current_user.id) != 6:
@@ -271,22 +271,39 @@ def issue_code():
     # timetableが存在する場合の処理
     if timetable:
         if request.method == "POST":
-
-            # 選択を終えコード発行ボタンを押下するとコードを発行し表示する。
             period = request.form.get("period")
-            code_data = f"{timetable.id}{now.strftime('%Y%m%d')}{period}" + "jn;zsbvuo;bbh;rlznnzibvnbrnl.fbk;lnk.szv;bab"
-            code_hash = hashlib.sha256(code_data.encode()).hexdigest()[:6]
 
-            # 一時的に発行したコードを保存（生徒が後で確認できるようにする）
-            session['attendance_code'] = code_hash
-            session['code_timestamp'] = datetime.now().timestamp()  # 時刻も保存
+            print("\n\n", period)
 
-            return render_template("teacher_seiseki/display_code.html", code=code_hash)
+            timetable = (
+                db.session.query(Timetable)
+                .filter_by(year=year, month=month, day=day)
+                .filter(or_(Timetable.period1 == period, Timetable.period2 == period, Timetable.period3 == period))
+                .first()
+            )
+
+            # `subject`テーブルに`period`で指定された科目が存在するか確認
+            # subject_name = getattr(timetable, f"period{period}", None)
+            subject = db.session.query(Subject).filter(Subject.subject_name == period).first()
+
+            if timetable and subject:
+                # コードを発行し表示する
+                code_data = f"{timetable.id}{now.strftime('%Y%m%d')}{period}" + "jn;zsbvuo;bbh;rlznnzibvnbrnl.fbk;lnk.szv;bab"
+                code_hash = hashlib.sha256(code_data.encode()).hexdigest()[:6]
+
+                # 一時的に発行したコードを保存（生徒が後で確認できるようにする）
+                session['attendance_code'] = code_hash
+                session['code_timestamp'] = datetime.now().timestamp()  # 時刻も保存
+
+                return render_template("teacher_seiseki/display_code.html", code=code_hash)
+            else:
+                flash("選択した授業は登録されていません。コードを発行できません。", "error")
+                return redirect(url_for("teacher.seiseki.issue_code"))
         
         # 最初にTimetableから取得した授業一覧を表示する処理
-        periods = [(1, "period1", timetable.period1), (2, "period2", timetable.period2), (3, "period3", timetable.period3)]
+        periods = [(1, timetable.period1, timetable.period1), (2, timetable.period2, timetable.period2), (3, timetable.period3, timetable.period3)]
         return render_template("teacher_seiseki/issue_code.html", periods=periods)
     
     # 存在しない場合はエラー文を表示する
-    flash("本日、授業がないか登録されていません。","error")
+    flash("本日、授業がないか登録されていません。", "error")
     return redirect(url_for("teacher.seiseki.search"))

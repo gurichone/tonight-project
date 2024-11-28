@@ -10,7 +10,7 @@ class SearchScore(FlaskForm):
 
     student_name = StringField("氏名")
 
-    submit = SubmitField("検索")
+    submit = SubmitField("")
 
 # データベースに成績を追加するためのフォームクラスを作成 
 class AddScore(FlaskForm):   
@@ -50,7 +50,7 @@ class AttendScore(FlaskForm):
 
     student_name = StringField("氏名")
 
-    submit = SubmitField("検索")
+    submit = SubmitField("")
 
 # 成績の編集を行うためのフォームを作成
 class EditScore(FlaskForm):

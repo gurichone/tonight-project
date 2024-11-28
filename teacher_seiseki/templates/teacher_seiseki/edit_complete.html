@@ -1,6 +1,10 @@
 {% extends "teacher/base.html" %}
 {% block title %}編集完了{% endblock %}
 {% block content %}
-    <h2>編集が完了しました</h2>
-    <a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>
+<body id="body">
+    <div class="form_white">
+        <h2>編集が完了しました</h2>
+        <a href="{{ url_for('teacher.seiseki.search') }}">成績一覧に戻る</a>
+    </div>
+</body>
 {% endblock %}
