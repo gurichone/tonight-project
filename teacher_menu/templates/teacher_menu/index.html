@@ -4,7 +4,7 @@
 		<title>教員メニュー</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}" />
 	</head>
-    <body>
+    <body id="menu_body">
         <header>
             <!-- 通知とアカウント情報のアイコン -->
             <!-- 通知 -->
@@ -16,44 +16,29 @@
 
                 <!-- アカウント情報 -->
                 <a href="{{ url_for('teacher.profile.profile')}}" class="menu-icon">
-                    <img src="{{ url_for('teacher.profile.upload_file', filename=teacher.icon_path.split('uploads/icon/')[1] if teacher.icon_path else 'icon/default/default_icon.png') }}" alt="プロフィール画像">
+                    <div><img src="{{ url_for('teacher.profile.upload_file', filename=teacher.icon_path.split('uploads/icon/')[1] if teacher.icon_path else 'icon/default/default_icon.png') }}" alt="プロフィール画像"></div>
                     <p class="icon-text">アカウント情報</p>
                 </a>
             </div>
         </header>
     <!-- 教員用メニュー画面のメニューの一覧を作成 -->
-        <div class="teacher-menu">
-            <ul>
-                <!-- 生徒管理 -->
-                <li><a href="{{ url_for('teacher.student.teacher_student') }}" class="menu-item">
-                    <img src="{{ url_for('static', filename='images/student.png') }}" alt="生徒管理">
-                </a></li>
-                
-                <!-- チャット -->
-                <li><a href="{{ url_for('teacher.chat.chat_page') }}" class="menu-item">
-                    <img src="{{ url_for('static', filename='images/chat.png') }}" alt="チャット">
-                </a></li>
-
-                <!-- 時間割管理 -->
-                <li><a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}" class="menu-item">
-                    <img src="{{ url_for('static', filename='images/jikanwari.png') }}" alt="時間割管理">
-                </a></li>
-
-                <!-- 提出物管理 -->
-                <li><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}" class="menu-item">
-                    <img src="{{ url_for('static', filename='images/teisyutu.png') }}" alt="提出物管理">
-                </a></li>
-
-                <!-- 成績管理 -->
-                <li><a href="{{ url_for('teacher.seiseki.search') }}" class="menu-item">
-                    <img src="{{ url_for('static', filename='images/seiseki.png') }}" alt="成績管理">
-                </a></li>
-
+        <div class="menu_out">
+            <div class="menu_in">
+                <!-- 生徒管理 --><!-- チャット -->
+                 <a href="{{ url_for('teacher.student.teacher_student') }}" class="menu-item mi_two"><img src="{{ url_for('static', filename='images/student.png') }}" alt="生徒管理"></a><a href="{{ url_for('teacher.chat.chat_page') }}" class="menu-item mi_two"><img src="{{ url_for('static', filename='images/chat.png') }}" alt="チャット"></a>
+            </div>
+        </div>
+        <div class="menu_out">
+            <div class="menu_in">
+                <!-- 時間割管理 --><!-- 提出物管理 --><!-- 成績管理 -->
+                <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}" class="menu-item mi_three"><img src="{{ url_for('static', filename='images/jikanwari.png') }}" alt="時間割管理"></a><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}" class="menu-item mi_three"><img src="{{ url_for('static', filename='images/teisyutu.png') }}" alt="提出物管理"></a><a href="{{ url_for('teacher.seiseki.search') }}" class="menu-item mi_three"><img src="{{ url_for('static', filename='images/seiseki.png') }}" alt="成績管理"></a>
+            </div>
+        </div>
+        <div class="menu_out">
+            <div class="menu_in">
                 <!-- お知らせ送信 -->
-                <li><a href="{{ url_for('teacher.sent.teacher_sent') }}" class="menu-item">
-                    <img src="{{ url_for('static', filename='images/noticesent.png') }}" alt="お知らせ送信">
-                </a></li>
-            </ul>
+                <a href="{{ url_for('teacher.sent.teacher_sent') }}" class="menu-item mi_right"><img src="{{ url_for('static', filename='images/noticesent.png') }}" alt="お知らせ送信"></a>
+            </div>
         </div>
     </body>
 </html>

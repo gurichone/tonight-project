@@ -1,39 +1,70 @@
 {% extends "teacher/base.html" %}
 
-{% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=submission_id) }}{% endblock %}
+{% block h1 %}提出物登録{% endblock %}
+
+{% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}{% endblock %}
 
 {% block content %}
-<div>
-    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_confirm_edit') }}" method="POST">
-    {{ form.csrf_token }}
-    {{ form.name.label }}
-    <input type="text" name="name" value="{{ form.name.data }}" readonly>
-    <br>
-    {{ form.subject.label }}
-    <select name="subject">
-        <option value="{{ form.subject.choices[0][0]}}">{{ form.subject.choices[0][1] }}</option>
-    </select>
-    <br>
-    {{ form.type.label }}
-    <select name="type">
-        <option value="{{ form.type.choices[0][0]}}">{{ form.type.choices[0][1] }}</option>
-    </select>
-    <br>
-    {{ form.rimit.label }}
-    <input type="text" name="rimit" value="{{ form.rimit.data }}" readonly>
-    <br>
-    {{ form.scoring_type.label }}
-    <select name="scoring_type">
-        <option value="{{ form.scoring_type.choices[0][0]}}">{{ form.scoring_type.choices[0][1] }}</option>
-    </select>
-    <br>
-    {{ form.question.label }}
-    <textarea id="question" name="question" readonly>{{ form.question.data }}</textarea>
-    <br>
-    {{ form.testcase.label }}
-    <textarea id="testcase" name="testcase" readonly>{{ form.testcase.data }}</textarea>
-    <br>
-    {{ form.submit }}
-    </form>
+<div id="t_sub_add_out">
+    <div id="t_sub_add_in" class="white">
+        <div class="for_saiten_buttons"><button id="question_button">問題文</button><button id="testcase_button">テストケース</button></div>
+        <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_confirm_edit') }}" method="POST">
+        {{ form.csrf_token }}
+        <div class="div_form">
+        <div class="t_sub_add_input">
+        <input type="text" name="name" value="{{ form.name.data }}" readonly>
+        </div>
+        <div class="t_sub_add_input">
+        {{ form.subject.label }}<select name="subject"><option value="{{ form.subject.choices[0][0]}}">{{ form.subject.choices[0][1] }}</option></select>
+        </div>
+        <div class="t_sub_add_input">
+        {{ form.type.label }}<select name="type"><option value="{{ form.type.choices[0][0]}}">{{ form.type.choices[0][1] }}</option></select>
+        </div>
+        <div class="t_sub_add_input">
+        {{ form.rimit.label }}<input type="date" name="rimit" value="{{ form.rimit.data }}" readonly>
+        </div>
+        <div class="t_sub_add_input">
+        {{ form.scoring_type.label }}<select name="scoring_type"><option value="{{ form.scoring_type.choices[0][0]}}">{{ form.scoring_type.choices[0][1] }}</option></select>
+        </div>
+        {{ form.submit(class="grey font_white") }}
+        </div>
+        <div id="div_question" class="grey font_white scroll_palent">
+            <p>生成AIによる採点を使用する場合問題文を入力してください</p>
+            <textarea id="question" name="question" readonly>{{ form.question.data }}</textarea>
+        </div>
+        <div id="div_testcase" class="grey font_white">
+            <p>テストケースによる採点を使用する場合テストケースを設定してください</p>
+            <textarea id="testcase" name="testcase" readonly>{{ form.testcase.data }}</textarea>
+        </div>
+        </form>
+    </div>
 </div>
+<script>
+    var questionButtonElm = document.getElementById("question_button");
+    var testcaseButtonElm = document.getElementById("testcase_button");
+    var questionElm = document.getElementById("div_question");
+    var testcaseElm = document.getElementById("div_testcase");
+
+    questionButtonElm.onclick = () => {
+        questionButtonElm.style.backgroundColor="#606C75"
+        questionButtonElm.style.color="#fff"
+        testcaseButtonElm.style.backgroundColor="#D9D9D9"
+        testcaseButtonElm.style.color="#7D7D7D"
+        testcaseElm.classList.add("hidden");
+        questionElm.classList.remove("hidden");
+    }
+    testcaseButtonElm.onclick = () => {
+        testcaseButtonElm.style.backgroundColor="#606C75"
+        testcaseButtonElm.style.color="#fff"
+        questionButtonElm.style.backgroundColor="#D9D9D9"
+        questionButtonElm.style.color="#7D7D7D"
+        questionElm.classList.add("hidden");
+        testcaseElm.classList.remove("hidden");
+    }
+    questionButtonElm.style.backgroundColor="#606C75"
+    questionButtonElm.style.color="#fff"
+    testcaseButtonElm.style.backgroundColor="#D9D9D9"
+    testcaseButtonElm.style.color="#7D7D7D"
+    testcaseElm.classList.add("hidden");
+</script>
 {% endblock %}

@@ -1,36 +1,79 @@
 {% extends "teacher/base.html" %}
 
+{% block h1 %}提出物変更{% endblock %}
+
 {% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu') }}{% endblock %}
 
 {% block content %}
-<div>
-    <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=submission_id) }}" method="POST">
-    {{ form.csrf_token }}
-    {{ form.name.label }}{{ form.name }}
-    <br>
-    {{ form.subject.label }}{{ form.subject }}
-    <br>
-    {{ form.type.label }}{{ form.type }}
-    <br>
-    {{ form.rimit.label }}{{ form.rimit }}
-    <br>
-    {{ form.scoring_type.label }}{{ form.scoring_type }}
-    <br>
-    {{ form.question.label }}{{ form.question }}
-    <br>
-    {{ form.testcase.label }}<textarea id="testcase" name="testcase" readonly></textarea>
-    <br>
-    {{ form.submit }}
-    </form>
-
-    <button id="add">追加</button>
-
-    <table id="testcaseTable">
-        <tr><th>入力</th><th>出力</th><th></th></tr>
-    </table>
+<div id="t_sub_add_out">
+    <div id="t_sub_add_in" class="white">
+        <div class="for_saiten_buttons"><button id="question_button">問題文</button><button id="testcase_button">テストケース</button></div>
+        <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=submission_id) }}" method="POST" style="display: contents;">
+        {{ form.csrf_token }}
+        <div class="div_form">  
+            <div class="t_sub_add_input">
+            {{ form.name }}
+            </div>
+            <div class="t_sub_add_input">
+            {{ form.subject.label }}{{ form.subject }}
+            </div>
+            <div class="t_sub_add_input">
+            {{ form.type.label }}{{ form.type }}
+            </div>
+            <div class="t_sub_add_input">
+            {{ form.rimit.label }}{{ form.rimit }}
+            </div>
+            <div class="t_sub_add_input">
+            {{ form.scoring_type.label }}{{ form.scoring_type }}
+            </div>
+            <br>
+            {{ form.submit(class="grey font_white") }}
+        </div>
+        <div id="div_question" class="grey font_white scroll_palent">
+            <p>生成AIによる採点を使用する場合問題文を入力してください</p>
+            {{ form.question(class="scroll_child") }}
+        </div>
+        <textarea class="hidden" id="testcase" name="testcase" readonly></textarea>
+        </form>
+        <div id="div_testcase" class="grey font_white">
+            <p>テストケースによる採点を使用する場合テストケースを設定してください</p>
+            <div class="div_table">
+                <table><tr><th>入力</th><th>出力</th><th class="th_add"><button id="add" class="white font_grey">追加</button></th></tr></table>
+                <div class="scroll_palent"><table id="testcaseTable" class="scroll_child"></table></div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
+    var questionButtonElm = document.getElementById("question_button");
+    var testcaseButtonElm = document.getElementById("testcase_button");
+    var questionElm = document.getElementById("div_question");
+    var testcaseElm = document.getElementById("div_testcase");
+
+    questionButtonElm.onclick = () => {
+        questionButtonElm.style.backgroundColor="#606C75"
+        questionButtonElm.style.color="#fff"
+        testcaseButtonElm.style.backgroundColor="#D9D9D9"
+        testcaseButtonElm.style.color="#7D7D7D"
+        testcaseElm.classList.add("hidden");
+        questionElm.classList.remove("hidden");
+    }
+    testcaseButtonElm.onclick = () => {
+        testcaseButtonElm.style.backgroundColor="#606C75"
+        testcaseButtonElm.style.color="#fff"
+        questionButtonElm.style.backgroundColor="#D9D9D9"
+        questionButtonElm.style.color="#7D7D7D"
+        questionElm.classList.add("hidden");
+        testcaseElm.classList.remove("hidden");
+    }
+    questionButtonElm.style.backgroundColor="#606C75"
+    questionButtonElm.style.color="#fff"
+    testcaseButtonElm.style.backgroundColor="#D9D9D9"
+    testcaseButtonElm.style.color="#7D7D7D"
+    testcaseElm.classList.add("hidden");
+
+
     let addButton = document.getElementById("add");
     let testcase = document.getElementById("testcase");
     let testcaseTable = document.getElementById("testcaseTable");
@@ -65,8 +108,8 @@
         var newOutputElm = document.createElement("textarea");
         var newDeleteElm = document.createElement("button");
         newDeleteElm.innerText = "削除";
-        newInputElm.innerText = input_txt;
-        newOutputElm.innerText = output_txt;
+        newInputElm.innerHTML = input_txt;
+        newOutputElm.innerHTML = output_txt;
         newInputElm.classList.add("input");
         newOutputElm.classList.add("output");
         newDeleteElm.classList.add("delete");
@@ -90,7 +133,7 @@
         testcase.value = testcaseText;
     }
     {% for t in testcase %}
-    addTestcase("{{t[0]}}", "{{t[1]}}");
+    addTestcase(`{{t[0]}}`, `{{t[1]}}`);
     resetClassname();
     {% endfor %}
 

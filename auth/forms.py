@@ -10,6 +10,7 @@ class TeacherSignUpForm(FlaskForm):
             DataRequired("教員番号は必須です。"), # 入力必須の設定
             Length(6, 6, "6文字で入力してください。"), # 教員番号は6桁
         ],
+        render_kw={"placeholder": "教員番号"}
     )
     teacher_name = StringField(  # ユーザネームを入力するフィールドを作成
         "氏名", # フォームに表示される文字を指定
@@ -17,6 +18,7 @@ class TeacherSignUpForm(FlaskForm):
             DataRequired("氏名は必須です。"), # 入力必須の設定
             Length(1, 30, "30文字以内で入力してください。"), # 文字数を1~30文字に設定
         ],
+        render_kw={"placeholder": "氏名"}
     )
     teacher_email = StringField(
         "メールアドレス",
@@ -24,13 +26,15 @@ class TeacherSignUpForm(FlaskForm):
             DataRequired("メールアドレスは必須です。"), # 入力必須の設定
             Email("メールアドレスの形式で入力してください。"), # emailの形式で入力するよう設定
         ],
+        render_kw={"placeholder": "メールアドレス"}
     )
     teacher_password = PasswordField(
         "パスワード", 
         validators=[
             DataRequired("パスワードは必須です。"), # 入力必須の設定
             Length(8, 25, "8~25文字で入力してください。"),
-        ]
+        ],
+        render_kw={"placeholder": "パスワード"}
     )
     teacher_class_num = SelectField(
         "クラス番号",
@@ -46,8 +50,12 @@ class TeacherLoginForm(FlaskForm):
             DataRequired("教員番号は必須です。"), # 入力必須の設定
             Length(6, 6, "6文字で入力してください。"),
         ],
+        render_kw={"placeholder": "教員番号"}
     )
-    teacher_password = PasswordField("パスワード", validators=[DataRequired("パスワードは必須です。")]) # パスワードを入力必須に設定
+    teacher_password = PasswordField(
+        "パスワード",
+        validators=[DataRequired("パスワードは必須です。")],
+        render_kw={"placeholder": "パスワード"}) # パスワードを入力必須に設定
     submit = SubmitField("ログイン")
 
 
@@ -59,6 +67,7 @@ class StudentSignUpForm(FlaskForm):
             DataRequired("生徒番号は必須です。"), # 入力必須の設定
             Length(7, 7, "7文字で入力してください。"), # 生徒番号は7桁
         ],
+        render_kw={"placeholder": "生徒番号"}
     )
     student_name = StringField(  # ユーザネームを入力するフィールドを作成
         "氏名", # フォームに表示される文字を指定
@@ -66,6 +75,7 @@ class StudentSignUpForm(FlaskForm):
             DataRequired("氏名は必須です。"), # 入力必須の設定
             Length(1, 30, "30文字以内で入力してください。"), # 文字数を1~30文字に設定
         ],
+        render_kw={"placeholder": "氏名"}
     )
     student_email = StringField(
         "メールアドレス",
@@ -73,13 +83,15 @@ class StudentSignUpForm(FlaskForm):
             DataRequired("メールアドレスは必須です。"), # 入力必須の設定
             Email("メールアドレスの形式で入力してください。"), # emailの形式で入力するよう設定
         ],
+        render_kw={"placeholder": "メールアドレス"}
     )
     student_password = PasswordField(
         "パスワード", 
         validators=[
             DataRequired("パスワードは必須です。"), # 入力必須の設定
             Length(8, 25, "8~25文字で入力してください。"),
-        ]
+        ],
+        render_kw={"placeholder": "パスワード"}
     )
     student_entrollment_year = SelectField(
         "入学年度",
@@ -103,8 +115,13 @@ class StudentLoginForm(FlaskForm):
             DataRequired("生徒番号は必須です。"), # 入力必須の設定
             Length(7, 7, "7文字で入力してください。"),
         ],
+        render_kw={"placeholder": "生徒番号"}
     )
-    student_password = PasswordField("パスワード", validators=[DataRequired("パスワードは必須です。")]) # パスワードを入力必須に設定
+    student_password = PasswordField(
+        "パスワード",
+        validators=[DataRequired("パスワードは必須です。")],
+        render_kw={"placeholder": "パスワード"}
+        ) # パスワードを入力必須に設定
     submit = SubmitField("ログイン")
 
 class EmailForm(FlaskForm):

@@ -6,7 +6,7 @@
 <h1 id="h1_title">パスワードリセット</h1>
 <div class="modorulink"><a href="{{url_for('auth.login')}}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a></div>
 <div class="form_white">
-    <form method="post" action="{{ url_for('auth.reset')}}">
+    <form class="form_white_form" method="post" action="{{ url_for('auth.reset')}}">
         {{ form.csrf_token }}
         {{ form.id(class="form_input") }}
         <br>

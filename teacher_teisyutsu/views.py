@@ -56,7 +56,7 @@ def t_teisyutsu_add():
         s = db.session.query(Subject).filter_by(subject_id = form1.subject.data).first()
         form2.name.data=form1.name.data
         form2.subject.choices=[(s.subject_id, s.subject_name)]
-        form2.type.choices=[form2.type.choices[form1.type.data]]
+        form2.type.choices=[form2.type.choices[form1.type.data-1]]
         form2.rimit.data=form1.rimit.data
         form2.scoring_type.choices=[form2.scoring_type.choices[form1.scoring_type.data]]
         form2.question.data=form1.question.data
@@ -136,7 +136,7 @@ def t_teisyutsu_edit(submission_id):
         s = db.session.query(Subject).filter_by(subject_id = form1.subject.data).first()
         form2.name.data=form1.name.data
         form2.subject.choices=[(s.subject_id, s.subject_name)]
-        form2.type.choices=[form2.type.choices[form1.type.data]]
+        form2.type.choices=[form2.type.choices[form1.type.data-1]]
         form2.rimit.data=form1.rimit.data
         form2.scoring_type.choices=[form2.scoring_type.choices[form1.scoring_type.data]]
         form2.question.data=form1.question.data

@@ -66,7 +66,7 @@
     {% endfor %}
 <form action="{{ url_for('teacher.saiten.auto') }}" method="POST">
     {{ form.csrf_token }}
-    <textarea style="display:none" id="fieldlist" name="fieldlist" readonly></textarea>
+    <textarea class="hidden" id="fieldlist" name="fieldlist" readonly></textarea>
     {{ form.submit }}
 </form>
 <script>

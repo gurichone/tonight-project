@@ -4,7 +4,7 @@
 
 {% block content %}
 <div>
-    <h2>{{ submission }}を削除しますか</h2>
-    <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_delete_done') }}">削除</a>
+    <h1 id="title_done">{{ submission }}を削除しますか</h1>
+    <div id="link_done"><a class="red font_white" href="{{ url_for('teacher.teisyutsu.t_teisyutsu_delete_done') }}">削除</a></div>
 </div>
 {% endblock %}

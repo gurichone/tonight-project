@@ -4,7 +4,7 @@
 
 {% block content %}
 <div>
-    <h2>変更が完了しました</h2>
-    <a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}">提出物管理画面に戻る</a>
+    <h1 id="title_done">変更が完了しました</h1>
+    <div id="link_done"><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu') }}" class="grey">提出物管理画面に戻る</a></div>
 </div>
 {% endblock %}

@@ -1,33 +1,47 @@
 {% extends "teacher/base.html" %}
 
+{% block h1 %}提出物採点{% endblock %}
+
 {% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu') }}{% endblock %}
 
 {% block content %}
-<div>
-    <ul>
-        <li>{{submission.Submission.submission_name}}</li>
-        <li>{{submission.Subject.subject_name}}</li>
-        <li>{{submission.Submission.submission_type}}</li>
-    </ul>
-    <a href="{{ url_for('teacher.saiten.manual') }}">ダウンロード</a>
-    <a href="{{ url_for('teacher.saiten.auto') }}">自動採点</a>
-</div>
-<div>
-    <table>
-        <tr><th>生徒番号</th><th>氏名</th><th>提出状況</th></tr>
-        {% for p in personal %}
-        <tr>
-            <td>{{ p.Student.id }}</td>
-            <td>{{ p.Student.student_name }}</td>
-            <td>
-                {% if p.Personal_Submission.submitted %}
-                <div id="submitted_true">✓</div>
-                {% else %}
-                <div id="submitted_none"></div>
+<div class="list_out">
+    <div id="saiten_index" class="white font_grey">
+        <div id="saiten_info">
+            <ul>
+                <li>科目名　:{{submission.Subject.subject_name}}</li>
+                <li>提出物名:{{submission.Submission.submission_name}}</li>
+                {% if submission.Submission.submission_type==1 %}
+                <li>実施内容:効果測定</li>
+                {% elif submission.Submission.submission_type==2 %}
+                <li>実施内容:演習問題</li>
                 {% endif %}
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+            </ul>
+            <div id="saiten_action">
+            <a href="{{ url_for('teacher.saiten.manual') }}" id="downroad" class="font_white">ダウンロード</a>
+            <a href="{{ url_for('teacher.saiten.auto') }}" class="grey font_white">自動採点</a>
+            </div>
+        </div>
+        <!-- <table>
+            <tr><th>生徒番号</th><th>氏名</th><th>提出状況</th></tr>
+        </table>
+        <div class="scroll_palent">
+        <table class="scroll_child">
+            {% for p in personal %}
+            <tr>
+                <td>{{ p.Student.id }}</td>
+                <td>{{ p.Student.student_name }}</td>
+                <td>
+                    {% if p.Personal_Submission.submitted %}
+                    <div id="submitted_true">✓</div>
+                    {% else %}
+                    <div id="submitted_none"></div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div> -->
+    </div>
 </div>
 {% endblock %}

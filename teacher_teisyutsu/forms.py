@@ -15,7 +15,7 @@ class SubmissionForms(FlaskForm): #ユーザー新規作成とユーザー編集
     type = SelectField(
         "実施内容", # フォームに表示される文字を指定
         choices=[(0, "指定なし"), (1, "効果測定"), (2, "演習問題")],
-        coerce=int
+        coerce=int,
     )
     submit = SubmitField("確定") # フォームの送信ボタンを作成
 
@@ -27,13 +27,15 @@ class CreateSubmissionForms(FlaskForm):
             Length(0, 30, "30文字以内で入力してください。"), # 教員番号は6桁
             
         ],
+        render_kw={"placeholder": "提出物名"}
     )
     subject = SelectField(
         "科目名", # フォームに表示される文字を指定
         validators=[
              DataRequired(message="入力は必須です。"), 
         ],
-        coerce=int
+        coerce=int,
+        render_kw={"placeholder": "科目名"}
     )
     type = SelectField(
         "実施内容", # フォームに表示される文字を指定
@@ -58,6 +60,7 @@ class CreateSubmissionForms(FlaskForm):
         "問題文", # フォームに表示される文字を指定
         validators=[
         ],
+        render_kw={"placeholder": "問題文"}
     )
     testcase = TextAreaField(
         "テストケース",
