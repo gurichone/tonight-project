@@ -1,13 +1,44 @@
 {% extends "teacher/base.html" %}
 
+{% block h1 %}採点結果{% endblock %}
+
 {% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu') }}{% endblock %}
 
+
 {% block content %}
+<div class="list_out" id="resultlist">
+<div class="list_in white">
+<table>
+    <tr><th>氏名</th><th>Jupyter</th><th>gemini</th><th>点数</th></tr>
+</table>
+<div class="scroll_palent">
+<table class="scroll_child">
     {% for p in personal_lst %}
-    <h2>{{p.Student.student_name}}({{p.Student.id}})</h2>
+    <tr>
+    <td>{{p.Student.student_name}}({{p.Student.id}})</td>
+    <td>{% if jupyter %}{{jupyter[p.Student.id]['point']}}点{% else %}-{% endif %}</td>
+    <td>{% if gemini %}{{ gemini[p.Student.id]['result'] }}点{% else %}-{% endif %}</td>
+    <td class="field"><input class="hide" type="hidden" value="{{p.Student.id}}"><input class="number" type="number" value="{{points[p.Student.id]}}" min="0" max="100"></td>
+    <td><button id="view_{{p.Student.id}}">詳細</button></td>
+    <tr></tr>
+    {% endfor %}
+</table>
+</div>
+<form action="{{ url_for('teacher.saiten.auto') }}" method="POST">
+    {{ form.csrf_token }}
+    <textarea class="hidden" id="fieldlist" name="fieldlist" readonly></textarea>
+    {{ form.submit }}
+</form>
+</div>
+</div>
+{% for p in personal_lst %}
+
+<div id="show_{{p.Student.id}}" class="hidden" class="show_window">
+<div class="list_in white">
     {% if p.Personal_Submission.submitted %}
         {% if jupyter %}
-            <h3>jupyter</h3>
+        <h3>jupyter</h3>
+        <div class="div_table scroll_palent">
             <table>
                 <tr>
                     <th>入力</th>
@@ -43,34 +74,48 @@
                 </tr>
                 {% endfor %}
             </table>
-            <p>{{jupyter[p.Student.id]['point']}}点</p>
-        {% endif %}
-
-        {% if gemini %}
-            <h3>gemini</h3>
-            <p>{{ gemini[p.Student.id]['result'] }}点</p>
-        {% endif %}
-        <div class="field">
-            <input class="hidden" type="hidden" value="{{p.Student.id}}">
-            <input class="number" type="number" value="{{points[p.Student.id]}}" min="0" max="100">
         </div>
-        <div>
-            <h3>コード</h3>
+        {% endif %}
+        <h3>コード</h3>
+        <div class="scroll_palent">
+        <div class="code grey font_white scroll_child">
             {% for code in codes[p.Student.id] %}
                 {{code}}<br>
             {% endfor %}
         </div>
+        </div>
     {% else %}
         <p>未提出</p>
     {% endif %}
-    {% endfor %}
-<form action="{{ url_for('teacher.saiten.auto') }}" method="POST">
-    {{ form.csrf_token }}
-    <textarea class="hidden" id="fieldlist" name="fieldlist" readonly></textarea>
-    {{ form.submit }}
-</form>
+    <button class="tojirubutton">閉じる</button>
+</div>
+</div>
+
 <script>
-    var hiddenElm = document.getElementsByClassName("hidden");
+    var button{{p.Student.id}}Elm = document.getElementById("view_{{p.Student.id}}");
+    var window{{p.Student.id}}Elm = document.getElementById("show_{{p.Student.id}}");
+    button{{p.Student.id}}Elm.onclick = () => {
+        window{{p.Student.id}}Elm.classList.remove("hidden");
+        window{{p.Student.id}}Elm.classList.add("list_out");
+        resultElm.classList.add("hidden");
+        resultElm.classList.remove("list_out");
+    }
+</script>
+{% endfor %}
+
+<script>
+    var resultElm = document.getElementById("resultlist")
+    var tojiruButtonElm = document.querySelectorAll(".tojirubutton")
+    for (let i = 0; i < tojiruButtonElm.length; i++) {
+        tojiruButtonElm[i].onclick = () => {
+            resultElm.classList.remove("hidden");
+            resultElm.classList.add("list_out");
+            tojiruButtonElm[i].parentElement.parentElement.classList.add("hidden");
+            tojiruButtonElm[i].parentElement.parentElement.classList.remove("list_out");
+        }
+    }
+
+    var hiddenElm = document.getElementsByClassName("hide");
     var numberElm = document.getElementsByClassName("number");
     var listElm = document.getElementById("fieldlist");
     var firstpoint = "";

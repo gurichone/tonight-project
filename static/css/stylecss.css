@@ -174,19 +174,30 @@ body{
   width: 56px;
   text-align: center;
 }
-
-#h1_title {
-  /* font-family: sans-serif;
-    font-weight: 200; */
-    display: flex;
+#h1_title{
+  display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#h1_title h1{
+  /* font-family: sans-serif;
+    font-weight: 200; */
     font-size: 32px;
     letter-spacing: 1px;
-    color: #ff0000;
+    color: #fff;
     margin: 0;
     line-height: 100px;
+}
+#h1_title h2{
+  /* font-family: sans-serif;
+    font-weight: 200; */
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: #fff;
+    margin: 0;
+    line-height: 16px;
 }
 #title_done {
   margin-top: 130px;
@@ -1060,4 +1071,39 @@ padding: 15px 40px;
 }
 #saiten_index .scroll_palent{
   height: 200px;
+}
+.profile-container .list_in{
+  width: 620px;
+}
+.profile-container .profile-image{
+  float: left;
+}
+.profile-container .profile-image img{
+  width: 200px;
+  height: 200px;
+  border-radius: 100px;
+  object-fit: cover;
+}
+.profile-container table{
+  float: right;
+}
+#logoutlink{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+}
+#logoutlink{
+  margin-right: 60px;
+}
+#logoutlink a img{
+  width: 110px;
+  height: 25px;
+}
+
+#resultlist .list_in{
+  width: 800px;
+}
+.show_window .list_in{
+  width: 800px;
 }

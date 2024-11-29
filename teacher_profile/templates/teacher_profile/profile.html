@@ -1,17 +1,20 @@
 {% extends "teacher/base.html" %}
 {% block title %}アカウント情報{% endblock %}
+{% block h1 %}アカウント情報{% endblock %}
 {% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 {% block content %}
 
 <!-- auth/views.pyのlogout関数を実行 -->
-<a href="{{ url_for('auth.logout') }}" class="nav-link">ログアウト</a>
+<div id="logoutlink"><a href="{{ url_for('auth.logout') }}" class="loguot" style="float: right;"><img src="{{ url_for('static', filename='images/logout.png') }}" alt="戻る"></a></div>
 
-<h2>アカウント情報</h2>
 
-<div class="profile-container">
+
+<div class="profile-container list_out">
+    
+    <div class="list_in grey font_white">
     <div class="profile-image">
         <!-- 画像の変更がわかるflashメッセージを表示 -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
+        <!-- {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="flashes">
                 {% for category, m in messages %}
@@ -19,10 +22,10 @@
                 {% endfor %}
             </div>
         {% endif %}
-    {% endwith %}    
+    {% endwith %}     -->
     <!-- ユーザーがアイコンを設定してない場合はデフォルトアイコンを表示 -->
     <img src="{{ url_for('teacher.profile.upload_file', filename=teacher.icon_path.split('uploads/icon/')[1] if teacher.icon_path else 'icon/default/default_icon.png') }}" alt="プロフィール画像">
-    <button onclick="window.location.href='{{ url_for('teacher.profile.edit_profile_image') }}'">画像を編集</button>
+    <br><button onclick="window.location.href='{{ url_for('teacher.profile.edit_profile_image') }}'">画像を編集</button>
     </div>
     <table>
         <tr>
@@ -47,5 +50,6 @@
             <td><a href="{{ url_for('teacher.profile.reset_password') }}">変更</a></td>
         </tr>
     </table>
+    </div>
 </div>
 {% endblock %}

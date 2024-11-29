@@ -5,7 +5,7 @@
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}" />
 	</head>
 	<body id="body">
-		<h1 id="h1_title">{% block h1 %}{% endblock %}</h1>
+		<div id="h1_title"><h1>{% block h1 %}{% endblock %}</h1>{% block option %}{% endblock %}</div>
 		<div class="modorulink">
 			<a href="{% block modorulink %}{% endblock %}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a>
 		</div>
