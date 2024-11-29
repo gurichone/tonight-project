@@ -1102,7 +1102,10 @@ padding: 15px 40px;
 }
 
 #resultlist .list_in{
-  width: 800px;
+  width: 700px;
+}
+#resultlist .scroll_palent{
+  height: 250px;
 }
 #resultlist table{
   border-spacing: 0 10px;
@@ -1115,7 +1118,7 @@ padding: 15px 40px;
   width: 100px;
 }
 #resultlist table .rl_name{
-  width: 250px;
+  width: 240px;
 }
 
 .show_window .list_in{
@@ -1132,19 +1135,30 @@ padding: 15px 40px;
 .show_window .div_table table{
   border-spacing: 0 10px;
 }
-.show_window .div_table table{
+.show_window .div_table table tr{
   border-bottom: solid 1px black;
 }
+.show_window .div_table table .tdbox div{
+  width: 100px;
+  height: 60px;
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #D9D9D9;
+}
+.show_window .div_table table .tdox{
+  text-align: center;
+}
+
 
 .show_window .div_table .scroll_palent{
-  height: 300px;
+  height: 220px;
   width: 400px;
 }
 .show_window .code{
   float: right;
 }
 .show_window .code .scroll_palent{
-  height: 280px;
+  height: 200px;
   width: 370px;
   padding-top: 20px;
   padding-left: 30px;

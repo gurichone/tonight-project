@@ -50,20 +50,26 @@
                     {% for o in jupyter[p.Student.id]['result'] %}
                     <tr>
                         <td class="tdbox">
+                            <div>
                             {% for input in o['input'] %}
                                 {{input}}<br>
                             {% endfor %}
+                            </div>
                         </td>
                         <td class="tdbox">
+                            <div>
                             {% for output in o['output'] %}
                                 {{output}}<br>
                             {% endfor %}
+                            </div>
                         </td>
                         <td class="tdbox">
+                            <div>
                             {% for ans in o['ans'] %}
                             
                                 {{ans}}<br>
                             {% endfor %}
+                            </div>
                         </td>
                         <td class="tdox">
                             {% if o['ox'] %}
