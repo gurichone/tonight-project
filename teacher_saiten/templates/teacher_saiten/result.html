@@ -9,13 +9,13 @@
 <div class="list_out" id="resultlist">
 <div class="list_in white">
 <table>
-    <tr><th>氏名</th><th>Jupyter</th><th>gemini</th><th>点数</th></tr>
+    <tr><th class="rl_name">氏名</th><th>Jupyter</th><th>gemini</th><th>点数</th></tr>
 </table>
 <div class="scroll_palent">
 <table class="scroll_child">
     {% for p in personal_lst %}
     <tr>
-    <td>{{p.Student.student_name}}({{p.Student.id}})</td>
+    <td class="rl_name">{{p.Student.student_name}}({{p.Student.id}})</td>
     <td>{% if jupyter %}{{jupyter[p.Student.id]['point']}}点{% else %}-{% endif %}</td>
     <td>{% if gemini %}{{ gemini[p.Student.id]['result'] }}点{% else %}-{% endif %}</td>
     <td class="field"><input class="hide" type="hidden" value="{{p.Student.id}}"><input class="number" type="number" value="{{points[p.Student.id]}}" min="0" max="100"></td>
@@ -33,56 +33,60 @@
 </div>
 {% for p in personal_lst %}
 
-<div id="show_{{p.Student.id}}" class="hidden" class="show_window">
+<div id="show_{{p.Student.id}}" class="hidden show_window">
 <div class="list_in white">
     {% if p.Personal_Submission.submitted %}
         {% if jupyter %}
-        <h3>jupyter</h3>
-        <div class="div_table scroll_palent">
-            <table>
-                <tr>
-                    <th>入力</th>
-                    <th>標準出力</th>
-                    <th>実行結果</th>
-                    <th>正誤</th>
-                </tr>
-                {% for o in jupyter[p.Student.id]['result'] %}
-                <tr>
-                    <td>
-                        {% for input in o['input'] %}
-                            {{input}}<br>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for output in o['output'] %}
-                            {{output}}<br>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% for ans in o['ans'] %}
-                        
-                            {{ans}}<br>
-                        {% endfor %}
-                    </td>
-                    <td>
-                        {% if o['ox'] %}
-                        〇
-                        {% else %}
-                        ×
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
+        <div class="div_table">
+            <h3>jupyter</h3>
+            <div class="scroll_palent">
+                <table class="scroll_child">
+                    <tr>
+                        <th>入力</th>
+                        <th>標準出力</th>
+                        <th>実行結果</th>
+                        <th>正誤</th>
+                    </tr>
+                    {% for o in jupyter[p.Student.id]['result'] %}
+                    <tr>
+                        <td class="tdbox">
+                            {% for input in o['input'] %}
+                                {{input}}<br>
+                            {% endfor %}
+                        </td>
+                        <td class="tdbox">
+                            {% for output in o['output'] %}
+                                {{output}}<br>
+                            {% endfor %}
+                        </td>
+                        <td class="tdbox">
+                            {% for ans in o['ans'] %}
+                            
+                                {{ans}}<br>
+                            {% endfor %}
+                        </td>
+                        <td class="tdox">
+                            {% if o['ox'] %}
+                            〇
+                            {% else %}
+                            ×
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div>
         {% endif %}
-        <h3>コード</h3>
-        <div class="scroll_palent">
-        <div class="code grey font_white scroll_child">
-            {% for code in codes[p.Student.id] %}
-                {{code}}<br>
-            {% endfor %}
-        </div>
+        <div class="code">
+            <h3>コード</h3>
+            <div class="scroll_palent grey">
+            <div class="font_white scroll_child">
+                {% for code in codes[p.Student.id] %}
+                    {{code}}<br>
+                {% endfor %}
+            </div>
+            </div>
         </div>
     {% else %}
         <p>未提出</p>
