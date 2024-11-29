@@ -5,34 +5,34 @@
 {% block content %}
 <body id="body">
     <h2 class="font_white" style="text-align: center;">成績</h2>
-        <div class="search_form">
-            <form class="form_white_form" action="{{ url_for('teacher.seiseki.search') }}" method="POST" novalidate="novalidate">
-                {{ score.csrf_token }}
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        <ul class="flashes">
-                            {% for category,message in messages %}
-                                <li class="{{ category }}">{{ message }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                {% endwith %}
+        <div id="t_sub_search_form" class="search_form">
+            {{ score.csrf_token }}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes">
+                        {% for category,message in messages %}
+                            <li class="{{ category }}" style="color: red;">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+            <form class="white" action="{{ url_for('teacher.seiseki.search') }}" method="POST" novalidate="novalidate">
                 <!-- 科目名を選ぶ -->
-                <label for="subject_id" class="font_white">科目名</label>
+                <label for="subject_id">科目名</label>
                 <select name="subject_id" id="subject_id">
                     {% for subject_id, label in score.subject_id.choices %}
                         <option value="{{ subject_id }}" {% if score.subject_id.data == subject_id %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
                 <!-- クラス番号を選ぶ -->
-                <label for="class_num" class="font_white">クラス番号</label>
+                <label for="class_num">クラス番号</label>
                 <select name="class_num" id="class_num">
                     {% for class_num, label in score.class_num.choices %}
                         <option value="{{ class_num }}" {% if score.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
                     {% endfor %}
                 </select>
                 <!-- 生徒番号を入力 -->
-                <label for="student_name" class="font_white">生徒名</label>
+                <label for="student_name">生徒名</label>
                 <input type="text" name="student_name" id="student_name" value="{{ score.student_name.data or '' }}">
                 <!-- ボタンを押して検索 -->
                 {{ score.submit }}
@@ -41,7 +41,7 @@
     <!-- 検索結果を表示 -->
     {% if results %}
         <div class="list_out">
-            <div class="list_in grey font_white">
+            <div class="list_in grey font_white" id="t_seiseki_table">
                 <table class="font_white">
                     <thead>
                         <tr>
@@ -52,7 +52,7 @@
                         </tr>
                     </thead>
                 </table>
-                <div class="scroll_palent" style="height: 250px;">
+                <div class="scroll_palent" style="height: 200px;">
                     <table class="scroll_child">
                         <tbody class="t_seiseki_tbody">
                             {% for results in results %}
@@ -62,7 +62,7 @@
                                 <td>{{ results.Score.assessment_id }}</td>
                                 <td>
                                     <!-- 編集ボタン -->
-                                    <form action="{{ url_for('teacher.seiseki.edit', score_id=results.Score.score_id) }}" method="GET">
+                                    <form  action="{{ url_for('teacher.seiseki.edit', score_id=results.Score.score_id) }}" method="GET">
                                         <button type="submit" class="white">編集</button>
                                     </form>
                                 </td>
@@ -83,9 +83,9 @@
     {% else %}
         <h2>一致する結果がありません</h2>
     {% endif %}
-    <form action="{{ url_for('teacher.seiseki.add') }}"><input type="submit" value="成績登録"></form>
-    <form action="{{ url_for('teacher.seiseki.attend') }}"><input type="submit" value="出席確認"></form>
-    <a href="{{ url_for('teacher.seiseki.issue_code') }}"><input type="submit" value="出席コード発行"></a>
+    <form  action="{{ url_for('teacher.seiseki.add') }}" style="text-align: center;"><input type="submit" value="成績登録"></form>
+    <form  action="{{ url_for('teacher.seiseki.attend') }}" style="text-align: center;"><input type="submit" value="出席確認"></form>
+    <form  action="{{ url_for('teacher.seiseki.issue_code') }}" style="text-align: center;"><input type="submit" value="出席コード発行"></a>
 </body>
 
 {% endblock %}

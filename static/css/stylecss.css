@@ -1166,3 +1166,11 @@ padding: 15px 40px;
 .show_window .code .scroll_child{
   font-family: monospace;
 }
+
+#t_seiseki_table td {
+  border-bottom: solid 1px #fff;
+}
+
+#t_seiseki_table table {
+  border-spacing: 0 10px;
+}
