@@ -8,10 +8,10 @@
 
 {% block content %}
 <div class="form_white">
-    <form action="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=submission.submission_id) }}" method="post" enctype="multipart/form-data" novalidate="novalidate">
+    <form id="stu_sub_form" class="form_white_form" action="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=submission.submission_id) }}" method="post" enctype="multipart/form-data" novalidate="novalidate">
         <!-- csrf対策。とりあえず書いておく -->
         {{ form.csrf_token }}
-        <h2>{{ submission.submission_name }}</h2>
+        <h2 class="font_grey">{{ submission.submission_name }}</h2>
         {{ form.file }}
         <p class="form_p">提出するファイルを選択してください</p>
         {{ form.submit(class="form_submit") }}

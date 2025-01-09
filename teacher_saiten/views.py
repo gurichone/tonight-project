@@ -69,8 +69,12 @@ def jupyter(testcase, lst, codes):
                         nbformat.write(nb, f)
                         
                     # 実行結果の部分だけを抽出
-                    ans = nb['cells'][0]['outputs'][0]['text']
-                except:
+                    if nb['cells'][0]['outputs']:
+                        ans = nb['cells'][0]['outputs'][0]['text']
+                    else:
+                        ans="\n"
+                except Exception as e:
+                    print("----------error--------------\n", e, "\n------------------------")
                     ans = "error\n"
                 r["ans"] = ans.split("\n")[:-1]
 

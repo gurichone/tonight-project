@@ -1,42 +1,46 @@
 {% extends "teacher/base.html" %}
 {% block title %}{{ student.student_name }}の詳細{% endblock %}
+{% block h1 %}生徒詳細{% endblock %}
 {% block modorulink %}{{ url_for('teacher.student.student_list') }}{% endblock %}
 {% block content %}
-<h2>生徒詳細</h2>
-<h3>{{ student.student_name }}</h3>
 <!-- 生徒の詳細を表示 -->
-<table>
-    <tr>
-        <th>氏名</th>
-        <td>{{ student.student_name }}</td>
-    </tr>
-    <tr>
-        <th>入学年度</th>
-        <td>{{ student.entrollment_year }}</td>
-    </tr>
-    <tr>
-        <th>生徒番号</th>
-        <td>{{ student.id }}</td>
-    </tr>
-    <tr>
-        <th>生年月日</th>
-        <td>{{ student.birth_date }}</td>
-    </tr>
-    <tr>
-        <th>学校名</th>
-        <td>{{ school_name }}</td>
-    </tr>
-    <tr>
-        <th>コース名</th>
-        <td>{{ course_name }}</td>
-    </tr>
-    <tr>
-        <th>クラス番号</th>
-        <td>{{ student.class_num }}</td>
-    </tr>
-    <tr>
-        <th>メールアドレス</th>
-        <td>{{ student.student_email }}</td>
-    </tr>
-</table>
+<div class="list2_out">
+    <h3 class="selected_h3 font_white">{{ student.student_name }}</h3>
+    <div class="list2_in grey font_white">
+        <table class="horizontal_table">
+            <tr>
+                <th>氏名</th>
+                <td>{{ student.student_name }}</td>
+            </tr>
+            <tr>
+                <th>入学年度</th>
+                <td>{{ student.entrollment_year }}</td>
+            </tr>
+            <tr>
+                <th>生徒番号</th>
+                <td>{{ student.id }}</td>
+            </tr>
+            <tr>
+                <th>生年月日</th>
+                <td>{{ student.birth_date }}</td>
+            </tr>
+            <tr>
+                <th>学校名</th>
+                <td>{{ school_name }}</td>
+            </tr>
+            <tr>
+                <th>コース名</th>
+                <td>{{ course_name }}</td>
+            </tr>
+            <tr>
+                <th>クラス番号</th>
+                <td>{{ student.class_num }}</td>
+            </tr>
+            <tr>
+                <th>メールアドレス</th>
+                <td>{{ student.student_email }}</td>
+            </tr>
+        </table>
+    </div>
+</div>
 {% endblock %}

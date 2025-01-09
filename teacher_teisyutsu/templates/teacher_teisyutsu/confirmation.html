@@ -1,8 +1,10 @@
 {% extends "teacher/base.html" %}
 
+{% block title %}提出物登録{% endblock %}
+
 {% block h1 %}提出物登録{% endblock %}
 
-{% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu_add') }}{% endblock %}
+{% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu') }}{% endblock %}
 
 {% block content %}
 <div id="t_sub_add_out">

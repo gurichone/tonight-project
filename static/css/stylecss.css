@@ -13,6 +13,12 @@ a.t-student img {
 .font_grey{
   color: #606C75;
 }
+.lightgrey{
+  background-color: #D9D9D9;
+}
+.lightgrey2{
+  background-color: #7B7B7B;
+}
 .font_lightgrey{
   color: #D9D9D9;
 }
@@ -143,7 +149,9 @@ body{
 }
 .menu-icon img {
   height: 32px;
+  width: 32px;
   border-radius: 16px;
+  object-fit: cover;
   margin: 0;
 }
 .menu-icon p{
@@ -215,11 +223,11 @@ body{
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  text-decoration: none;
+  font-weight: bold;
 }
 
 #link_done a{
-  color: #fff;
   border-radius: 10px;
   text-decoration: none;
 padding: 15px 40px;
@@ -244,6 +252,93 @@ padding: 15px 40px;
   padding: 10px 30px;
   border-radius: 20px;
   transform-origin: top;
+}
+.list_in .table_head{
+  border-spacing: 0px;
+  font-size: 12px;
+}
+.list_in .table_body{
+  border-spacing: 0 10px;
+  font-size: 12px;
+}
+.list_in .table_body tr{
+ height: 30px;
+}
+.list_in .table_body td{
+  border-bottom: solid 1px white;
+  text-align: center;
+}
+.list_in .table_body .table_text{
+  vertical-align: bottom;
+}
+.list_in .table_head .table_button{
+  width: 80px;
+}
+.list_in .table_body .table_button{
+  vertical-align: center;
+  width: 80px;
+}
+.list_in .table_button a{
+  border-radius: 5px;
+  padding: 4px 20px;
+  font-size: 10px;
+  text-decoration: none;
+}
+.selected_h3{
+  margin: 0;
+  font-weight: 100;
+}
+.t_classlist_table{
+  border-radius: 20px;
+  display: inline-block;
+  width: 400px;
+  padding: 10px 30px;
+}
+.t_classlist_button{
+  display: inline-block;
+  vertical-align: middle;
+  height: 240px;
+  padding: 10px 30px;
+}
+.t_classlist_button button{
+  background:rgba(0,0,0,0.0);
+  border: none; 
+}
+.t_classlist_button img{
+  width: 50%;
+  height: 50%;
+}
+/* .t_classlist_right{
+  display: inline-block;
+} */
+.list2_out {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.list2_in {
+  overflow: hidden;
+  min-width: 400px;
+  margin-top: 10px;
+  padding: 10px 30px;
+  border-radius: 20px;
+  transform-origin: top;
+}
+.list2_in .horizontal_table{
+  border-spacing: 0 10px;
+  font-size: 12px;
+  text-align: left;
+  vertical-align: bottom;
+  margin: auto;
+}
+.list2_in .horizontal_table th{
+  border-bottom: solid 1px white;
+  width: 120px;
+}
+.list2_in .horizontal_table td{
+  border-bottom: solid 1px white;
+  width: 240px;
 }
 
 .search_form{
@@ -277,6 +372,21 @@ padding: 15px 40px;
   margin-top: 10px;
   margin-right: 40px;
   width: 180px;
+}
+#t_student_form label{
+  margin-top: 10px;
+  margin-right: 10px;
+}
+#t_student_form select{
+  margin-top: 10px;
+  margin-right: 20px;
+  width: 90px;
+}
+#t_student_form input[type=text]{
+  margin-top: 10px;
+  margin-right: 0px;
+  width: 180px;
+  vertical-align: super;
 }
 .form_white .form_white_form h2{
   width: 100%;
@@ -435,34 +545,6 @@ padding: 15px 40px;
     left: 21px;
 }
 
-/* テーブル全体のスタイル */
-.jikanwari-table {
-    width: 90%;
-    margin: 20px auto;
-    border-collapse: collapse;
-    background-color: #333; /* ダークな背景色 */
-    color: #fff; /* 白文字 */
-}
-
-/* ヘッダー */
-.jikanwari-th {
-    padding: 10px;
-    background-color: #444; /* ダークな背景色 */
-    text-align: center;
-}
-
-/* 各セル */
-.jikanwari-td {
-    padding: 10px;
-    background-color: #555; /* セルの背景色 */
-    border: 1px solid #666; /* セルの境界線 */
-}
-
-/* 削除ボタン */
-.jikanwari-delete-button {
-    color: #ffcc00; /* ボタンの文字色 */
-    text-decoration: none;
-}
 
 /* ログインのやつだお */
 
@@ -917,6 +999,7 @@ padding: 15px 40px;
   width: 50%;
   aspect-ratio: 7 / 2;
   margin: 0 25%;
+  margin-top: 20px;
 }
 #t_sub_add_in .div_form label{
   width: 100px;
@@ -1012,7 +1095,7 @@ padding: 15px 40px;
 }
 
 #stu_sub_table table{
-  border-spacing: 0, 10px;
+  border-spacing: 0 10px;
   display: block;
   flex: 1;
 }
@@ -1025,6 +1108,13 @@ padding: 15px 40px;
   width: 490px;
   padding-left: 10px;
   vertical-align: bottom;
+}
+#stu_sub_form{
+  padding: 30px 50px;
+}
+#stu_sub_form h2{
+  font-weight: normal;
+  
 }
 #saiten_index{
   overflow: hidden;
@@ -1064,7 +1154,7 @@ padding: 15px 40px;
   
 }
 #saiten_index table{
-  border-spacing: 0, 10px;
+  border-spacing: 0 10px;
 }
 #saiten_index td{
   border-bottom: solid 1px black;
@@ -1084,8 +1174,35 @@ padding: 15px 40px;
   border-radius: 100px;
   object-fit: cover;
 }
+.profile-container .student_profile{
+  font-size: 12px;
+  border-spacing: 0 4px;
+}
 .profile-container table{
   float: right;
+  border-spacing: 0 10px;
+  width: 360px;
+}
+.profile-container table th{
+  border-bottom: solid 1px #fff;
+  text-align: start;
+  width: 120px;
+}
+.profile-container table td{
+  border-bottom: solid 1px #fff;
+}
+.profile-container table td p{
+  display: inline;
+}
+.profile-container table td a{
+  margin-left: 50px;
+  margin-bottom: 5px;
+  border: none;
+  padding: 0 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  color: #606C75;
+  display: inline-block;
 }
 #logoutlink{
   display: flex;
@@ -1105,22 +1222,38 @@ padding: 15px 40px;
   width: 700px;
 }
 #resultlist .scroll_palent{
-  height: 250px;
+  height: 230px;
+}
+#resultlist .ths{
+  height: 30px;
 }
 #resultlist table{
   border-spacing: 0 10px;
 }
 #resultlist table th{
+  height: 26px;
   width: 100px;
+  font-weight: 100;
 }
 #resultlist table td{
   border-bottom: solid 1px black;
   width: 100px;
+  text-align: center;
 }
 #resultlist table .rl_name{
   width: 240px;
 }
-
+#resultlist table .syousai{
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+}
+#resultlist #submit{
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+}
 .show_window .list_in{
   width: 800px;
   overflow: hidden;
@@ -1129,29 +1262,51 @@ padding: 15px 40px;
   border-radius: 20px;
   transform-origin: top;
 }
+.show_window h3{
+  text-align: center;
+  font-weight: 100;
+}
 .show_window .div_table{
   float: left
 }
+.show_window .div_table .ths{
+  height: 26px;
+}
+.show_window .div_table .ths .thbox{
+  width: 100px;
+}
+.show_window .div_table .ths .thox{
+  width: 80px;
+}
+
 .show_window .div_table table{
   border-spacing: 0 10px;
 }
 .show_window .div_table table tr{
   border-bottom: solid 1px black;
 }
-.show_window .div_table table .tdbox div{
+
+.show_window .div_table table .tdbox{
   width: 100px;
+}
+.show_window .div_table table .tdbox div{
+  width: 90px;
   height: 60px;
-  padding: 5px;
+  padding: 4px;
   border-radius: 5px;
-  background-color: #D9D9D9;
+  background-color: #fff;
+  border: solid 1px black;
 }
 .show_window .div_table table .tdox{
   text-align: center;
+  width: 80px;
+}
+.show_window .div_table{
+  width: 400px;
 }
 
-
 .show_window .div_table .scroll_palent{
-  height: 220px;
+  height: 194px;
   width: 400px;
 }
 .show_window .code{
@@ -1166,6 +1321,13 @@ padding: 15px 40px;
 .show_window .code .scroll_child{
   font-family: monospace;
 }
+.show_window .tojirubutton{
+  float: right;
+  margin-top: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+}
 
 #t_seiseki_table td {
   border-bottom: solid 1px #fff;
@@ -1174,3 +1336,127 @@ padding: 15px 40px;
 #t_seiseki_table table {
   border-spacing: 0 10px;
 }
+
+.teacher-student{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.teacher-student ul {
+  width: 800px;
+  padding: 0;
+  padding-top: 40px;
+}
+.teacher-student ul li{
+  width: 350px;
+}
+.teacher-student ul li img{
+  width: 350px
+}
+.teacher-student .class_list{
+  float: left;
+}
+.teacher-student .student_list{
+  float: right;
+}
+.jikanwari_out{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.jikanwari_buttons{
+  width: 700px;
+}
+.jikanwari_buttons form{
+  float: left;
+}
+.jikanwari_buttons a{
+  float: right;
+  padding: 4px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-right: 20px;
+}
+.jikanwari_buttons button{
+  float: right;
+  padding: 4px 20px;
+  border-radius: 5px;
+  margin-right: 20px;
+  border: none;
+}
+.jikanwari_in{
+  overflow: hidden;
+  transform-origin: top;
+  width: 700px;
+}
+.jikanwari_table_head{
+  border-spacing: 6px;
+  font-size: 12px;
+}
+.jikanwari_table_body{
+  border-spacing: 6px;
+  font-size: 12px;
+}
+.jikanwari-th{
+  width: 106px;
+  height: 30px;
+  padding: 0;
+}
+.jikanwari-td{
+  width: 106px;
+  height: 30px;
+  padding: 0;
+  text-align: center;
+}
+.jikanwari-td select{
+  border: none;
+  margin: 1px;
+  padding: 1px;
+  width: 102px;
+  height: 26px;
+}
+.jikanwari-td select:focus{
+  outline: none;
+}
+.jikanwari-td input{
+  border: none;
+  margin: 1px;
+  padding: 1px;
+  width: 102px;
+  height: 26px;
+}
+.jikanwari-td input:focus{
+  outline: none;
+}
+.jikanwari-date{
+  width: 50px;
+}
+
+
+/* .jikanwari-table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: #333;
+  color: #fff;
+}
+
+
+.jikanwari-th {
+  padding: 10px;
+  background-color: #444; 
+  text-align: center;
+}
+
+.jikanwari-td {
+  padding: 10px;
+  background-color: #555;
+  border: 1px solid #666;
+}
+
+.jikanwari-delete-button {
+  color: #ffcc00; 
+  text-decoration: none;
+} */

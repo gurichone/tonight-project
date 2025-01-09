@@ -1,5 +1,7 @@
 {% extends "teacher/base.html" %}
 
+{% block title %}採点結果{% endblock %}
+
 {% block h1 %}採点結果{% endblock %}
 
 {% block modorulink %}{{ url_for('teacher.teisyutsu.t_teisyutsu') }}{% endblock %}
@@ -19,7 +21,7 @@
     <td>{% if jupyter %}{{jupyter[p.Student.id]['point']}}点{% else %}-{% endif %}</td>
     <td>{% if gemini %}{{ gemini[p.Student.id]['result'] }}点{% else %}-{% endif %}</td>
     <td class="field"><input class="hide" type="hidden" value="{{p.Student.id}}"><input class="number" type="number" value="{{points[p.Student.id]}}" min="0" max="100"></td>
-    <td><button id="view_{{p.Student.id}}">詳細</button></td>
+    <td><button id="view_{{p.Student.id}}" class="syousai lightgrey grey">詳細</button></td>
     <tr></tr>
     {% endfor %}
 </table>
@@ -27,7 +29,7 @@
 <form action="{{ url_for('teacher.saiten.auto') }}" method="POST">
     {{ form.csrf_token }}
     <textarea class="hidden" id="fieldlist" name="fieldlist" readonly></textarea>
-    {{ form.submit }}
+    {{ form.submit(class="grey font_white") }}
 </form>
 </div>
 </div>
@@ -39,14 +41,16 @@
         {% if jupyter %}
         <div class="div_table">
             <h3>jupyter</h3>
+            <table class="ths">
+                <tr>
+                    <th class="thbox">入力</th>
+                    <th class="thbox">標準出力</th>
+                    <th class="thbox">実行結果</th>
+                    <th class="thox">正誤</th>
+                </tr>
+            </table>
             <div class="scroll_palent">
                 <table class="scroll_child">
-                    <tr>
-                        <th>入力</th>
-                        <th>標準出力</th>
-                        <th>実行結果</th>
-                        <th>正誤</th>
-                    </tr>
                     {% for o in jupyter[p.Student.id]['result'] %}
                     <tr>
                         <td class="tdbox">
@@ -97,7 +101,7 @@
     {% else %}
         <p>未提出</p>
     {% endif %}
-    <button class="tojirubutton">閉じる</button>
+    <button class="tojirubutton lightgrey font_grey">閉じる</button>
 </div>
 </div>
 

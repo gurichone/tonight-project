@@ -4,4 +4,4 @@ from wtforms.validators import DataRequired, NumberRange
 
 class PointForm(FlaskForm):
     fieldlist = TextAreaField()
-    submit = SubmitField("確定")
+    submit = SubmitField("採点完了")

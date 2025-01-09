@@ -1,38 +1,46 @@
 {% extends "teacher/base.html" %}
 {% block title %}クラス管理{% endblock %}
+{% block h1 %}クラス管理{% endblock %}
 {% block modorulink %}{{ url_for('teacher.student.teacher_student') }}{% endblock %}
 {% block content %}
 
-<h2>クラス管理</h2>
-
-    {% for class_num, students in class_students.items() %}
-        <h3>クラス {{ class_num }}</h3>
+{% for class_num, students in class_students.items() %}
+<div class="list_out">
+    <h3 class="selected_h3 font_white">クラス {{ class_num }}</h3>
         <!-- スクロールするためのボタン（仮） -->
-        <button onclick="scrollContainer('class-{{ class_num }}', -1)">左へスクロール</button>
-        <button onclick="scrollContainer('class-{{ class_num }}', 1)">右へスクロール</button>
-        <div class="class-container" id="class-{{ class_num }}">
-            <table>
+        <div class="class-container list_in" style="white-space: nowrap;"  id="class-{{ class_num }}">
+            <div class="t_classlist_button"><button onclick="scrollContainer('class-{{ class_num }}', -1)"><img src="{{ url_for('static', filename='images/toleft.png') }}" alt="左へスクロール"></button></div>
+            <div class="t_classlist_table grey font_white">
+            <table class="table_head">
                 <thead>
                     <tr>
-                        <th>生徒番号</th>
-                        <th>氏名</th>
+                        <th style="width: 100px;">生徒番号</th>
+                        <th style="width: 180px;">氏名</th>
                     </tr>
                 </thead>
+            </table>
+            <div class="scroll_palent" style="height: 220px;">
+            <table class="table_body scroll_child">
                 <tbody>
                     {% for student in students %}
                         <tr>
-                            <td>{{ student.id }}</td>
-                            <td>{{ student.student_name }}</td>
-                            <td>
+                            <td class="table_text" style="width: 100px;">{{ student.id }}</td>
+                            <td class="table_text" style="width: 200px;">{{ student.student_name }}</td>
+                            <td class="table_button">
                                 <!-- 削除ページのリンクを生徒ごとに表示 -->
-                                <a href="{{ url_for('teacher.student.delete_confirm', id=student.id) }}">削除</a>
+                                <a href="{{ url_for('teacher.student.delete_confirm', id=student.id) }}" class="red font_white">削除</a>
                             </td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            </div>
+            </div>
+            <div class="t_classlist_button"><button onclick="scrollContainer('class-{{ class_num }}', 1)"><img src="{{ url_for('static', filename='images/toright.png') }}" alt="右へスクロール"></button></div>
         </div>
-    {% endfor %}
+    </div>
+</div>
+{% endfor %}
 
     <script>
         // 左右にスクロールする関数

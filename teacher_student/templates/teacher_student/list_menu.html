@@ -1,17 +1,18 @@
 {% extends "teacher/base.html" %}
 {% block title %}生徒管理メニュー{% endblock %}
+{% block h1 %}生徒管理{% endblock %}
 {% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 {% block content %}
 
         <div class="teacher-student">
             <ul>
                 <!-- クラス管理ボタン -->
-                <li><a href="class_list" class="t-student">
+                <li class="class_list"><a href="class_list">
                     <img src="{{ url_for('static', filename='images/kurasukanri.png') }}" alt="クラス管理">
                 </a></li>
                 
                 <!-- 生徒一覧ボタン -->
-                <li><a href="student_list" class="t-student">
+                <li class="student_list"><a href="student_list">
                     <img src="{{ url_for('static', filename='images/seitoitiran.png') }}" alt="生徒一覧">
                 </a></li>
             </ul>

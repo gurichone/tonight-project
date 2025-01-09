@@ -1,64 +1,72 @@
 {% extends "teacher/base.html" %}
 {% block title %}生徒一覧{% endblock %}
+{% block h1 %}生徒一覧{% endblock %}
 {% block modorulink %}{{ url_for('teacher.student.teacher_student') }}{% endblock %}
 {% block content %}
-<h2>生徒一覧</h2>
-
+<div id="t_student_form" class="search_form">
     <!-- 検索フォーム -->
-    <form method="POST" action="{{ url_for('teacher.student.student_list') }}">
+    <form class="white" method="POST" action="{{ url_for('teacher.student.student_list') }}">
 
-        {{ stu_list.csrf_token }}
+            {{ stu_list.csrf_token }}
+        <div>
+            <!-- 生徒番号のセレクトボックス -->
+            <label for="id">生徒番号</label>
+            <select name="id" id="id">
+                {% for id, label in stu_list.id.choices %}
+                    <option value="{{ id }}" {% if stu_list.id.data == id %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <!-- クラス番号のセレクトボックス -->
+            <label for="class_num">クラス番号</label>
+            <select name="class_num" id="class_num">
+                {% for class_num, label in stu_list.class_num.choices %}
+                    <option value="{{ class_num }}" {% if stu_list.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <!-- 氏名のテキストボックス -->
+            <label for="student_name">
+                <input type="text" name="student_name" id="student_name"
+                placeholder="氏名" value="{{ stu_list.student_name.data }}">
+            </label>
 
-        <!-- 生徒番号のセレクトボックス -->
-        <label for="id">生徒番号</label>
-        <select name="id" id="id">
-            {% for id, label in stu_list.id.choices %}
-                <option value="{{ id }}" {% if stu_list.id.data == id %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>
-
-        <!-- クラス番号のセレクトボックス -->
-        <label for="class_num">クラス番号</label>
-        <select name="class_num" id="class_num">
-            {% for class_num, label in stu_list.class_num.choices %}
-                <option value="{{ class_num }}" {% if stu_list.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>
-
-        <!-- 氏名のテキストボックス -->
-        <label for="student_name">
-            <input type="text" name="student_name" id="student_name"
-            placeholder="氏名" value="{{ stu_list.student_name.data }}">
-        </label>
-
-        <button type="submit">検索</button>
+            <button id="submit" type="submit"></button>
+        </div>
     </form>
-
-    <!-- 検索結果のメッセージ表示 -->
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %}
-
+</div>
+<div class="list_out">
+    <div class="list_in grey font_white">
     <!-- 生徒の一覧表示 -->
-    <table>
-        <thead>
-            <tr>
-                <th>生徒番号</th>
-                <th>クラス番号</th>
-                <th>氏名</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for student in students %}
+    <div>
+        <table class="table_head">
+            <thead>
                 <tr>
-                    <td>{{ student.id }}</td>
-                    <td>{{ student.class_num }}</td>
-                    <td>{{ student.student_name }}</td>
-                    <!-- 生徒の詳細画面へのボタン -->
-                    <td><a href="{{ url_for('teacher.student.student_detail', id=student.id) }}">詳細</a></td>
+                    <th style="width: 140px;">生徒番号</th>
+                    <th style="width: 100px;">クラス番号</th>
+                    <th style="width: 280px;">氏名</th>
+                    <th></th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+            </thead>
+        </table>
+        <div class="scroll_palent" style="height: 200px;">
+        <table class="table_body scroll_child">
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td class="table_text" style="width: 140px;">{{ student.id }}</td>
+                        <td class="table_text" style="width: 100px;">{{ student.class_num }}</td>
+                        <td class="table_text" style="width: 280px;">{{ student.student_name }}</td>
+                        <!-- 生徒の詳細画面へのボタン -->
+                        <td class="table_button"><a href="{{ url_for('teacher.student.student_detail', id=student.id) }}" class="lightgrey font_white">詳細</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        </div>
+    </div>
+    </div>
+</div>
 {% endblock %}

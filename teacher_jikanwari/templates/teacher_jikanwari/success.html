@@ -1,12 +1,12 @@
 {% extends "teacher/base.html" %}
-
+{% block h1 %}<br>{% endblock %}
 {% block title %}登録完了{% endblock %}
 
 {% block modorulink %}{{ url_for('teacher.jikanwari.add_entry') }}{% endblock %}
 
 {% block content %}
     <div class="success-message">
-        <h1>登録が完了されました</h1>
-        <a href="{{ url_for('teacher.jikanwari.t_jikanwari') }}" class="back-to-timetable-btn">時間割表に戻る</a>
+        <h1 id="title_done">登録が完了されました</h1>
+        <div id="link_done"><a class="lightgrey font_grey" href="{{ url_for('teacher.jikanwari.t_jikanwari') }}" class="back-to-timetable-btn">時間割表に戻る</a></div>
     </div>
 {% endblock %}
