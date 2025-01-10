@@ -23,13 +23,15 @@
                 <tr>
                     <td>{{ subject.subject_name }}</td>
                     <td>
-                        <select name="periods_{{ subject.subject_id }}" required>
+                        <select name="periods_{{ subject.subject_id }}" 
+                                onchange="updateUnitsAndPeriods('{{ subject.subject_id }}', 'periods')" 
+                                required>
                             <option value="">選択してください</option>
                             {% for i in range(1, 11) %}
                             <option value="{{ i * 15 }}"
                                     {% if subject_details[subject.subject_name] 
-                                       and subject_details[subject.subject_name].periods == i * 15 %}
-                                    selected
+                                       and subject_details[subject.subject_name].periods == i * 15 %} 
+                                    selected 
                                     {% endif %}>
                                 {{ i * 15 }} コマ
                             </option>
@@ -37,13 +39,15 @@
                         </select>
                     </td>
                     <td>
-                        <select name="units_{{ subject.subject_id }}" required>
+                        <select name="units_{{ subject.subject_id }}" 
+                                onchange="updateUnitsAndPeriods('{{ subject.subject_id }}', 'units')" 
+                                required>
                             <option value="">選択してください</option>
                             {% for i in range(1, 11) %}
                             <option value="{{ i }}"
                                     {% if subject_details[subject.subject_name] 
-                                       and subject_details[subject.subject_name].units == i %}
-                                    selected
+                                       and subject_details[subject.subject_name].units == i %} 
+                                    selected 
                                     {% endif %}>
                                 {{ i }} 単位
                             </option>
@@ -54,32 +58,32 @@
                 {% endfor %}
             </tbody>
         </table>
-        <button type="submit">登録</button>
+        <button type="submit">確認</button>
     </form>
     
     <script>
-        // 単位数に応じてコマ数を15の倍数に設定するスクリプト
-        function updatePeriods(subjectId) {
-            const units = document.querySelector(`select[name="units_${subjectId}"]`).value;
+        // コマ数と単位数の双方向更新を行うスクリプト
+        function updateUnitsAndPeriods(subjectId, changedField) {
             const periodsSelect = document.querySelector(`select[name="periods_${subjectId}"]`);
-    
-            // コマ数をリセット
-            periodsSelect.innerHTML = '<option value="">選択してください</option>';
-    
-            if (units) {
-                const unitsInt = parseInt(units, 10);
-                const maxMultiplier = 10;  // 1～10倍の15の倍数を生成
-    
-                for (let i = 1; i <= maxMultiplier; i++) {
-                    const value = i * 15 * unitsInt;
-                    const option = document.createElement('option');
-                    option.value = value;
-                    option.textContent = `${value} コマ`;
-                    periodsSelect.appendChild(option);
+            const unitsSelect = document.querySelector(`select[name="units_${subjectId}"]`);
+
+            if (changedField === 'periods') {
+                const selectedPeriods = parseInt(periodsSelect.value, 10);
+                if (selectedPeriods) {
+                    const calculatedUnits = selectedPeriods / 15; // 15コマ = 1単位の計算
+                    unitsSelect.value = calculatedUnits; // 単位数を更新
+                } else {
+                    unitsSelect.value = ""; // 初期状態にリセット
+                }
+            } else if (changedField === 'units') {
+                const selectedUnits = parseInt(unitsSelect.value, 10);
+                if (selectedUnits) {
+                    const calculatedPeriods = selectedUnits * 15; // 1単位 = 15コマの計算
+                    periodsSelect.value = calculatedPeriods; // コマ数を更新
+                } else {
+                    periodsSelect.value = ""; // 初期状態にリセット
                 }
             }
         }
     </script>
-    
-    
 {% endblock %}
