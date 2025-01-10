@@ -8,22 +8,25 @@
     {% if error_message %}
     <p style="color: red;">{{ error_message }}</p>
     {% endif %}
-
-    <form method="POST" action="{{ url_for('teacher.jikanwari.show_class_count') }}">
-        <table>
+<div class="form_out">
+    <form class="form_in white t_classcount_form" method="POST" action="{{ url_for('teacher.jikanwari.show_class_count') }}">
+        <table class="table_head">
             <thead>
                 <tr>
-                    <th>授業科目</th>
-                    <th>コマ数</th>
-                    <th>単位数</th>
+                    <th style="width:100px;">授業科目</th>
+                    <th style="width:100px;">コマ数</th>
+                    <th style="width:100px;">単位数</th>
                 </tr>
             </thead>
+        </table>
+        <div class="scroll_palent" style="height: 150px;">
+        <table class="table_body scroll_child">
             <tbody>
                 {% for subject in subjects %}
                 <tr>
-                    <td>{{ subject.subject_name }}</td>
-                    <td>
-                        <select name="periods_{{ subject.subject_id }}" 
+                    <td style="width:100px;">{{ subject.subject_name }}</td>
+                    <td style="width:100px;">
+                        <select class="lightgrey" name="periods_{{ subject.subject_id }}" 
                                 onchange="updateUnitsAndPeriods('{{ subject.subject_id }}', 'periods')" 
                                 required>
                             <option value="">選択してください</option>
@@ -38,8 +41,8 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td>
-                        <select name="units_{{ subject.subject_id }}" 
+                    <td style="width:100px;">
+                        <select class="lightgrey" name="units_{{ subject.subject_id }}" 
                                 onchange="updateUnitsAndPeriods('{{ subject.subject_id }}', 'units')" 
                                 required>
                             <option value="">選択してください</option>
@@ -58,9 +61,10 @@
                 {% endfor %}
             </tbody>
         </table>
-        <button type="submit">確認</button>
+        </div>
+        <button type="submit" class="grey font_white">確認</button>
     </form>
-    
+</div>
     <script>
         // コマ数と単位数の双方向更新を行うスクリプト
         function updateUnitsAndPeriods(subjectId, changedField) {

@@ -7,7 +7,8 @@
     <div class="form_out">
         <!-- 登録が完了したら以下の内容を表示 -->
         {% if success %}
-        <p class="font_white">登録が完了しました</p>   
+        <h1 id="title_done">登録が完了しました</h1>
+        <div id="link_done"><a class="lightgrey font_grey" href="{{ url_for('teacher.seiseki.search') }}" class="back-to-timetable-btn">成績一覧に戻る</a></div>
 
         <!-- 最初に入力フォームの表示を行う -->
         {% elif not confirm %}
@@ -40,13 +41,13 @@
 
         <!-- 入力が完了したら確認画面に遷移 -->
         {% else %}
+        <h3 id="h3_sub" class="font_white">以下の内容を登録しますか？</h3>
         <form class="form_in t_seiseki_add_form white" action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
             {{ score.csrf_token }}
-            <h3 class="">以下の内容を登録しますか？</h3>
-            <p class="">生徒番号: {{ score.id }}</p>
-            <p class="">生徒名: {{ student_name }}</p>
-            <p class="">科目名: {{ score.subject_id }}</p>
-            <p class="">評価: {{ score.assessment_id }}</p>
+            <p style="margin: 9px 0;">生徒番号: {{ score.id(disabled=true, class="font_black") }}</p>
+            <p style="margin: 9px 0;">生徒名: {{ student_name }}</p>
+            <p style="margin: 9px 0;">科目名: {{ score.subject_id(disabled=true, class="font_black") }}</p>
+            <p style="margin: 9px 0;">評価: {{ score.assessment_id(disabled=true, class="font_black") }}</p>
             <input type="hidden" name="id" value="{{ score.id.data }}">
             <!-- 一応ここにも追加したけど必要なさそう -->
             {% for error in score.id.errors %}
@@ -64,7 +65,7 @@
             {% for error in score.assessment_id.errors %}
                 <span style="color:red">{{ error }}</span>
             {% endfor %}
-            <button type="submit" name="action" value="add">確定</button>
+            <button type="submit" name="action" value="add" class="form_button grey font_white">確定</button>
         </form>
         {% endif %}
     </div>

@@ -7,6 +7,9 @@ a.t-student img {
 }
 
 /* 共通部分 */
+.font_black{
+  color: #000;
+}
 .grey{
   background-color: #606C75;
 }
@@ -434,6 +437,20 @@ padding: 15px 40px;
   border-radius: 5px;
   display: flex;
   margin: auto;
+}
+.form_in .table_head{
+  border-spacing: 0 10px;
+}
+.form_in .table_body{
+  border-spacing: 0 10px;
+}
+.form_in .table_body td{
+  border-bottom: solid 1px #606C75;
+  width: 30%;
+}
+.form_in .table_body select{
+  width: 100%;
+  font-size: 12px;
 }
 .form_white .form_white_form h2{
   width: 100%;
@@ -1535,4 +1552,38 @@ padding: 15px 40px;
 }
 .form_out .t_seiseki_add_form button {
   margin: 40px auto 10px;
+}
+.t_classcount_form .table_body td{
+  vertical-align: bottom;
+  padding-left: 5px;
+}
+.t_classcount_form .table_body select{
+  border: none;
+  border-radius: 5px;
+  padding: 3px 0;
+}
+.t_classcount_form .table_body select:focus{
+  outline: none;
+}
+.t_classcount_form button{
+  border: none;
+  border-radius: 5px;
+  padding: 10px 60px;
+  margin: 10px auto 0;
+  display: flex;
+}
+#h3_sub{
+  margin-top: 0;
+  margin-bottom: 5px;
+  font-weight: 100;
+}
+.t_classcount_start{
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.t_classcount_start a{
+  border-radius: 5px;
+  padding: 4px 20px;
+  text-decoration: none;
+  float: right;
 }

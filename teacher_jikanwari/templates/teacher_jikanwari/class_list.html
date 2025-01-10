@@ -1,34 +1,39 @@
 {% extends "teacher/base.html" %}
 
 {% block title %}授業数一覧{% endblock %}
-
+{% block h1 %}授業数一覧{% endblock %}
 {% block modorulink %}{{ url_for('teacher.jikanwari.t_jikanwari') }}{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>授業数一覧</h1>
+<div class="container list_out">
+    <div class="list_in grey font_white">
 
-    <div>
-        <a href="{{ url_for('teacher.jikanwari.show_class_count') }}">授業数登録</a>
+    <div class="t_classcount_start">
+        <a href="{{ url_for('teacher.jikanwari.show_class_count') }}" class="lightgrey font_grey">授業数登録</a>
     </div>
 
-    <table>
+    <table class="table_head">
         <thead>
             <tr>
-                <th>授業名</th>
-                <th>コマ数</th>
-                <th>単位数</th>  <!-- 単位数の列を追加 -->
+                <th style="width: 320px;">授業名</th>
+                <th style="width: 150px;">コマ数</th>
+                <th style="width: 150px;">単位数</th>  <!-- 単位数の列を追加 -->
             </tr>
         </thead>
+    </table>
+    <div class="scroll_palent" style="height: 200px;">
+    <table class="table_body scroll_child">
         <tbody>
             {% for subject in subjects %}
             <tr>
-                <td>{{ subject.name }}</td>  <!-- 授業名 -->
-                <td>{{ subject.periods }} コマ</td>  <!-- コマ数 -->
-                <td>{{ subject.units }} 単位</td>  <!-- 単位数 -->
+                <td style="width: 320px;">{{ subject.name }}</td>  <!-- 授業名 -->
+                <td style="width: 150px;">{{ subject.periods }} コマ</td>  <!-- コマ数 -->
+                <td style="width: 150px;">{{ subject.units }} 単位</td>  <!-- 単位数 -->
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    </div>
+    </div>
 </div>
 {% endblock %}

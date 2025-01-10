@@ -1,30 +1,28 @@
 {% extends "teacher/base.html" %}
-{% block title %}成績登録{% endblock %}
-
+{% block title %}出席確認{% endblock %}
+{% block h1 %}出席確認{% endblock %}
 {% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
-<body id="body">
-    <h2 class="font_white">出席確認</h2>
     <!-- 出席日数を確認する際の情報の絞り込みを行う -->
     <div class="search_form">
-        <form class="form_white_form" action="{{ url_for('teacher.seiseki.attend') }}" method="POST" novalidate="novalidate">
+        <form class="form_white_form white" action="{{ url_for('teacher.seiseki.attend') }}" method="POST" novalidate="novalidate">
             {{ attend.csrf_token }}
             <!-- 科目名を選ぶ -->
-            <label for="subject_id" class="font_white">科目名</label>
+            <label for="subject_id" class="">科目名</label>
             <select name="subject_id" id="subject_id">
                 {% for subject_id, label in attend.subject_id.choices %}
                     <option value="{{ subject_id }}" {% if attend.subject_id.data == subject_id %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
             <!-- クラス番号を選ぶ -->
-            <label for="class_num" class="font_white">クラス番号</label>
+            <label for="class_num" class="">クラス番号</label>
             <select name="class_num" id="class_num">
                 {% for class_num, label in attend.class_num.choices %}
                     <option value="{{ class_num }}" {% if attend.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
             <!-- 生徒番号を入力 -->
-            <label for="student_name" class="font_white">生徒名</label>
+            <label for="student_name" class="">生徒名</label>
             <input type="text" name="student_name" id="student_name" value="{{ attend.student_name.data or '' }}">
             <!-- ボタンを押して検索 -->
             {{ attend.submit }}
@@ -34,23 +32,23 @@
     {% if results %}
         <div class="list_out">
             <div class="list_in grey font_white">
-                <table class="font_white">
+                <table class="font_white table_head">
                     <thead>
                         <tr>
-                            <th>科目名</th>
-                            <th>氏名</th>
-                            <th>日数</th>
+                            <th style="width: 240px;">科目名</th>
+                            <th style="width: 240px;">氏名</th>
+                            <th style="width: 100px;">日数</th>
                         </tr>
                     </thead>
                 </table>
-                <div class="scroll_palent" style="height: 250px;">
-                    <table class="scroll_child">
+                <div class="scroll_palent" style="height: 200px;">
+                    <table class="scroll_child table_body">
                         <tbody>
                             {% for attend in results %}
                             <tr>
-                                <td>{{ attend.Subject.subject_name }}</td>
-                                <td>{{ attend.Student.student_name }}</td>
-                                <td>{{ attend.Score.attend_day }}</td>
+                                <td style="width: 240px;">{{ attend.Subject.subject_name }}</td>
+                                <td style="width: 240px;">{{ attend.Student.student_name }}</td>
+                                <td style="width: 100px;">{{ attend.Score.attend_day }}</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -62,5 +60,4 @@
         {% else %}
             <h2>一致する結果がありません</h2>
         {% endif %}
-</body>
 {% endblock %}

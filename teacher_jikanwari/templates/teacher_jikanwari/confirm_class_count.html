@@ -1,32 +1,35 @@
 {% extends "teacher/base.html" %}
 
 {% block title %}入力内容の確認{% endblock %}
-
+{% block h1 %}授業数登録{% endblock %}
 {% block modorulink %}{{ url_for('teacher.jikanwari.show_class_count') }}{% endblock %}
 
 {% block content %}
     <!-- teacher_jikanwari/confirm_class_count.html -->
-<h1>登録しますか？</h1>
-
-<form method="POST">
-    <table>
+<div class="form_out">
+    <h3 id="h3_sub" class="font_white">登録しますか？</h3>
+<form class="form_in white t_classcount_form" method="POST">
+    <table class="table_head">
         <tr>
-            <th>授業科目名</th>
-            <th>コマ数</th>
-            <th>単位数</th>
+            <th style="width:100px;">授業科目名</th>
+            <th style="width:100px;">コマ数</th>
+            <th style="width:100px;">単位数</th>
         </tr>
+    </table>
+    <div class="scroll_palent" style="height: 120px;">
+    <table class="table_body scroll_child">
         {% for data in form_data %}
         <tr>
-            <td>{{ data.subject_name }}</td>
-            <td>{{ data.periods }}</td>
-            <td>{{ data.units }}</td>
+            <td style="width:100px;">{{ data.subject_name }}</td>
+            <td style="width:100px;"><select class="lightgrey font_black" disabled=true><option>{{ data.periods }}</option></select></td>
+            <td style="width:100px;"><select class="lightgrey font_black" disabled=true><option>{{ data.units }}</option></select></td>
         </tr>
         {% endfor %}
     </table>
 
-    <br>
-
-    <button type="submit">登録</button>
+    </div>
+    <button type="submit" class="grey font_white">登録</button>
 </form>
+</div>
 
 {% endblock %}
