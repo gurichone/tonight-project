@@ -284,6 +284,12 @@ padding: 15px 40px;
   font-size: 10px;
   text-decoration: none;
 }
+.list_in .table_button button{
+  border-radius: 5px;
+  padding: 4px 20px;
+  font-size: 10px;
+  border: none;
+}
 .selected_h3{
   margin: 0;
   font-weight: 100;
@@ -355,7 +361,21 @@ padding: 15px 40px;
 .search_form div{
   float: left;
 }
-
+.search_form input[type=text]{
+  border: none;
+  border-bottom: solid 1px black;
+}
+.search_form input[type=text]:focus{
+  outline: none;
+}
+.search_form select{
+  border: none;
+  background-color: #D9D9D9;
+  border-radius: 2px;
+}
+.search_form select:focus{
+  outline: none;
+}
 .search_form #submit{
   border: none;
   background:rgba(0,0,0,0.0);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
@@ -387,6 +407,33 @@ padding: 15px 40px;
   margin-right: 0px;
   width: 180px;
   vertical-align: super;
+}
+#t_seiseki_search_form label{
+  margin: 0 10px;
+}
+#t_seiseki_search_form select{
+  margin-right: 20px;
+}
+.form_out {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.form_in{
+  overflow: hidden;
+  min-width: 310px;
+  min-height: 190px;
+  padding: 30px 50px;
+  border-radius: 20px;
+  transform-origin: top;
+}
+.form_in .form_button{
+  border: none;
+  padding: 10px 60px;
+  border-radius: 5px;
+  display: flex;
+  margin: auto;
 }
 .form_white .form_white_form h2{
   width: 100%;
@@ -1460,3 +1507,32 @@ padding: 15px 40px;
   color: #ffcc00; 
   text-decoration: none;
 } */
+
+#t_seiseki_search_button form{
+  display: inline;
+}
+#t_seiseki_search_button input{
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.form_out .t_seiseki_add_form p{
+  border-bottom: solid 1px black;
+  margin: 25px 0;
+}
+.form_out .t_seiseki_add_form label{
+  display: inline-block;
+  width: 30%;
+}
+.form_out .t_seiseki_add_form select{
+  border: none;
+  width: 60%;
+}
+.form_out .t_seiseki_add_form input:focus{
+  outline: none;
+}
+.form_out .t_seiseki_add_form button {
+  margin: 40px auto 10px;
+}

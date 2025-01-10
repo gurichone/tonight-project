@@ -1,11 +1,9 @@
 {% extends "teacher/base.html" %}
 {% block title %}成績{% endblock %}
-
+{% block h1 %}成績{% endblock %}
 {% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 {% block content %}
-<body id="body">
-    <h2 class="font_white" style="text-align: center;">成績</h2>
-        <div id="t_sub_search_form" class="search_form">
+        <div id="t_seiseki_search_form" class="search_form">
             {{ score.csrf_token }}
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
@@ -33,7 +31,7 @@
                 </select>
                 <!-- 生徒番号を入力 -->
                 <label for="student_name">生徒名</label>
-                <input type="text" name="student_name" id="student_name" value="{{ score.student_name.data or '' }}">
+                <input type="text" name="student_name" id="student_name" value="{{ score.student_name.data or '' }}" placeholder="生徒番号">
                 <!-- ボタンを押して検索 -->
                 {{ score.submit }}
             </form>
@@ -42,31 +40,30 @@
     {% if results %}
         <div class="list_out">
             <div class="list_in grey font_white" id="t_seiseki_table">
-                <table class="font_white">
+                <table class="font_white table_head">
                     <thead>
                         <tr>
-                            <th>科目名</th>
-                            <th>氏名</th>
-                            <th>成績</th>
-                            <th>操作</th>
+                            <th style="width: 180px;">科目名</th>
+                            <th style="width: 180px;">氏名</th>
+                            <th style="width: 80px;">成績</th>
                         </tr>
                     </thead>
                 </table>
-                <div class="scroll_palent" style="height: 200px;">
-                    <table class="scroll_child">
+                <div class="scroll_palent" style="height: 144px;">
+                    <table class="scroll_child table_body">
                         <tbody class="t_seiseki_tbody">
                             {% for results in results %}
                             <tr>
-                                <td>{{ results.Subject.subject_name }}</td>
-                                <td>{{ results.Student.student_name }}</td>
-                                <td>{{ results.Score.assessment_id }}</td>
-                                <td>
+                                <td class="table_text" style="width: 180px;">{{ results.Subject.subject_name }}</td>
+                                <td class="table_text" style="width: 180px;">{{ results.Student.student_name }}</td>
+                                <td class="table_text" style="width: 80px;">{{ results.Score.assessment_id }}</td>
+                                <td class="table_button">
                                     <!-- 編集ボタン -->
                                     <form  action="{{ url_for('teacher.seiseki.edit', score_id=results.Score.score_id) }}" method="GET">
                                         <button type="submit" class="white">編集</button>
                                     </form>
                                 </td>
-                                <td>
+                                <td class="table_button">
                                     <!-- 消去する際はこのボタンを押すことで実行する -->
                                     <form action="{{ url_for('teacher.seiseki.delete', score_id=results.Score.score_id) }}" method="POST">
                                         <button type="submit" onclick="return confirm('削除してよろしいですか？')" class="red font_white">削除</button>
@@ -78,14 +75,16 @@
                     </table>
                 </div>
             </div>
-        </div>
+        
    <!-- resultsに何もない場合は以下の文を表示 -->
     {% else %}
         <h2>一致する結果がありません</h2>
     {% endif %}
-    <form  action="{{ url_for('teacher.seiseki.add') }}" style="text-align: center;"><input type="submit" value="成績登録"></form>
-    <form  action="{{ url_for('teacher.seiseki.attend') }}" style="text-align: center;"><input type="submit" value="出席確認"></form>
-    <form  action="{{ url_for('teacher.seiseki.issue_code') }}" style="text-align: center;"><input type="submit" value="出席コード発行"></a>
-</body>
+    <div id="t_seiseki_search_button">
+    <form  action="{{ url_for('teacher.seiseki.add') }}" style="text-align: center;"><input class="grey font_white" type="submit" value="成績登録"></form>
+    <form  action="{{ url_for('teacher.seiseki.attend') }}" style="text-align: center;"><input class="grey font_white" type="submit" value="出席確認"></form>
+    <form  action="{{ url_for('teacher.seiseki.issue_code') }}" style="text-align: center;"><input class="grey font_white" type="submit" value="出席コード発行"></form>
+    </div>
+    </div>
 
 {% endblock %}

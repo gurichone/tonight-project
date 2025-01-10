@@ -1,18 +1,17 @@
 {% extends "teacher/base.html" %}
 {% block title %}成績登録{% endblock %}
-
+{% block h1 %}成績登録{% endblock %}
 {% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
 <body id="body">
-    <div class="form_white">
-        <h2 class="font_white">成績登録</h2>
+    <div class="form_out">
         <!-- 登録が完了したら以下の内容を表示 -->
         {% if success %}
         <p class="font_white">登録が完了しました</p>   
 
         <!-- 最初に入力フォームの表示を行う -->
         {% elif not confirm %}
-        <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
+        <form class="form_in t_seiseki_add_form white" action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
             {{ score.csrf_token }}
             <!-- 既に登録した情報が存在する際にエラー文を表示する処理 -->
             {% with messages = get_flashed_messages(with_categories=true) %}
@@ -24,30 +23,30 @@
                     </ul>
                 {% endif %}
             {% endwith %}
-            <p class="font_white">{{ score.id.label }} {{ score.id }}</p>
+            <p>{{ score.id.label(class="t_seiseki_add_label") }} {{ score.id(class="form_input t_seiseki_add_input") }}</p>
             <!-- 各エラーが起きた際の処理(forms.py参照) -->
             {% for error in score.id.errors %}
                 <span style="color:red">{{ error }}</span>
             {% endfor %}
 
-            <p class="font_white">{{ score.subject_id.label }} {{ score.subject_id }}</p>
+            <p>{{ score.subject_id.label(class="t_seiseki_add_label") }} {{ score.subject_id(class="form_input t_seiseki_add_input") }}</p>
             {% for error in score.subject_id.errors %}
                 <span style="color:red">{{ error }}</span>
             {% endfor %}
 
-            <p class="font_white">{{ score.assessment_id.label }} {{ score.assessment_id }}</p>
-            <button type="submit" name="action" value="confirm">確認</button>
+            <p>{{ score.assessment_id.label(class="t_seiseki_add_label") }} {{ score.assessment_id(class="form_input t_seiseki_add_input") }}</p>
+            <button class="form_button grey font_white" type="submit" name="action" value="confirm">確認</button>
         </form>
 
         <!-- 入力が完了したら確認画面に遷移 -->
         {% else %}
-        <form action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
+        <form class="form_in t_seiseki_add_form white" action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
             {{ score.csrf_token }}
-            <h3 class="font_white">以下の内容を登録しますか？</h3>
-            <p class="font_white">生徒番号: {{ score.id }}</p>
-            <p class="font_white">生徒名: {{ student_name }}</p>
-            <p class="font_white">科目名: {{ score.subject_id }}</p>
-            <p class="font_white">評価: {{ score.assessment_id }}</p>
+            <h3 class="">以下の内容を登録しますか？</h3>
+            <p class="">生徒番号: {{ score.id }}</p>
+            <p class="">生徒名: {{ student_name }}</p>
+            <p class="">科目名: {{ score.subject_id }}</p>
+            <p class="">評価: {{ score.assessment_id }}</p>
             <input type="hidden" name="id" value="{{ score.id.data }}">
             <!-- 一応ここにも追加したけど必要なさそう -->
             {% for error in score.id.errors %}
