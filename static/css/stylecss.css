@@ -1587,3 +1587,34 @@ padding: 15px 40px;
   text-decoration: none;
   float: right;
 }
+#osirase_class{
+  border-bottom: solid 1px black;
+}
+#osirase_class label {
+  display: inline-block;
+  width: 20%;
+}
+#osirase_class select{
+  border: none;
+  width: 75%;
+}
+#osirase_class select:focus{
+  outline: none;
+}
+#osirase_title textarea{
+  border: none;
+  border-bottom: solid 1px black;
+  width: 100%;
+}
+#osirase_title textarea:focus{
+  outline: none;
+}
+#osirase_message textarea{
+  border: none;
+  border-radius: 10px;
+  height: 120px;
+  width: 100%;
+}
+#osirase_message textarea:focus{
+  outline: none;
+}

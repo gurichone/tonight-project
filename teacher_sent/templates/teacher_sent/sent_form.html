@@ -1,13 +1,15 @@
 {% extends "teacher/base.html" %}
 {% block title %}お知らせ送信{% endblock %}
+{% block h1 %}お知らせ送信{% endblock %}
 {% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 {% block content %}
 
-<form method="POST">
+<div class="form_out">
+<form method="POST" class="form_in white">
     {{ form.hidden_tag() }}
 
     <!-- 宛先 -->
-    <div>
+    <div id="osirase_class">
         {{ form.address.label }}
         {% for error in form.address.errors %}
             <div>{{ error }}</div>
@@ -16,23 +18,24 @@
     </div>
 
     <!-- タイトル -->
-    <div>
-        {{ form.title.label }}
+    <div id="osirase_title">
+        <!-- {{ form.title.label }} -->
         {% for error in form.title.errors %}
             <div>{{ error }}</div>
         {% endfor %}
-        {{ form.title }}
+        {{ form.title(placeholder="タイトル") }}
     </div>
 
     <!-- 本文 -->
-    <div>
-        {{ form.discription.label }}
+    <div id="osirase_message">
+        <!-- {{ form.discription.label }} -->
         {% for error in form.discription.errors %}
             <div>{{ error }}</div>
         {% endfor %}
-        {{ form.discription }}
+        {{ form.discription(placeholder="内容",class="lightgrey") }}
     </div>
     
-    <button type="submit">{{ form.submit.label }}</button>
+    <button type="submit" class="form_button grey font_white">{{ form.submit.label }}</button>
 </form>
+</div>
 {% endblock %}
