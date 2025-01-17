@@ -17,6 +17,15 @@
             </button>
             <!-- フォーム入力後はauth/views.pyのlogin関数を実行 -->
             <form method="post" class="login-form loginform-form loginform-form-teacher" action="{{ url_for('auth.login') }}">
+                {% with error_messages = get_flashed_messages(with_categories=true) %}
+                {% if error_messages %}
+                    <div class="flashes">
+                        {% for category, m in error_messages %}
+                            <div class="flash {{ category }}">{{ m }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}    
 
                 <!-- csrf対策。とりあえずすべてのhtmlファイルに書いておく -->
                 {{ teacherform.csrf_token }}
@@ -40,6 +49,15 @@
             </button>
             <!-- フォーム入力後はauth/views.pyのlogin関数を実行 -->
             <form method="post" class="login-form loginform-form loginform-form-student" action="{{ url_for('auth.login') }}">
+                {% with error_messages = get_flashed_messages(with_categories=true) %}
+                {% if error_messages %}
+                    <div class="flashes">
+                        {% for category, m in error_messages %}
+                            <div class="flash {{ category }}">{{ m }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %}    
                 <!-- csrf対策。とりあえずすべてのhtmlファイルに書いておく -->
                 {{ studentform.csrf_token }}
                 <!-- auth/forms.pyのLoginFormクラスのemail、password、の情報を基にフォームを作成 -->

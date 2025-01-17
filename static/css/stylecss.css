@@ -37,6 +37,9 @@ a.t-student img {
 .red{
   background-color: #A30E00;
 }
+.flash{
+  color: red;
+}
 
 .hidden{
   display: none;
