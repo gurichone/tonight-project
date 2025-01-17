@@ -8,7 +8,7 @@
     {% if message %}
     <p class="error">{{message}}</p>
     {% endif %}
-    <form method="post" action="{{ url_for('auth.newpw')}}">
+    <form class="form_white_form" method="post" action="{{ url_for('auth.newpw')}}">
         {{ form.csrf_token }}
         {{ form.password1(class="form_input") }}
         <br>
