@@ -3,7 +3,7 @@
 {% block title %}パスワードリセット{% endblock %}
 
 {% block content %}
-<h1 id="h1_title">パスワードリセット</h1>
+<div id="h1_title"><h1>パスワードリセット</h1></div>
 <div class="modorulink"><a href="{{url_for('auth.login')}}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a></div>
 <div class="form_white">
     <form class="form_white_form" method="post" action="{{ url_for('auth.reset')}}">

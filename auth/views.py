@@ -141,17 +141,20 @@ def send_email(to, subject, template, **kwargs):
 def reset():
     form = EmailForm()
     if form.validate_on_submit():
+        exist = False
         if len(form.id.data) == 6:
             teacher = db.session.query(Teacher).filter_by(id=form.id.data, teacher_email=form.mail.data).first()
             if teacher:
                 user_id=teacher.id
                 username=teacher.teacher_name
+                exist = True
         if len(form.id.data) == 7:
             student = db.session.query(Student).filter_by(id=form.id.data, student_email=form.mail.data).first()
             if student:
                 user_id=student.id
                 username=student.student_name
-        if user_id:
+                exist = True
+        if exist:
             db.session.query(OneTime).filter_by(user_id=user_id).delete()
             db.session.commit()
             uu=str(uuid.uuid4())
