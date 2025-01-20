@@ -1,14 +1,20 @@
 {% extends "teacher/base.html" %}
+{% block title %}生徒削除完了{% endblock %}
+{% block h1 %}<br>{% endblock %}
+{% block modorulink %}{{ url_for('teacher.student.class_list') }}{% endblock %}
 {% block content %}
+<div>
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       <ul>
         {% for category, message in messages %}
         <!-- 削除完了メッセージを表示 -->
-          <li class="alert alert-{{ category }}">{{ message }}</li>
+          <!-- <li class="alert alert-{{ category }}">{{ message }}</li> -->
+          <h1 id="title_done">{{ message }}</h1>
         {% endfor %}
       </ul>
     {% endif %}
   {% endwith %}
-  <a href="{{ url_for('teacher.student.class_list') }}">クラス管理に戻る</a>
+  <diV id="link_done"><a class="lightgrey font_grey" href="{{ url_for('teacher.student.class_list') }}">クラス管理に戻る</a></diV>
+  </div>
 {% endblock %}

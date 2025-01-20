@@ -1621,3 +1621,26 @@ padding: 15px 40px;
 #osirase_message textarea:focus{
   outline: none;
 }
+.t_student_del table{
+  border-spacing: 0 10px;
+  width: 100%;
+}
+.t_student_del th{
+  border-bottom: solid 1px black;
+}
+.t_student_del td{
+  border-bottom: solid 1px black;
+}
+.t_student_del .form_button {
+  margin-top: 20px;
+}
+.s_seiseki table{
+  border-spacing: 0 10px;
+  width: 100%;
+}
+.s_seiseki th{
+  border-bottom: solid 1px black;
+}
+.s_seiseki td{
+  border-bottom: solid 1px black;
+}

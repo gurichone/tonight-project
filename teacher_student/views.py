@@ -133,10 +133,12 @@ def class_list():
 @student.route("/student/delete_confirm/<string:id>")
 @login_required
 def delete_confirm(id):
+    print("------------------------------")
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
-    if current_user.authority == 0:
-        return render_template("teacher/yang.html")
+    if current_user.authority != 1:
+        flash("管理者のみ利用可能な機能です")
+        return redirect(url_for('teacher.student.class_list'))
     student = Student.query.get(id)
     if not student:
         return "いないよそんな人", 404

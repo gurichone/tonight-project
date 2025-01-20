@@ -7,12 +7,12 @@
         <div class="teacher-student">
             <ul>
                 <!-- クラス管理ボタン -->
-                <li class="class_list"><a href="class_list">
+                <li class="class_list"><a href="{{ url_for('teacher.student.class_list') }}"">
                     <img src="{{ url_for('static', filename='images/kurasukanri.png') }}" alt="クラス管理">
                 </a></li>
                 
                 <!-- 生徒一覧ボタン -->
-                <li class="student_list"><a href="student_list">
+                <li class="student_list"><a href="{{ url_for('teacher.student.student_list') }}">
                     <img src="{{ url_for('static', filename='images/seitoitiran.png') }}" alt="生徒一覧">
                 </a></li>
             </ul>

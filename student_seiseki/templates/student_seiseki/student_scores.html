@@ -4,7 +4,8 @@
 {% block modorulink %}{{ url_for('student.menu.s_menu') }}{% endblock %}
 {% block h1 %}成績確認{% endblock %}
 {% block content %}
-<div color="form_white"></div>
+<div class="form_out">
+  <div class="form_in white font_grey s_seiseki">
     {% with messages = get_flashed_messages() %}
       {% if messages %}
         <ul>
@@ -19,23 +20,28 @@
         <table>
             <thead>
                 <tr>
-                    <th>科目名</th>
-                    <th>評価ID</th>
-                    <th>出席日数</th>
+                    <th style="width: 100px;">科目名</th>
+                    <th style="width: 100px;">評価ID</th>
+                    <th style="width: 100px;">出席日数</th>
                 </tr>
             </thead>
+          </table>
+          <div class="scroll_palent" style="height: 200px; width: 100%;">
+          <table class="scroll_child">
             <tbody>
                 {% for score, subject_name in scores %}
                 <tr>
-                    <td>{{ subject_name }}</td>
-                    <td>{{ score.assessment_id }}</td>
-                    <td>{{ score.attend_day }}</td>
+                    <td style="width: 100px;">{{ subject_name }}</td>
+                    <td style="width: 100px;">{{ score.assessment_id }}</td>
+                    <td style="width: 100px;">{{ score.attend_day }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        </div>
     {% else %}
         <p>表示できるスコアはありません。</p>
     {% endif %}
+  </div>
 </div>
 {% endblock %}

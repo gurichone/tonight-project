@@ -11,7 +11,16 @@
         <div class="class-container list_in" style="white-space: nowrap;"  id="class-{{ class_num }}">
             <div class="t_classlist_button"><button onclick="scrollContainer('class-{{ class_num }}', -1)"><img src="{{ url_for('static', filename='images/toleft.png') }}" alt="左へスクロール"></button></div>
             <div class="t_classlist_table grey font_white">
-            <table class="table_head">
+                {% with error_messages = get_flashed_messages(with_categories=true) %}
+                {% if error_messages %}
+                    <div class="flashes">
+                        {% for category, m in error_messages %}
+                            <div class="flash {{ category }}">{{ m }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %} 
+                <table class="table_head">
                 <thead>
                     <tr>
                         <th style="width: 100px;">生徒番号</th>

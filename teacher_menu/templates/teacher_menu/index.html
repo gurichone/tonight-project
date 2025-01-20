@@ -24,9 +24,18 @@
         </header>
     <!-- 教員用メニュー画面のメニューの一覧を作成 -->
         <div class="menu_out">
+            {% with error_messages = get_flashed_messages(with_categories=true) %}
+            {% if error_messages %}
+                <div class="flashes">
+                    {% for category, m in error_messages %}
+                        <div class="flash {{ category }}">{{ m }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %} 
             <div class="menu_in">
                 <!-- 生徒管理 --><!-- チャット -->
-                 <a href="{{ url_for('teacher.student.teacher_student') }}" class="menu-item mi_two"><img src="{{ url_for('static', filename='images/student.png') }}" alt="生徒管理"></a><a href="{{ url_for('admin.admin_menu') }}" class="menu-item mi_two"><img src="{{ url_for('static', filename='images/chat.png') }}" alt="チャット"></a>
+                 <a href="{{ url_for('teacher.student.teacher_student') }}" class="menu-item mi_two"><img src="{{ url_for('static', filename='images/student.png') }}" alt="生徒管理"></a><a href="{{ url_for('admin.admin_menu') }}" class="menu-item mi_two"><img src="{{ url_for('static', filename='images/authority.png') }}" alt="管理者"></a>
             </div>
         </div>
         <div class="menu_out">

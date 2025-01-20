@@ -46,7 +46,7 @@ def signup():
         db.session.add(teacher)
         db.session.commit()
 
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("admin.admin_menu"))
 
         # フォームが正しく入力されているかをチェックする
     if studentform.validate_on_submit(): 
@@ -74,7 +74,7 @@ def signup():
         db.session.add(student)
         db.session.commit()
 
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("admin.admin_menu"))
     # フォームが正しく入力されていない場合はtemplates/auth/signup.htmlを表示
     return render_template("auth/signup.html", teacherform=teacherform, studentform=studentform)
 

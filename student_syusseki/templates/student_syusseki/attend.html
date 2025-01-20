@@ -4,8 +4,8 @@
 {% block modorulink %}{{ url_for('student.menu.s_menu') }}{% endblock %}
 {% block h1 %}出席登録{% endblock %}
 {% block content %}
-<div class="form_white">
-    <form action="{{ url_for('student.syusseki.s_syusseki') }}" method="POST">
+<div class="form_out">
+    <form action="{{ url_for('student.syusseki.s_syusseki') }}" method="POST" class="form_in white">
         {{ form.csrf_token }}
         
         <!-- フォーム全体のエラーメッセージを表示 -->
@@ -16,13 +16,13 @@
                 {% endfor %}
             </ul>
         {% endif %}
-
+        <br>
         <div class="form-group">
             <label for="attendance_code">出席コード</label>
             {{ form.attendance_code(class="form-control", id="attendance_code") }}
         </div>
-
-        <button type="submit">出席登録</button>
+        <br><br><br><br>
+        <button class="form_button grey font_white" type="submit">出席登録</button>
     </form>
 </div>
 {% endblock %}

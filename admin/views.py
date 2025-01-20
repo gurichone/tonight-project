@@ -1,4 +1,5 @@
 from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import current_user
 from app import db 
 from admin.forms import CourseForm, SubjectForm, ClassNumForm, CourseSubjectForm, SchoolForm, StudentAddForm
 from auth.models import Teacher, Student, Subject, Course, ClassNum, CourseSubject, School
@@ -9,6 +10,11 @@ admin = Blueprint("admin", __name__, template_folder="templates", static_folder=
 
 @admin.route("/")
 def admin_menu():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
+    if current_user.authority != 1:
+        flash("管理者のみ利用可能な機能です")
+        return redirect(url_for('teacher.menu.t_menu'))
     return render_template("admin/admin.html", message="お前が管理者だ")
 
 @admin.route("/course", methods=["GET", "POST"])

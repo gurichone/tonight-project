@@ -1,11 +1,12 @@
 {% extends "teacher/base.html" %}
 {% block title %}コード発行完了{% endblock %}
+{% block h1 %}<br>{% endblock %}
 {% block content %}
 <body id="body">
     <div class="form_white">
         <!-- コードを表示する -->
-        <p>発行された出席コード: {{ code }}</p>
-        <a href="{{ url_for('teacher.seiseki.search') }}">戻る</a>
+        <p class="font_white">発行された出席コード: {{ code }}</p>
+        <div id="link_done"><a class="grey font_white" href="{{ url_for('teacher.seiseki.search') }}">戻る</a></div>
     </div>
 </body>
 {% endblock %}

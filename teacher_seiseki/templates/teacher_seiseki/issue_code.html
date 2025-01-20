@@ -1,12 +1,11 @@
 {% extends "teacher/base.html" %}
-{% block title %}コード発行{% endblock %}
-
+{% block title %}出席コード発行{% endblock %}
+{% block h1 %}出席コード発行{% endblock %}
 {% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
 <body id="body">
-    <div color="form_white">
-        <h2 class="font_white">出席コード発行</h2>
-        <form method="post">
+    <div class="form_out">
+        <form method="post" class="form_in white">
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <ul class="flashes">
@@ -16,6 +15,7 @@
                     </ul>
                 {% endif %}
             {% endwith %}
+            <br>
             <!-- 時間割のうちあてはまるのを選択 -->
             <label>時間割を選択してください:</label>
             <select name="period">
@@ -23,7 +23,8 @@
                 <option value="{{ period }}">{{ i }}時限目: {{ name }}</option>
                 {% endfor %}
             </select>
-            <button type="submit">出席コード発行</button>
+            <br><br><br><br>
+            <button class="form_button grey font_white" type="submit">出席コード発行</button>
         </form>
     </div>
 </body>
