@@ -39,6 +39,10 @@ class TeacherSignUpForm(FlaskForm):
     teacher_class_num = SelectField(
         "クラス番号",
     )
+    teacher_authority = SelectField(
+        "管理者権限",
+        choices=[(0, "なし"), (1, "あり")],
+    )
     submit = SubmitField("登録") # フォームの入力完了ボタンの作成
 
 # LoginFormを作成。フォームを作成する際はとりあえずカッコの中にFlaskFormを書いておく（フォーム作成に必要な機能を使えるようになる）

@@ -13,7 +13,7 @@ class Teacher(db.Model, UserMixin):
     password_hash = db.Column(db.String)
     class_num = db.Column(db.String)
     icon_path = db.Column(db.String)
-    authority = db.Column(db.Boolean)
+    authority = db.Column(db.Integer)
 
     @property
     def password(self):

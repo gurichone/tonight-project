@@ -13,6 +13,7 @@
 				<li><a href="{{url_for('admin.class_num')}}">ClassNumテーブル</a></li>
 				<li><a href="{{url_for('admin.school')}}">Schoolテーブル</a></li>
 			</ul>
+			<a href="{{url_for('auth.signup')}}">アカウント新規作成</a>
 		</div>
 		{% block content %}{% endblock %}
 		<div id="bg_homebutton" onclick="changeDisplay()"><img src="{{ url_for('static', filename='images/bg_home.png') }}"></div>

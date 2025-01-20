@@ -33,6 +33,7 @@ def signup():
             teacher_email=teacherform.teacher_email.data, # DBのユーザーテーブルのemailにフォームに入力されたメールアドレスを代入
             password=teacherform.teacher_password.data, # DBのユーザーテーブルのpasswordにフォームに入力されたパスワードを代入
             class_num=teacherform.teacher_class_num.data,
+            authority=teacherform.teacher_authority.data,
         )
 
         # メールアドレス重複チェックをする

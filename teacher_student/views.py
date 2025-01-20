@@ -135,6 +135,8 @@ def class_list():
 def delete_confirm(id):
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
+    if current_user.authority == 0:
+        return render_template("teacher/yang.html")
     student = Student.query.get(id)
     if not student:
         return "いないよそんな人", 404

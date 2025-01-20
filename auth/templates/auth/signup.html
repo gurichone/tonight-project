@@ -9,7 +9,15 @@
     <div class="card dt-auth-signup">
         <br>
         <h2 class="signup-head">新規登録</h2>
-        
+        {% with error_messages = get_flashed_messages(with_categories=true) %}
+        {% if error_messages %}
+            <div class="flashes">
+                {% for category, m in error_messages %}
+                    <div class="flash {{ category }}">{{ m }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %} 
         <section>
             <h3>教員</h3>
             <!-- フォーム入力後はauth/views.pyのsignup関数を実行。変数nextに現在のページ情報を追加。 -->
@@ -30,7 +38,9 @@
                 <br>
                 {{ teacherform.teacher_password(placeholder="パスワード") }}
                 <br>
-                {{ teacherform.teacher_class_num(placeholder="クラス番号") }}
+                クラス番号{{ teacherform.teacher_class_num(placeholder="クラス番号") }}
+                <br>
+                管理者権限{{ teacherform.teacher_authority(placeholder="管理者権限") }}
                 <br>
                 {{ teacherform.submit }}
             </form>

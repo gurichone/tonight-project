@@ -1,0 +1,10 @@
+<!-- get out here boys -->
+{% extends "teacher/base.html" %}
+
+{% block modorulink %}{{ url_for('auth.login') }}{% endblock %}
+
+{% block content %}
+<div>
+    <h2>管理者のみ利用可能な機能です</h2>
+</div>
+{% endblock %}
