@@ -30,8 +30,8 @@
                     {% endfor %}
                 </select>
                 <!-- 生徒番号を入力 -->
-                <label for="student_name">生徒名</label>
-                <input type="text" name="student_name" id="student_name" value="{{ score.student_name.data or '' }}" placeholder="生徒番号">
+                <label for="student_name">氏名</label>
+                <input type="text" name="student_name" id="student_name" value="{{ score.student_name.data or '' }}" placeholder="氏名">
                 <!-- ボタンを押して検索 -->
                 {{ score.submit }}
             </form>

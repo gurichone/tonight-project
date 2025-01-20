@@ -7,7 +7,15 @@
 <div class="form_out">
     <form action="{{ url_for('student.syusseki.s_syusseki') }}" method="POST" class="form_in white">
         {{ form.csrf_token }}
-        
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
         <!-- フォーム全体のエラーメッセージを表示 -->
         {% if form.attendance_code.errors %}
             <ul class="errors" style="color:red">

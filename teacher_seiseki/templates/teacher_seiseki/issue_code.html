@@ -19,8 +19,8 @@
             <!-- 時間割のうちあてはまるのを選択 -->
             <label>時間割を選択してください:</label>
             <select name="period">
-                {% for i, period, name in periods %}
-                <option value="{{ period }}">{{ i }}時限目: {{ name }}</option>
+                {% for i in periods %}
+                <option value="{{ i }}">{{ i }}時限目</option>
                 {% endfor %}
             </select>
             <br><br><br><br>

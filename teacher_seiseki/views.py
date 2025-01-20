@@ -255,55 +255,50 @@ def issue_code():
         return render_template("teacher/gohb.html")
     
     # セッションの期限切れチェックと削除処理
-    if 'code_timestamp' in session:
-        code_time = datetime.fromtimestamp(session['code_timestamp'])
-        if datetime.now() - code_time > timedelta(minutes=5):
-            session.pop('attendance_code', None)
-            session.pop('code_timestamp', None)
+    # if 'code_timestamp' in session:
+    #     code_time = datetime.fromtimestamp(session['code_timestamp'])
+    #     if datetime.now() - code_time > timedelta(minutes=5):
+    #         session.pop('attendance_code', None)
+    #         session.pop('code_timestamp', None)
 
     # datetime関数で日時を取得
     now = datetime.now()
     year, month, day = now.year, now.month, now.day
 
     # 現在の日時に一致する時間割があるかどうかを検索
-    timetable = db.session.query(Timetable).filter_by(year=year, month=month, day=day).first()
+    # timetable = db.session.query(Timetable).filter_by(year=year, month=month, day=day).first()
 
-    # timetableが存在する場合の処理
-    if timetable:
-        if request.method == "POST":
-            period = request.form.get("period")
 
-            print("\n\n", period)
+    if request.method == "POST":
+        period = request.form.get("period")
 
-            timetable = (
-                db.session.query(Timetable)
-                .filter_by(year=year, month=month, day=day)
-                .filter(or_(Timetable.period1 == period, Timetable.period2 == period, Timetable.period3 == period))
-                .first()
-            )
+        print("\n\n", period)
 
-            # `subject`テーブルに`period`で指定された科目が存在するか確認
-            # subject_name = getattr(timetable, f"period{period}", None)
-            subject = db.session.query(Subject).filter(Subject.subject_name == period).first()
+        # timetable = (
+        #     db.session.query(Timetable)
+        #     .filter_by(year=year, month=month, day=day)
+        #     .filter(or_(Timetable.period1 == period, Timetable.period2 == period, Timetable.period3 == period))
+        #     .first()
+        # )
 
-            if timetable and subject:
-                # コードを発行し表示する
-                code_data = f"{timetable.id}{now.strftime('%Y%m%d')}{period}" + "jn;zsbvuo;bbh;rlznnzibvnbrnl.fbk;lnk.szv;bab"
-                code_hash = hashlib.sha256(code_data.encode()).hexdigest()[:6]
+        # `subject`テーブルに`period`で指定された科目が存在するか確認
+        # subject_name = getattr(timetable, f"period{period}", None)
+        # subject = db.session.query(Subject).filter(Subject.subject_name == period).first()
 
-                # 一時的に発行したコードを保存（生徒が後で確認できるようにする）
-                session['attendance_code'] = code_hash
-                session['code_timestamp'] = datetime.now().timestamp()  # 時刻も保存
+        # if timetable and subject:
+        # コードを発行し表示する
+        code_data = f"{now.strftime('%Y%m%d')}{period}" + "jn;zsbvuo;bbh;rlznnzibvnbrnl.fbk;lnk.szv;bab"
+        code_hash = hashlib.sha256(code_data.encode()).hexdigest()[:6]
 
-                return render_template("teacher_seiseki/display_code.html", code=code_hash)
-            else:
-                flash("選択した授業は登録されていません。コードを発行できません。", "error")
-                return redirect(url_for("teacher.seiseki.issue_code"))
-        
-        # 最初にTimetableから取得した授業一覧を表示する処理
-        periods = [(1, timetable.period1, timetable.period1), (2, timetable.period2, timetable.period2), (3, timetable.period3, timetable.period3)]
-        return render_template("teacher_seiseki/issue_code.html", periods=periods)
+        # 一時的に発行したコードを保存（生徒が後で確認できるようにする）
+        # session['attendance_code'] = code_hash
+        # session['code_timestamp'] = datetime.now().timestamp()  # 時刻も保存
+
+        return render_template("teacher_seiseki/display_code.html", code=code_hash)
+        # else:
+        #     flash("選択した授業は登録されていません。コードを発行できません。", "error")
+        #     return redirect(url_for("teacher.seiseki.issue_code"))
     
-    # 存在しない場合はエラー文を表示する
-    flash("本日、授業がないか登録されていません。", "error")
-    return redirect(url_for("teacher.seiseki.search"))
+    # 最初にTimetableから取得した授業一覧を表示する処理
+    periods = [1, 2, 3]
+    return render_template("teacher_seiseki/issue_code.html", periods=periods)
