@@ -1,23 +1,25 @@
 {% extends "auth/base.html" %}
 
 {% block title %}パスワードリセット{% endblock %}
-
 {% block content %}
-<a href="{{ url_for('teacher.profile.profile') }}"></a>
-<h2>パスワードリセット</h2>
-<div>
-    {% if message %}
-    <p>{{ message }}</p>
-    {% endif %}
-    <form method="post" action="{{ url_for('student.profile.reset_password')}}">
+
+<div id="h1_title"><h1>パスワードリセット</h1></div>
+<div class="modorulink"><a href="{{ url_for('student.profile.profile') }}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a></div>
+<div class="form_out password_reset">
+    
+    <form class="form_in white" method="post" action="{{ url_for('student.profile.reset_password')}}">
+        {% if message %}
+        <p class="flash">{{ message }}</p>
+        {% endif %}
         {{ form.csrf_token }}
-        {{ form.oldpassword.label }}{{ form.oldpassword }}
-        <br>
-        {{ form.password1.label }}{{ form.password1 }}
-        <br>
-        {{ form.password2.label }}{{ form.password2 }}
-        <br>
-        {{ form.submit }}
+        <div>
+        {{ form.oldpassword(style="width:100%;", placeholder="現在のパスワード") }}
+        </div><div>
+        {{ form.password1(style="width:100%;", placeholder="新しいパスワード") }}
+        </div><div>
+        {{ form.password2(style="width:100%;", placeholder="再確認") }}
+        </div>
+        {{ form.submit(class="form_button grey font_white") }}
     </form>
 </div>
 {% endblock %}
