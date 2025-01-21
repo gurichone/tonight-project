@@ -62,7 +62,7 @@ class EditScore(FlaskForm):
     attend_day = IntegerField(
         "出席回数",
         validators=[
-            DataRequired("この欄は必ず入力してください。"),
+            # DataRequired("この欄は必ず入力してください。"),
             NumberRange(min=0, max=2100000000)
         ]
     )

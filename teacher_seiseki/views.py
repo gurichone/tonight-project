@@ -119,19 +119,29 @@ def add():
                         confirm=False,
                         success=False
                         )
-            
-            student = db.session.query(Student).filter_by(id=score_form.id.data).first()
-            subject = db.session.query(Subject).filter_by(subject_id=score_form.subject_id.data).first()
+                else:
+                    student = db.session.query(Student).filter_by(id=score_form.id.data).first()
+                    subject = db.session.query(Subject).filter_by(subject_id=score_form.subject_id.data).first()
 
-            # フォームデータを使用してScoreモデルのインスタンスを作成し、データベースに登録
-            score = Score(
-                id=student.id,
-                class_num=student.class_num,
-                subject_id=subject.subject_id,
-                assessment_id=score_form.assessment_id.data
-            )
-            db.session.add(score)
-            db.session.commit()
+                    # フォームデータを使用してScoreモデルのインスタンスを作成し、データベースに登録
+                    existing_score.assessment_id=score_form.assessment_id.data
+                    
+                    db.session.add(existing_score)
+                    db.session.commit()
+            else:
+            
+                student = db.session.query(Student).filter_by(id=score_form.id.data).first()
+                subject = db.session.query(Subject).filter_by(subject_id=score_form.subject_id.data).first()
+
+                # フォームデータを使用してScoreモデルのインスタンスを作成し、データベースに登録
+                score = Score(
+                    id=student.id,
+                    class_num=student.class_num,
+                    subject_id=subject.subject_id,
+                    assessment_id=score_form.assessment_id.data
+                )
+                db.session.add(score)
+                db.session.commit()
             # 登録完了画面を表示する
             return render_template(
                 "teacher_seiseki/add.html", 

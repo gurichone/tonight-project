@@ -8,6 +8,7 @@ from .models import Timetable
 from teacher_jikanwari.models import SubjectDetails
 from teacher_jikanwari.models import Timetable
 from auth.models import Subject, CourseSubject, ClassNum
+from datetime import datetime
 
 
 # Blueprintの作成
@@ -41,8 +42,9 @@ def get_subjects():
 # 指定された年月の時間割を表示するルート
 @jikanwari.route('/', methods=['GET'])
 def t_jikanwari():
-    selected_year = request.args.get('year', 2024, type=int)
-    selected_month = request.args.get('month', 1, type=int)
+    now = datetime.now()
+    selected_year = request.args.get('year', now.year, type=int)
+    selected_month = request.args.get('month', now.month, type=int)
 
     # 年月を指定してJikanwariエントリを取得
     entries = get_jikanwari_entries(selected_year, selected_month)
@@ -52,15 +54,16 @@ def t_jikanwari():
                            entries=entries,
                            selected_year=selected_year,
                            selected_month=selected_month,
-                           sbj_key_val=sbj_key_val)
+                           sbj_key_val=sbj_key_val,
+                           thisyear = now.year,)
 
 @jikanwari.route('/add_entry', methods=['GET', 'POST'])
 def add_entry():
-
+    now = datetime.now()
     subjects = get_subjects()
 
-    selected_year = request.args.get('year', default=2024, type=int)
-    selected_month = request.args.get('month', default=1, type=int)
+    selected_year = request.args.get('year', default=now.year, type=int)
+    selected_month = request.args.get('month', default=now.month, type=int)
 
     # 月の日数を取得
     number_of_days = calendar.monthrange(selected_year, selected_month)[1]
@@ -132,7 +135,8 @@ def add_entry():
                            selected_year=selected_year,
                            selected_month=selected_month, 
                            dates_and_weekdays=dates_and_weekdays,
-                           existing_data=existing_data,)
+                           existing_data=existing_data,
+                           thisyear = now.year,)
 
 
 

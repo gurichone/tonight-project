@@ -11,3 +11,12 @@ class Score(db.Model):
     subject_id = db.Column(db.String(10))
     assessment_id = db.Column(db.String(1))
     attend_day = db.Column(db.Integer)
+
+class Syusseki(db.Model):
+    __tablename__ = "syusseki"
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.String)
+    year = db.Column(db.Integer, nullable=False)
+    month = db.Column(db.Integer, nullable=False)
+    day = db.Column(db.Integer, nullable=False)
+    periods = db.Column(db.Integer)

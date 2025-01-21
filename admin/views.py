@@ -15,7 +15,7 @@ def admin_menu():
     if current_user.authority != 1:
         flash("管理者のみ利用可能な機能です")
         return redirect(url_for('teacher.menu.t_menu'))
-    return render_template("admin/admin.html", message="お前が管理者だ")
+    return render_template("admin/admin.html", message="管理者機能")
 
 @admin.route("/course", methods=["GET", "POST"])
 def course():
