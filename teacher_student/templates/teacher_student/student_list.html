@@ -60,7 +60,7 @@
                         <td class="table_text" style="width: 100px;">{{ student.class_num }}</td>
                         <td class="table_text" style="width: 280px;">{{ student.student_name }}</td>
                         <!-- 生徒の詳細画面へのボタン -->
-                        <td class="table_button"><a href="{{ url_for('teacher.student.student_detail', id=student.id) }}" class="lightgrey font_white">詳細</a></td>
+                        <td class="table_button"><a href="{{ url_for('teacher.student.student_detail', id=student.id) }}" class="lightgrey3 font_white">詳細</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
