@@ -9,6 +9,15 @@
 {% block content %}
 <div class="list_out">
     <div id="saiten_index" class="white font_grey">
+        {% with error_messages = get_flashed_messages(with_categories=true) %}
+        {% if error_messages %}
+            <div class="flashes">
+                {% for category, m in error_messages %}
+                    <div class="flash {{ category }}">{{ m }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %} 
         <div id="saiten_info">
             <ul>
                 <li>科目名　:{{submission.Subject.subject_name}}</li>
@@ -21,7 +30,8 @@
             </ul>
             <div id="saiten_action">
             <a href="{{ url_for('teacher.saiten.manual') }}" id="downroad" class="font_white">ダウンロード</a>
-            <a href="{{ url_for('teacher.saiten.auto') }}" class="grey font_white">自動採点</a>
+            <a href="{{ url_for('teacher.saiten.auto') }}" class="grey font_white">採点</a>
+            <a href="{{ url_for('teacher.saiten.show') }}" class="grey font_white">点数</a>
             </div>
         </div>
         <!-- <table>

@@ -3,6 +3,7 @@ from flask_login import current_user, login_required
 from app import db
 from auth.models import Subject
 from teacher_seiseki.models import Score
+from teacher_teisyutsu.models import Personal_Submission, Submission
 
 seiseki = Blueprint(
     "seiseki",
@@ -26,3 +27,13 @@ def s_seiseki():
         return render_template("student_seiseki/student_scores.html", scores=None)
     
     return render_template("student_seiseki/student_scores.html", scores=scores)
+
+@seiseki.route("/<subject_id>", methods=["GET","POST"])
+@login_required
+def s_submission(subject_id):
+    if len(current_user.id) != 7:
+        return render_template("student/gohb.html")
+    subject = db.session.query(Subject).filter_by(subject_id=subject_id).first()
+    submission = db.session.query(Personal_Submission, Submission).join(Personal_Submission, Personal_Submission.submission_id==Submission.submission_id).filter_by(student_id=current_user.id).all()
+    return render_template("student_seiseki/student_submissions.html", submissions = submission, subject=subject)
+    

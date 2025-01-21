@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, session, current_app, send_file
+from flask import Blueprint, render_template, redirect, url_for, session, current_app, send_file, flash
 from flask_login import current_user, login_required
 from app import db
 from teacher_saiten.forms import PointForm
@@ -223,3 +223,16 @@ def auto():
             codes[pl.Student.id]=codes[pl.Student.id].split("\n")
     return render_template("teacher_saiten/result.html", jupyter=jupyter_output, gemini=gemini_output, personal_lst=personal_lst, codes=codes, form=form, points=points, submission=submission)
     # return render_template("teacher_saiten/index.html")
+
+@saiten.route("/show", methods=["GET", "POST"])
+@login_required
+def show():
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
+    submission = db.session.query(Submission, Subject).join(Submission, Submission.subject_id==Subject.subject_id).filter_by(submission_id=session["submission"]).first()
+    personal_lst = db.session.query(Personal_Submission, Student).join(Personal_Submission, Personal_Submission.student_id==Student.id).filter_by(submission_id=session["submission"]).all()
+    for p in personal_lst:
+        if p.Personal_Submission.point is None:
+            flash("採点されていません")
+            return redirect(url_for("teacher.saiten.t_saiten", submission_id=submission.Submission.submission_id))
+    return render_template("teacher_saiten/show.html", personal_lst=personal_lst,  submission=submission)

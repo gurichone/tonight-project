@@ -1,7 +1,7 @@
 {% extends "student/base.html" %}
 {% block title %}成績確認{% endblock %}
 
-{% block modorulink %}{{ url_for('student.menu.s_menu') }}{% endblock %}
+{% block modorulink %}{{ url_for('student.seiseki.s_seiseki') }}{% endblock %}
 {% block h1 %}成績確認{% endblock %}
 {% block content %}
 <div class="form_out">
@@ -16,24 +16,19 @@
       {% endif %}
     {% endwith %}
 
-    {% if scores %}
-        <table>
-            <thead>
-                <tr>
-                    <th style="width: 100px;">科目名</th>
-                    <th style="width: 100px;">評価ID</th>
-                    <th style="width: 100px;">出席日数</th>
-                </tr>
-            </thead>
-          </table>
+    {% if submissions %}
+        <h3>{{subject.name}}</h3>
           <div class="scroll_palent" style="height: 200px; width: 100%;">
           <table class="scroll_child">
             <tbody>
-                {% for score, subject_name in scores %}
+                {% for submission in submissions %}
                 <tr>
-                    <td style="width: 100px;"><a class="font_white" href="{{ url_for('student.seiseki.s_submission', subject_id=score.subject_id) }}">{{ subject_name }}</a></td>
-                    <td style="width: 100px;">{{ score.assessment_id }}</td>
-                    <td style="width: 100px;">{{ score.attend_day }}</td>
+                    <td style="width: 150px;">{{ submission.Submission.submission_name }}</td>
+                    {% if submission.Personal_Submission.point or submission.Personal_Submission.point==0%}
+                    <td style="width: 150px;">点数  {{ submission.Personal_Submission.point }}</td>
+                    {% else %}
+                    <td style="width: 150px;">未提出</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>
