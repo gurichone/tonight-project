@@ -15,15 +15,15 @@
         <form class="form_in t_seiseki_add_form white" action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
             {{ score.csrf_token }}
             <!-- 既に登録した情報が存在する際にエラー文を表示する処理 -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <ul class="flashes font_white">
-                        {% for category,message in messages %}
-                            <li class="{{ category }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            {% endwith %}
+            {% with error_messages = get_flashed_messages(with_categories=true) %}
+            {% if error_messages %}
+                <div class="flashes">
+                    {% for category, m in error_messages %}
+                        <div class="flash {{ category }}">{{ m }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            {% endwith %}   
             <p>{{ score.id.label(class="t_seiseki_add_label") }} {{ score.id(class="form_input t_seiseki_add_input") }}</p>
             <!-- 各エラーが起きた際の処理(forms.py参照) -->
             {% for error in score.id.errors %}

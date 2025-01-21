@@ -62,7 +62,15 @@ def s_syusseki():
         if period == 0:
             flash("出席コードが違います")
             return render_template("student_syusseki/attend.html", form=attend)
+            
         else:
+            subjects = db.session.query(Timetable).filter_by(year=now.year, month=now.month, day=now.day, class_num=current_user.class_num)
+
+            if period == 1:
+                existing_score = db.session.query(Score).filter_by(id=current_user.id, subject_id=subjects.period1)
+            if existing_score:
+                if existing_score.attend_day is not None:
+                    existing_score.attend_day = 0
 
             return render_template(
                 "student_syusseki/attend_complete.html",

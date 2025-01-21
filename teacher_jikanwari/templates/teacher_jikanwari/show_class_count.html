@@ -24,16 +24,16 @@
             <tbody>
                 {% for subject in subjects %}
                 <tr>
-                    <td style="width:100px;">{{ subject.subject_name }}</td>
+                    <td style="width:100px;">{{ subject.Subject.subject_name }}</td>
                     <td style="width:100px;">
-                        <select class="lightgrey" name="periods_{{ subject.subject_id }}" 
-                                onchange="updateUnitsAndPeriods('{{ subject.subject_id }}', 'periods')" 
+                        <select class="lightgrey" name="periods_{{ subject.Subject.subject_id }}" 
+                                onchange="updateUnitsAndPeriods('{{ subject.Subject.subject_id }}', 'periods')" 
                                 required>
                             <option value="">選択してください</option>
                             {% for i in range(1, 11) %}
                             <option value="{{ i * 15 }}"
-                                    {% if subject_details[subject.subject_name] 
-                                       and subject_details[subject.subject_name].periods == i * 15 %} 
+                                    {% if subject_details[subject.Subject.subject_id] 
+                                       and subject_details[subject.Subject.subject_id].SubjectDetails.periods == i * 15 %} 
                                     selected 
                                     {% endif %}>
                                 {{ i * 15 }} コマ
@@ -42,14 +42,14 @@
                         </select>
                     </td>
                     <td style="width:100px;">
-                        <select class="lightgrey" name="units_{{ subject.subject_id }}" 
-                                onchange="updateUnitsAndPeriods('{{ subject.subject_id }}', 'units')" 
+                        <select class="lightgrey" name="units_{{ subject.Subject.subject_id }}" 
+                                onchange="updateUnitsAndPeriods('{{ subject.Subject.subject_id }}', 'units')" 
                                 required>
                             <option value="">選択してください</option>
                             {% for i in range(1, 11) %}
                             <option value="{{ i }}"
-                                    {% if subject_details[subject.subject_name] 
-                                       and subject_details[subject.subject_name].units == i %} 
+                                    {% if subject_details[subject.Subject.subject_name] 
+                                       and subject_details[subject.Subject.subject_name].SubjectDetails.units == i %} 
                                     selected 
                                     {% endif %}>
                                 {{ i }} 単位

@@ -26,9 +26,9 @@
         <tbody>
             {% for subject in subjects %}
             <tr>
-                <td style="width: 320px;">{{ subject.name }}</td>  <!-- 授業名 -->
-                <td style="width: 150px;">{{ subject.periods }} コマ</td>  <!-- コマ数 -->
-                <td style="width: 150px;">{{ subject.units }} 単位</td>  <!-- 単位数 -->
+                <td style="width: 320px;">{{ subject.Subject.subject_name }}</td>  <!-- 授業名 -->
+                <td style="width: 150px;">{{ subject.SubjectDetails.periods }} コマ</td>  <!-- コマ数 -->
+                <td style="width: 150px;">{{ subject.SubjectDetails.units }} 単位</td>  <!-- 単位数 -->
             </tr>
             {% endfor %}
         </tbody>

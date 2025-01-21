@@ -111,13 +111,14 @@ def add():
             ).first()
             # エラー文を表示
             if existing_score:
-                flash("同じ情報が既に登録されています。", "error")
-                return render_template(
-                    "teacher_seiseki/add.html",
-                    score=score_form,
-                    confirm=False,
-                    success=False
-                    )
+                if existing_score.assessment_id is not None:
+                    flash("同じ情報が既に登録されています。", "error")
+                    return render_template(
+                        "teacher_seiseki/add.html",
+                        score=score_form,
+                        confirm=False,
+                        success=False
+                        )
             
             student = db.session.query(Student).filter_by(id=score_form.id.data).first()
             subject = db.session.query(Subject).filter_by(subject_id=score_form.subject_id.data).first()

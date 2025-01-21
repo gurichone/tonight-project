@@ -1,10 +1,11 @@
 {% extends "teacher/base.html" %}
-
+{% block title %}パスワード変更完了{% endblock %}
+{% block h1 %}<br>{% endblock %}
 {% block modorulink %}{{ url_for('teacher.profile.profile') }}{% endblock %}
 
 {% block content %}
 <div>
-    <h2>パスワード変更が完了しました</h2>
-    <a href="{{ url_for('teacher.menu.t_menu') }}">メニューに戻る</a>
+    <h1 id="title_done">パスワード変更が完了しました</h1>
+    <div id="link_done"><a class="lightgrey font_grey" href="{{ url_for('teacher.menu.t_menu') }}">メニューに戻る</a></div>
 </div>
 {% endblock %}

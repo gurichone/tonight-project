@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import IntegerField, StringField, SelectField, SubmitField
-from wtforms.validators import DataRequired, length
+from wtforms.validators import DataRequired, length, NumberRange
 
 # 成績を検索する際の絞り込みに必要なフォームクラスを作成
 class SearchScore(FlaskForm):
@@ -36,7 +36,7 @@ class AddScore(FlaskForm):
     assessment_id = SelectField(
         "評価",
         choices=[
-            ("","--"),('A','A'),('B','B'),('C','C'),('D','D'),('E','E')
+            ('A','A'),('B','B'),('C','C'),('D','D'),('E','E')
         ]
     )
 
@@ -62,6 +62,7 @@ class EditScore(FlaskForm):
     attend_day = IntegerField(
         "出席回数",
         validators=[
-            DataRequired("この欄は必ず入力してください。")
+            DataRequired("この欄は必ず入力してください。"),
+            NumberRange(min=0, max=2100000000)
         ]
     )

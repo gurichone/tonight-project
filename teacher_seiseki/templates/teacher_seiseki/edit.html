@@ -1,29 +1,27 @@
 {% extends "teacher/base.html" %}
-{% block title %}編集{% endblock %}
-
+{% block title %}成績編集{% endblock %}
+{% block h1 %}成績編集{% endblock %}
 {% block modorulink %}{{ url_for('teacher.seiseki.search') }}{% endblock %}
 {% block content %}
-<body id="body">
-    <div class="form_white">
-        <h2>成績編集</h2>
-        <p>生徒番号: {{ student.id }} | 科目: {{ subject.subject_name }}</p>
+    <div class="form_out">
+        
 
-        <form method="POST" action="{{ url_for('teacher.seiseki.edit', score_id=score.score_id) }}">
+        <form class="form_in white" method="POST" action="{{ url_for('teacher.seiseki.edit', score_id=score.score_id) }}">
+            <p>生徒番号: {{ student.id }}</p><p>科目: {{ subject.subject_name }}</p>
             {{ form.csrf_token }}
             
-            <div>
-                {{ form.assessment_id.label }}: {{ form.assessment_id }}
+            <div class="t_seiseki_edit">
+                {{ form.assessment_id.label(style="width:100px;", class="t_seiseki_edit_label") }}: {{ form.assessment_id(style="width:200px;", class="t_seiseki_edit_select") }}
             </div>
             
-            <div>
-                {{ form.attend_day.label }}: {{ form.attend_day }}
+            <div class="t_seiseki_edit">
+                {{ form.attend_day.label(style="width:100px;", class="t_seiseki_edit_label") }}: {{ form.attend_day(style="width:200px;", class="t_seiseki_edit_input") }}
                 {% for error in form.attend_day.errors %}
                     <span style="color:red">{{ error }}</span>
                 {% endfor %}
             </div>
 
-            <button type="submit">保存</button>
+            <button class="form_button grey font_white" type="submit">保存</button>
         </form>
     </div>
-</body>
 {% endblock %}

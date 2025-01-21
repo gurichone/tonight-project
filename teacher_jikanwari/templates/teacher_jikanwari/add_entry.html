@@ -58,21 +58,25 @@
                         <td class="jikanwari-td white">
                             <select name="period1_{{ date.day }}">
                                 {% for subject in subjects %}
-                                    <option value="{{ subject }}" {% if entry and entry.period1 == subject %}selected{% endif %}>{{ subject }}</option>
+                                {% if entry.period1 == subject.Subject.subject_id %}
+                                    <option value="{{ subject.Subject.subject_id }}" selected>{{ subject.Subject.subject_name }}</option>
+                                {% else %}
+                                    <option value="{{ subject.Subject.subject_id }}">{{ subject.Subject.subject_name }}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
                         </td>
                         <td class="jikanwari-td white">
                             <select name="period2_{{ date.day }}">
                                 {% for subject in subjects %}
-                                    <option value="{{ subject }}" {% if entry and entry.period2 == subject %}selected{% endif %}>{{ subject }}</option>
+                                    <option value="{{ subject.Subject.subject_id }}" {% if entry and entry.period2 == subject.Subject.subject_id %}selected{% endif %}>{{ subject.Subject.subject_name }}</option>
                                 {% endfor %}
                             </select>
                         </td>
                         <td class="jikanwari-td white">
                             <select name="period3_{{ date.day }}">
                                 {% for subject in subjects %}
-                                    <option value="{{ subject }}" {% if entry and entry.period3 == subject %}selected{% endif %}>{{ subject }}</option>
+                                    <option value="{{ subject.Subject.subject_id }}" {% if entry and entry.period3 == subject.Subject.subject_id %}selected{% endif %}>{{ subject.Subject.subject_name }}</option>
                                 {% endfor %}
                             </select>
                         </td>

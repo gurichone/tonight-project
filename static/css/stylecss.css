@@ -1644,3 +1644,55 @@ padding: 15px 40px;
 .s_seiseki td{
   border-bottom: solid 1px black;
 }
+.t_seiseki_edit{
+  border-bottom: solid 1px black;
+  margin: 10px 0;
+  }
+.t_seiseki_edit label{
+  display: inline-block;
+}
+.t_seiseki_edit select{
+  border: none;
+}
+.t_seiseki_edit select:focus{
+  outline: none;
+}
+.t_seiseki_edit input{
+  border: none;
+}
+.t_seiseki_edit input:focus{
+  outline: none;
+}
+.profile_confirm form{
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.profile_confirm button{
+  width: 300px;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 5px;
+}
+.profile_confirm input[type=submit]{
+  width: 300px;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 5px;
+}
+.password_reset div{
+  border-bottom: solid 1px black;
+  margin-bottom: 20px;
+
+}
+
+.password_reset input{
+  border: none;
+}
+.password_reset input:focus{
+  outline: none;
+}

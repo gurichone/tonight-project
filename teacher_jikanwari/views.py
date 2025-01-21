@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash,session
+from flask_login import current_user
 import calendar
 import sqlite3
 from calendar import monthrange, weekday
@@ -6,7 +7,7 @@ from app import db
 from .models import Timetable
 from teacher_jikanwari.models import SubjectDetails
 from teacher_jikanwari.models import Timetable
-from auth.models import Subject
+from auth.models import Subject, CourseSubject, ClassNum
 
 
 # Blueprintの作成
@@ -19,26 +20,23 @@ jikanwari = Blueprint(
 
 # 指定IDのエントリを取得する関数
 def get_entry_by_id(entry_id):
-    return Timetable.query.get(entry_id)
+    # return Timetable.query.get(entry_id)
+    return Timetable.query.filter_by(class_num=current_user.class_num)
 
 # 年と月を指定してデータを取得する関数
 def get_entries_from_database(year, month):
-    return Timetable.query.filter_by(year=year, month=month).all()
+    return Timetable.query.filter_by(year=year, month=month, class_num=current_user.class_num).all()
 
 def get_entry_by_date(year, month, day):
-    return Timetable.query.filter_by(year=year, month=month, day=day).first()
+    return Timetable.query.filter_by(year=year, month=month, day=day, class_num=current_user.class_num).first()
 
 # 年と月を指定してJikanwariエントリを取得する関数
 def get_jikanwari_entries(year, month):
-    return Timetable.query.filter_by(year=year, month=month).all()
+    return Timetable.query.filter_by(year=year, month=month, class_num=current_user.class_num).all()
 
 def get_subjects():
-    connection = sqlite3.connect('local.sqlite')
-    cursor = connection.cursor()
-    cursor.execute("SELECT subject_name FROM subject")  # subject_nameが科目名を格納していると仮定
-    subjects = cursor.fetchall()
-    connection.close()
-    return [subject[0] for subject in subjects]
+    course =db.session.query(ClassNum).filter_by(class_num=current_user.class_num).first()
+    return db.session.query(Subject, CourseSubject).join(CourseSubject, CourseSubject.subject_id==Subject.subject_id).filter_by(course_id=course.course_id).all()
 
 # 指定された年月の時間割を表示するルート
 @jikanwari.route('/', methods=['GET'])
@@ -48,12 +46,13 @@ def t_jikanwari():
 
     # 年月を指定してJikanwariエントリを取得
     entries = get_jikanwari_entries(selected_year, selected_month)
-
+    sbj_key_val = {subject.subject_id:subject.subject_name for subject in db.session.query(Subject).all()}
     # テンプレートに渡して時間割を表示
     return render_template('teacher_jikanwari/table.html', 
                            entries=entries,
                            selected_year=selected_year,
-                           selected_month=selected_month)
+                           selected_month=selected_month,
+                           sbj_key_val=sbj_key_val)
 
 @jikanwari.route('/add_entry', methods=['GET', 'POST'])
 def add_entry():
@@ -79,8 +78,11 @@ def add_entry():
         })
 
     # 選択された年と月のデータを取得
-    existing_entries = Timetable.query.filter_by(year=selected_year, month=selected_month).all()
+    existing_entries = Timetable.query.filter_by(year=selected_year, month=selected_month, class_num=current_user.class_num).all()
     existing_data = {entry.day: entry for entry in existing_entries}
+    # for i in existing_entries:
+    #     print(i.period1, type(i.period1))
+    # print(type(existing_data[1].period1), "------------------\n\n\n\n\n")
 
     if request.method == 'POST':
         # POSTリクエストが送られた場合、新しいエントリを追加
@@ -92,7 +94,7 @@ def add_entry():
             event = request.form.get(f'event_{day}')
 
             # 既存のエントリをチェック
-            existing_entry = Timetable.query.filter_by(year=selected_year, month=selected_month, day=day).first()
+            existing_entry = Timetable.query.filter_by(year=selected_year, month=selected_month, day=day, class_num=current_user.class_num).first()
 
             weekday = calendar.weekday(selected_year, selected_month, day)
             weekday_name = weekdays[weekday]
@@ -115,7 +117,8 @@ def add_entry():
                     period2=period2,
                     period3=period3,
                     notes=notes,
-                    event=event
+                    event=event,
+                    class_num=current_user.class_num,
                 )
                 db.session.add(new_entry)  # 新しいエントリを追加
                 db.session.commit()  # 一度だけコミットしてデータベースに保存
@@ -129,7 +132,7 @@ def add_entry():
                            selected_year=selected_year,
                            selected_month=selected_month, 
                            dates_and_weekdays=dates_and_weekdays,
-                           existing_data=existing_data)
+                           existing_data=existing_data,)
 
 
 
@@ -146,7 +149,7 @@ def save_timetable():
     selected_month = int(form['month'])
 
     # 年月に基づいてデータを取得
-    dates_and_weekdays = Timetable.query.filter_by(year=selected_year, month=selected_month).all()
+    dates_and_weekdays = Timetable.query.filter_by(year=selected_year, month=selected_month, class_num=current_user.class_num).all()
     if dates_and_weekdays:
         for date in dates_and_weekdays:
             period1 = form["period1_"+str(date.day)]
@@ -155,7 +158,7 @@ def save_timetable():
             notes = form["notes_"+str(date.day)]
             event = form["event_"+str(date.day)]
 
-            entry = Timetable.query.filter_by(day=date.day, month=selected_month, year=selected_year).first()
+            entry = Timetable.query.filter_by(day=date.day, month=selected_month, year=selected_year, class_num=current_user.class_num).first()
             
             # 既存のエントリを更新
             entry.period1 = period1
@@ -188,7 +191,8 @@ def save_timetable():
                 period2=period2,
                 period3=period3,
                 notes=notes,
-                event=event
+                event=event,
+                class_num=current_user.class_num
             )
             db.session.add(entry)
             db.session.commit()
@@ -204,15 +208,15 @@ def success():
 # クラス一覧表示
 @jikanwari.route('/class_list')
 def class_list():
-    subjects = SubjectDetails.query.all()  # SubjectDetailsテーブルから全てのデータを取得
+    subjects = db.session.query(SubjectDetails, Subject).join(SubjectDetails, SubjectDetails.subject_id==Subject.subject_id)  # SubjectDetailsテーブルから全てのデータを取得
     return render_template('teacher_jikanwari/class_list.html', subjects=subjects)
 
 
 # クラス数の表示
 @jikanwari.route('/show_class_count', methods=['GET', 'POST'])
 def show_class_count():
-    subjects = Subject.query.all()
-    subject_details = {detail.name: detail for detail in SubjectDetails.query.all()}  # SubjectDetailsを取得
+    subjects = get_subjects()
+    subject_details = {detail.SubjectDetails.subject_id: detail for detail in db.session.query(SubjectDetails, Subject).join(SubjectDetails, SubjectDetails.subject_id==Subject.subject_id)}  # SubjectDetailsを取得
 
     error_message = None  # 初期化する
 
@@ -220,10 +224,10 @@ def show_class_count():
         # フォームから取得したデータを一時的に保存
         form_data = []
         for subject in subjects:
-            subject_id = subject.subject_id
+            subject_id = subject.Subject.subject_id
             periods = request.form.get(f'periods_{subject_id}')
             units = request.form.get(f'units_{subject_id}')
-            subject_name = subject.subject_name
+            subject_name = subject.Subject.subject_name
 
             # 入力がない場合のスキップ処理
             if not periods or not units:
@@ -239,6 +243,7 @@ def show_class_count():
                 break
 
             form_data.append({
+                'subject_id' : subject_id,
                 'subject_name': subject_name,
                 'periods': periods,
                 'units': units
@@ -272,17 +277,17 @@ def confirm_class_count():
     if request.method == 'POST':
         # データをDBに保存する
         for data in form_data:
-            subject_name = data['subject_name']
+            subject_id = data['subject_id']
             periods = data['periods']
             units = data['units']
             
-            existing_detail = SubjectDetails.query.filter_by(name=subject_name).first()
+            existing_detail = SubjectDetails.query.filter_by(subject_id=subject_id).first()
             if existing_detail:
                 existing_detail.periods = periods
                 existing_detail.units = units
             else:
                 new_subject_detail = SubjectDetails(
-                    name=subject_name,
+                    subject_id=subject_id,
                     periods=periods,
                     units=units
                 )

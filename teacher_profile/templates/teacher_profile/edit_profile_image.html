@@ -1,19 +1,20 @@
 {% extends "teacher/base.html" %}
 {% block title %}プロフィール編集{% endblock %}
+{% block h1 %}プロフィール編集{% endblock %}
 {% block modorulink %}{{ url_for('teacher.profile.profile') }}{% endblock %}
 {% block content %}
-<h2>プロフィール編集</h2>
+<div class="form_out profile_confirm">
 <form method="POST" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
-    <div>
-        {{ form.profile_image.label }}<br>
-        {{ form.profile_image }}
-    </div>
-    <div>
-        {{ form.submit }}
-    </div>
+
+        {{ form.profile_image(class="font_white") }}
+<br>
+<br>
+        {{ form.submit(class="lightgrey font_grey") }}
+
 </form>
 <form action="{{ url_for('teacher.profile.reset_profile_image') }}" method="POST">
-    <button type="submit">デフォルトアイコンに戻す</button>
+    <button class="form_button lightgrey font_grey" type="submit">デフォルトアイコンに戻す</button>
 </form>
+</div>
 {% endblock %}
