@@ -96,7 +96,7 @@ def login():
             # crud/templates/crud/index.htmlを表示
             return redirect(url_for("teacher.menu.t_menu"))
 
-        flash("メールアドレスかパスワードか不正です") # ログイン失敗メッセージを設定する
+        flash("教員番号かパスワードが不正です") # ログイン失敗メッセージを設定する
     
     if studentform.validate_on_submit():
         # 入力されたメールアドレスを持つユーザデータを取得
@@ -109,7 +109,7 @@ def login():
             # crud/templates/crud/index.htmlを表示
             return redirect(url_for("student.menu.s_menu"))
 
-        flash("メールアドレスかパスワードか不正です") # ログイン失敗メッセージを設定する
+        flash("生徒番号かパスワードか不正です") # ログイン失敗メッセージを設定する
 
     return render_template("auth/login.html", teacherform=teacherform, studentform=studentform) # フォームが正しく入力されていなければauth/login.htmlを表示
 
