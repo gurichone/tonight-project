@@ -1,7 +1,7 @@
 #gvuihbjhgvhuygibjhvyuihjkbh
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, FileField
-from wtforms.validators import DataRequired, length, ReadOnly
+from wtforms.validators import DataRequired, length
 from flask_wtf.file import FileAllowed, FileField, FileRequired
 
 

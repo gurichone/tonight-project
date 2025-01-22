@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, session, current_app
 from flask_login import current_user, login_required
-from wtforms.validators import ReadOnly
 from app import db
 from teacher_teisyutsu.forms import SubmissionForms, CreateSubmissionForms
 from teacher_teisyutsu.models import Submission, Personal_Submission
