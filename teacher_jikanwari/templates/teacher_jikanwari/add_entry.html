@@ -53,11 +53,13 @@
             <tbody id="calendar-body">
                 {% for date in dates_and_weekdays %}
                     {% set entry = existing_data.get(date.day, None) %}
+                    {% if date.weekday != '土' and date.weekday != '日'%}
                     <tr>
                         <td class="jikanwari-td jikanwari-date grey font_white">{{ date.day }}</td>
                         <td class="jikanwari-td jikanwari-date grey font_white">{{ date.weekday }}</td>
                         <td class="jikanwari-td white">
                             <select name="period1_{{ date.day }}">
+                                <option value="0"></option>
                                 {% for subject in subjects %}
                                 {% if entry.period1 == subject.Subject.subject_id %}
                                     <option value="{{ subject.Subject.subject_id }}" selected>{{ subject.Subject.subject_name }}</option>
@@ -69,15 +71,25 @@
                         </td>
                         <td class="jikanwari-td white">
                             <select name="period2_{{ date.day }}">
+                                <option value="0"></option>
                                 {% for subject in subjects %}
-                                    <option value="{{ subject.Subject.subject_id }}" {% if entry and entry.period2 == subject.Subject.subject_id %}selected{% endif %}>{{ subject.Subject.subject_name }}</option>
+                                {% if entry.period2 == subject.Subject.subject_id %}
+                                    <option value="{{ subject.Subject.subject_id }}" selected>{{ subject.Subject.subject_name }}</option>
+                                {% else %}
+                                    <option value="{{ subject.Subject.subject_id }}">{{ subject.Subject.subject_name }}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
                         </td>
                         <td class="jikanwari-td white">
                             <select name="period3_{{ date.day }}">
+                                <option value="0"></option>
                                 {% for subject in subjects %}
-                                    <option value="{{ subject.Subject.subject_id }}" {% if entry and entry.period3 == subject.Subject.subject_id %}selected{% endif %}>{{ subject.Subject.subject_name }}</option>
+                                {% if entry.period3 == subject.Subject.subject_id %}
+                                    <option value="{{ subject.Subject.subject_id }}" selected>{{ subject.Subject.subject_name }}</option>
+                                {% else %}
+                                    <option value="{{ subject.Subject.subject_id }}">{{ subject.Subject.subject_name }}</option>
+                                {% endif %}
                                 {% endfor %}
                             </select>
                         </td>
@@ -88,6 +100,54 @@
                             <input type="text" name="event_{{ date.day }}" value="{{ entry.event if entry else '' }}" placeholder="イベント">
                         </td>
                     </tr>
+                    {% else %}
+                    <tr>
+                        <td class="jikanwari-td jikanwari-date grey font_white">{{ date.day }}</td>
+                        <td class="jikanwari-td jikanwari-date grey font_white">{{ date.weekday }}</td>
+                        <td class="jikanwari-td lightgrey4">
+                            <select name="period1_{{ date.day }}" class="lightgrey4">
+                                <option value="0"></option>
+                                {% for subject in subjects %}
+                                {% if entry.period1 == subject.Subject.subject_id %}
+                                    <option value="{{ subject.Subject.subject_id }}" selected>{{ subject.Subject.subject_name }}</option>
+                                {% else %}
+                                    <option value="{{ subject.Subject.subject_id }}">{{ subject.Subject.subject_name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="jikanwari-td lightgrey4">
+                            <select name="period2_{{ date.day }}" class="lightgrey4">
+                                <option value="0"></option>
+                                {% for subject in subjects %}
+                                {% if entry.period2 == subject.Subject.subject_id %}
+                                    <option value="{{ subject.Subject.subject_id }}" selected>{{ subject.Subject.subject_name }}</option>
+                                {% else %}
+                                    <option value="{{ subject.Subject.subject_id }}">{{ subject.Subject.subject_name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="jikanwari-td lightgrey4">
+                            <select name="period3_{{ date.day }}" class="lightgrey4">
+                                <option value="0"></option>
+                                {% for subject in subjects %}
+                                {% if entry.period3 == subject.Subject.subject_id %}
+                                    <option value="{{ subject.Subject.subject_id }}" selected>{{ subject.Subject.subject_name }}</option>
+                                {% else %}
+                                    <option value="{{ subject.Subject.subject_id }}">{{ subject.Subject.subject_name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td class="jikanwari-td lightgrey4">
+                            <input type="text" name="notes_{{ date.day }}" value="{{ entry.notes if entry else '' }}" placeholder="備考" class="lightgrey4">
+                        </td>
+                        <td class="jikanwari-td lightgrey4">
+                            <input type="text" name="event_{{ date.day }}" value="{{ entry.event if entry else '' }}" placeholder="イベント" class="lightgrey4">
+                        </td>
+                    </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>

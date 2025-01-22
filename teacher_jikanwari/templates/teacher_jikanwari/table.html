@@ -51,17 +51,55 @@
     <table class="scroll_child jikanwari_table_body">
         <tbody>
             {% for entry in entries %}
+            {% if entry.weekday != '土' and entry.weekday != '日' %}
             <tr>
                 <!-- <td class="jikanwari-td white">{{ entry.year }}</td>
                 <td class="jikanwari-td white">{{ entry.month }}</td> -->
                 <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.day }}</td>
                 <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.weekday }}</td>
+                {% if entry.period1 %}
                 <td class="jikanwari-td white">{{ sbj_key_val[entry.period1] }}</td>
+                {% else %}
+                <td class="jikanwari-td white"></td>
+                {% endif %}
+                {% if entry.period2 %}
                 <td class="jikanwari-td white">{{ sbj_key_val[entry.period2] }}</td>
+                {% else %}
+                <td class="jikanwari-td white"></td>
+                {% endif %}
+                {% if entry.period3 %}
                 <td class="jikanwari-td white">{{ sbj_key_val[entry.period3] }}</td>
+                {% else %}
+                <td class="jikanwari-td white"></td>
+                {% endif %}
                 <td class="jikanwari-td white">{{ entry.notes }}</td>
                 <td class="jikanwari-td white">{{ entry.event }}</td>
             </tr>
+            {% else %}
+            <tr>
+                <!-- <td class="jikanwari-td white">{{ entry.year }}</td>
+                <td class="jikanwari-td white">{{ entry.month }}</td> -->
+                <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.day }}</td>
+                <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.weekday }}</td>
+                {% if entry.period1 %}
+                <td class="jikanwari-td lightgrey4">{{ sbj_key_val[entry.period1] }}</td>
+                {% else %}
+                <td class="jikanwari-td lightgrey4"></td>
+                {% endif %}
+                {% if entry.period2 %}
+                <td class="jikanwari-td lightgrey4">{{ sbj_key_val[entry.period2] }}</td>
+                {% else %}
+                <td class="jikanwari-td lightgrey4"></td>
+                {% endif %}
+                {% if entry.period3 %}
+                <td class="jikanwari-td lightgrey4">{{ sbj_key_val[entry.period3] }}</td>
+                {% else %}
+                <td class="jikanwari-td lightgrey4"></td>
+                {% endif %}
+                <td class="jikanwari-td lightgrey4">{{ entry.notes }}</td>
+                <td class="jikanwari-td lightgrey4">{{ entry.event }}</td>
+            </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>
