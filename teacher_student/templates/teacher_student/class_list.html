@@ -9,7 +9,7 @@
     <h3 class="selected_h3 font_white">クラス {{ class_num }}</h3>
         <!-- スクロールするためのボタン（仮） -->
         <div class="class-container list_in" style="white-space: nowrap;"  id="class-{{ class_num }}">
-            <div class="t_classlist_button"><button onclick="scrollContainer('class-{{ class_num }}', -1)"><img src="{{ url_for('static', filename='images/toleft.png') }}" alt="左へスクロール"></button></div>
+            <!-- <div class="t_classlist_button"><button onclick="scrollContainer('class-{{ class_num }}', -1)"><img src="{{ url_for('static', filename='images/toleft.png') }}" alt="左へスクロール"></button></div> -->
             <div class="t_classlist_table grey font_white">
                 {% with error_messages = get_flashed_messages(with_categories=true) %}
                 {% if error_messages %}
@@ -45,7 +45,7 @@
             </table>
             </div>
             </div>
-            <div class="t_classlist_button"><button onclick="scrollContainer('class-{{ class_num }}', 1)"><img src="{{ url_for('static', filename='images/toright.png') }}" alt="右へスクロール"></button></div>
+            <!-- <div class="t_classlist_button"><button onclick="scrollContainer('class-{{ class_num }}', 1)"><img src="{{ url_for('static', filename='images/toright.png') }}" alt="右へスクロール"></button></div> -->
         </div>
     </div>
 </div>
