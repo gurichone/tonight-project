@@ -1,18 +1,20 @@
 {% extends "admin/base.html" %}
 
 {% block title %}CourseSubjectテーブル{% endblock %}
-
+{% block h1 %}CourseSubjectテーブル{% endblock %}
+{% block nav %}
+<ul>
+    <li><a href="{{url_for('admin.course')}}" class="font_grey">Courseテーブル</a></li>
+    <li><a href="{{url_for('admin.subject')}}" class="font_grey">Subjectテーブル</a></li>
+    <li class="lightgrey3"><a href="{{url_for('admin.cs')}}" class="font_white">CourseSubjectテーブル</a></li>
+    <li><a href="{{url_for('admin.class_num')}}" class="font_grey">ClassNumテーブル</a></li>
+    <li><a href="{{url_for('admin.school')}}" class="font_grey">Schoolテーブル</a></li>
+</ul>
+{% endblock %}
 {% block content %}
-<div>
-    <h1>CourseSubjectテーブル</h1>
-    <table>
-        <tr><th>course_id</th><th>course_name</th><th>subject_id</th><th>subject_name</th></tr>
-    {% for cs in cs_list %}
-    <tr><td>{{ cs.Course.course_id }}</td><td>{{ cs.Course.course_name }}</td><td>{{ cs.Subject.subject_id }}</td><td>{{ cs.Subject.subject_name }}</td></tr>     
-    {% endfor %}
-    </table>
-    <br>
-    <h2>追加</h2>
+<div class="right">
+    <div class="add white font_grey">
+    <label class="action_label">追加</label>
     <form method="post" action="{{ url_for('admin.cs')}}"
         class="form-signin">
         <!-- csrf対策。とりあえず書いておく -->
@@ -24,14 +26,26 @@
         <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
         {{ form.course.label }}
         {{ form.course(placeholder="コース名") }}
-        <br>
         {{ form.subject.label }}
         {{ form.subject(placeholder="科目名") }}
-        <br>
-        {{ form.submit }}
+        {{ form.submit(class="grey font_white") }}
     </form>
-    <br>
-    <h2>削除</h2>
-    <a href="{{url_for('admin.cs_delete')}}">CourseSubjectテーブルのすべてを消す</a>
+    </div>
+    <div class="table font_white">
+    <table>
+        <tr><th style="width: 100px;">course_id</th><th style="width: 180px;">(course_name)</th><th style="width: 100px;">subject_id</th><th style="width: 180px;">(subject_name)</th></tr>
+    </table>
+    <div class="scroll_palent">
+    <table class="scroll_child">
+    {% for cs in cs_list %}
+    <tr><td style="width: 100px;">{{ cs.Course.course_id }}</td><td style="width: 180px;">{{ cs.Course.course_name }}</td><td style="width: 100px;">{{ cs.Subject.subject_id }}</td><td style="width: 180px;">{{ cs.Subject.subject_name }}</td></tr>     
+    {% endfor %}
+    </table>
+    </div>
+    </div>
+    <div class="del white font_grey">
+    <label class="action_label">削除</label>
+    <a href="{{url_for('admin.cs_delete')}}" class="red font_white">CourseSubjectテーブルのすべてを消す</a>
+    </div>
 </div>
 {% endblock %}

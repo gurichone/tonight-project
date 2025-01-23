@@ -1707,4 +1707,106 @@ padding: 15px 40px;
 .password_reset input:focus{
   outline: none;
 }
-/* saiten_index */
+.form-signin input[type=text]{
+  border: none;
+  border-bottom: solid 1px black;
+  background:rgba(0,0,0,0.0);
+}
+.form-signin input[type=password]{
+  border: none;
+  border-bottom: solid 1px black;
+  background:rgba(0,0,0,0.0);
+}
+.form-signin input[type=date]{
+  border: none;
+  background:rgba(0,0,0,0.0);
+}
+.form-signin input:focus{
+  outline: none;
+}
+.form-signin select{
+  border: none;
+  background:rgba(0,0,0,0.0);
+}
+.form-signin .sign-in{
+  border-bottom: solid 1px black;
+}
+.form-signin .sign-in label{
+  display: inline-block;
+}
+#admin{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#admin .inner{
+  width: 770px;
+  border-radius: 10px;
+  padding: 10px;
+}
+#admin .inner .left{
+  float: left;
+  width: 200px;
+  height: 290px;
+  border-radius: 10px;
+}
+#admin .inner .left ul{
+  padding: 0;
+}
+#admin .inner .left li{
+  padding: 10px 0;
+}
+#admin .inner .left a{
+  text-decoration: none;
+  padding: 10px;
+}
+#admin .inner .right{
+  float: right;
+  width: 560px;
+  height: 290px;
+}
+#admin .inner .right .add{
+  border-radius: 10px;
+  height: 35px;
+  padding-top: 10px;
+}
+#admin .inner .right .add .action_label{
+  padding: 5px;
+  font-weight: bold;
+}
+#admin .inner .right .add form{
+  display: inline;
+  font-size: 12px;
+  padding: 5px;
+  
+}
+#admin .inner .right .add form input[type=submit]{
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+}
+#admin .inner .right .table{
+  margin-bottom: 10px;
+}
+#admin .inner .right .table .scroll_palent{
+  height: 160px;
+}
+#admin .inner .right .table th{
+  text-align: start;
+}
+#admin .inner .right .del{
+  border-radius: 10px;
+  height: 35px;
+  padding-top: 10px;
+}
+#admin .inner .right .del .action_label{
+  padding: 5px;
+  font-weight: bold;
+}
+#admin .inner .right .del a{
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-left: 100px;
+}

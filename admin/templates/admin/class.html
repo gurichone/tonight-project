@@ -1,18 +1,20 @@
 {% extends "admin/base.html" %}
 
 {% block title %}ClassNumテーブル{% endblock %}
-
+{% block h1 %}ClassNumテーブル{% endblock %}
+{% block nav %}
+<ul>
+    <li><a href="{{url_for('admin.course')}}" class="font_grey">Courseテーブル</a></li>
+    <li><a href="{{url_for('admin.subject')}}" class="font_grey">Subjectテーブル</a></li>
+    <li><a href="{{url_for('admin.cs')}}" class="font_grey">CourseSubjectテーブル</a></li>
+    <li class="lightgrey3"><a href="{{url_for('admin.class_num')}}" class="font_white">ClassNumテーブル</a></li>
+    <li><a href="{{url_for('admin.school')}}" class="font_grey">Schoolテーブル</a></li>
+</ul>
+{% endblock %}
 {% block content %}
-<div>
-    <h1>ClassNumテーブル</h1>
-    <table>
-        <tr><th>course_id</th><th>course_name</th><th>subject_id</th><th>subject_name</th></tr>
-    {% for c in class_list %}
-    <tr><td>{{ c.ClassNum.class_num }}</td><td>{{ c.Course.course_id }}</td><td>{{ c.Course.course_name }}</td></tr>     
-    {% endfor %}
-    </table>
-    <br>
-    <h2>追加</h2>
+<div class="right">
+    <div class="add white font_grey">
+    <label class="action_label">追加</label>
     <form method="post" action="{{ url_for('admin.class_num')}}"
         class="form-signin">
         <!-- csrf対策。とりあえず書いておく -->
@@ -23,14 +25,26 @@
         {% endfor %}
         {{ form.class_num.label }}
         {{ form.class_num(placeholder="クラス番号") }}
-        <br>
         {{ form.course.label }}
         {{ form.course(placeholder="コース名") }}
-        <br>
-        {{ form.submit }}
+        {{ form.submit(class="grey font_white") }}
     </form>
-    <br>
-    <h2>削除</h2>
-    <a href="{{url_for('admin.class_delete')}}">ClassNumテーブルのすべてを消す</a>
+    </div>
+    <div class="table font_white">
+    <table>
+        <tr><th style="width: 180px;">class_num</th><th style="width: 180px;">course_id</th><th style="width: 300px;">(course_name)</th></tr>
+    </table>
+    <div class="scroll_palent">
+    <table class="scroll_child">
+    {% for c in class_list %}
+    <tr><td style="width: 180px;">{{ c.ClassNum.class_num }}</td><td style="width: 180px;">{{ c.Course.course_id }}</td><td style="width: 300px;">{{ c.Course.course_name }}</td></tr>     
+    {% endfor %}
+    </table>
+    </div>
+    </div>
+    <div class="del white font_grey">
+    <label class="action_label">削除</label>
+    <a href="{{url_for('admin.class_delete')}}" class="red font_white">ClassNumテーブルのすべてを消す</a>
+    </div>
 </div>
 {% endblock %}

@@ -1,7 +1,13 @@
 {% extends "admin/base.html" %}
 
 {% block title %}管理者{% endblock %}
-
-{% block content %}
-<h1>{{ message }}</h1>
+{% block h1 %}{{message}}{% endblock %}
+{% block nav %}
+<ul>
+    <li><a href="{{url_for('admin.course')}}" class="font_grey">Courseテーブル</a></li>
+    <li><a href="{{url_for('admin.subject')}}" class="font_grey">Subjectテーブル</a></li>
+    <li><a href="{{url_for('admin.cs')}}" class="font_grey">CourseSubjectテーブル</a></li>
+    <li><a href="{{url_for('admin.class_num')}}" class="font_grey">ClassNumテーブル</a></li>
+    <li><a href="{{url_for('admin.school')}}" class="font_grey">Schoolテーブル</a></li>
+</ul>
 {% endblock %}

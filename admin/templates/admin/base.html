@@ -4,27 +4,18 @@
 		<title>{% block title %}{% endblock %}</title>
 		<link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}" />
 	</head>
-	<body>
-		<a href="{{ url_for('teacher.menu.t_menu') }}">メニューに戻る</a>
-		<div>
-			<ul>
-				<li><a href="{{url_for('admin.course')}}">Courseテーブル</a></li>
-				<li><a href="{{url_for('admin.subject')}}">Subjectテーブル</a></li>
-				<li><a href="{{url_for('admin.cs')}}">CourseSubjectテーブル</a></li>
-				<li><a href="{{url_for('admin.class_num')}}">ClassNumテーブル</a></li>
-				<li><a href="{{url_for('admin.school')}}">Schoolテーブル</a></li>
-			</ul>
-			<a href="{{url_for('auth.signup')}}">アカウント新規作成</a>
+	<body id="body">
+	<div id="h1_title"><h1>{% block h1 %}{% endblock %}</h1></div>
+	<div class="modorulink"><a href="{{url_for('teacher.menu.t_menu')}}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a></div>
+	<div id="admin">	
+		<div class="inner grey">
+			<div class="left white">
+				{% block nav %}{% endblock %}
+				<a href="{{url_for('auth.signup')}}" class="font_grey">アカウント新規作成</a>
+			</div>
+			{% block content %}{% endblock %}
 		</div>
-		{% block content %}{% endblock %}
-		<div id="bg_homebutton" onclick="changeDisplay()"><img src="{{ url_for('static', filename='images/bg_home.png') }}"></div>
-		<div id="bg_menu">
-			<ul>
-				<li>メニュー</li>
-				<li>出席登録</li>
-				<li>TODOリスト</li>
-			</ul>
-		</div>
+	</div>
 	</body>
 	<script>
 		const changeDisplay = () => {

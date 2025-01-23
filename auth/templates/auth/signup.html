@@ -5,11 +5,9 @@
 
 <!-- base.htmlのblock contentの中にhtmlを埋め込む -->
 {% block content %}
-<div class="mx-auto dt-auth-main">
-    <div class="card dt-auth-signup white">
-        <div class="modorulink"><a href="{{url_for('admin.admin_menu')}}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a></div>
-        <br>
-        <h2 class="signup-head">新規登録</h2>
+<div id="h1_title"><h1>新規登録</h1></div>
+<div class="modorulink"><a href="{{url_for('admin.admin_menu')}}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a></div>
+    
         {% with error_messages = get_flashed_messages(with_categories=true) %}
         {% if error_messages %}
             <div class="flashes">
@@ -19,76 +17,106 @@
             </div>
         {% endif %}
         {% endwith %} 
-        <section>
-            <h3>教員</h3>
+<section class="loginform-forms-section">
+    
+    <div class="loginform-forms">
+        <div class="loginform-form-wrapper is-active">
+            <button type="loginform-button" class="loginform-switcher loginform-switcher-teacher">
+                教員
+                <span class="loginform-underline"></span>
+            </button>
             <!-- フォーム入力後はauth/views.pyのsignup関数を実行。変数nextに現在のページ情報を追加。 -->
             <form method="post" action="{{ url_for('auth.signup')}}"
-                class="form-signin">
+                class="form-signin login-form loginform-form loginform-form-teacher">
                 <!-- csrf対策。とりあえず書いておく -->
                 {{ teacherform.csrf_token }}
                 <!-- flash関数で指定したメッセージを順に表示 -->
-                {% for message in get_flashed_messages() %}
-                <div class="dt-auth-flash">{{ message }}</div>
-                {% endfor %}
+                {% with error_messages = get_flashed_messages(with_categories=true) %}
+                {% if error_messages %}
+                    <div class="flashes">
+                        {% for category, m in error_messages %}
+                            <div class="flash {{ category }}">{{ m }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %} 
                 <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
-                {{ teacherform.teacher_id(placeholder="教員番号") }}
+                {{ teacherform.teacher_id(placeholder="教員番号", style="width: 300px;") }}
                 <br>
-                {{ teacherform.teacher_name(placeholder="氏名") }}
+                {{ teacherform.teacher_name(placeholder="氏名", style="width: 300px;") }}
                 <br>
-                {{ teacherform.teacher_email(placeholder="メールアドレス") }}
+                {{ teacherform.teacher_email(placeholder="メールアドレス", style="width: 300px;") }}
                 <br>
-                {{ teacherform.teacher_password(placeholder="パスワード") }}
-                <br>
-                クラス番号{{ teacherform.teacher_class_num(placeholder="クラス番号") }}
-                <br>
-                管理者権限{{ teacherform.teacher_authority(placeholder="管理者権限") }}
-                <br>
-                {{ teacherform.submit }}
+                {{ teacherform.teacher_password(placeholder="パスワード", style="width: 300px;") }}
+
+                <div class="sign-in">{{ teacherform.teacher_class_num.label(style="width: 100px;") }}{{ teacherform.teacher_class_num(placeholder="クラス番号", style="width: 200px;") }}</div>
+
+                <div class="sign-in">{{ teacherform.teacher_authority.label(style="width: 100px;") }}{{ teacherform.teacher_authority(placeholder="管理者権限", style="width: 200px;") }}</div>
+
+                {{ teacherform.submit(class="grey font_white") }}
             </form>
             <!-- <br>
             <div class="had-account">すでにアカウントをお持ちですか？<a class="nav-link" href="{{ url_for('auth.login') }}">ログイン</a></div> -->
-        </section>
+        </div>
 
         
-        <section>
-            <h3>生徒</h3>
+        <div class="loginform-form-wrapper">
+            <button type="button" class="loginform-switcher loginform-switcher-student">
+                生徒
+                <span class="loginform-underline"></span>
+            </button>
             <!-- フォーム入力後はauth/views.pyのsignup関数を実行。変数nextに現在のページ情報を追加。 -->
             <form method="post" action="{{ url_for('auth.signup')}}"
-                class="form-signin">
+                class="form-signin login-form loginform-form loginform-form-student">
                 <!-- csrf対策。とりあえず書いておく -->
                 {{ studentform.csrf_token }}
                 <!-- flash関数で指定したメッセージを順に表示 -->
-                {% for message in get_flashed_messages() %}
-                <div class="dt-auth-flash">{{ message }}</div>
-                {% endfor %}
+                {% with error_messages = get_flashed_messages(with_categories=true) %}
+                {% if error_messages %}
+                    <div class="flashes">
+                        {% for category, m in error_messages %}
+                            <div class="flash {{ category }}">{{ m }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% endwith %} 
                 <!-- auth/forms.pyのSignUpクラスの情報を基にフォームを作成 -->
-                {{ studentform.student_id.label }}
-                {{ studentform.student_id(placeholder="生徒番号") }}
+                {{ studentform.student_id(placeholder="生徒番号", style="width: 300px;") }}
                 <br>
-                {{ studentform.student_name.label }}
-                {{ studentform.student_name(placeholder="氏名") }}
+                {{ studentform.student_name(placeholder="氏名", style="width: 300px;") }}
                 <br>
-                {{ studentform.student_email.label }}
-                {{ studentform.student_email(placeholder="メールアドレス") }}
+                {{ studentform.student_email(placeholder="メールアドレス", style="width: 300px;") }}
                 <br>
-                {{ studentform.student_password.label }}
-                {{ studentform.student_password(placeholder="パスワード") }}
-                <br>
-                {{ studentform.student_entrollment_year.label }}
-                {{ studentform.student_entrollment_year(placeholder="入学年度") }}
-                <br>
-                {{ studentform.student_birth_date.label }}
-                {{ studentform.student_birth_date(placeholder="誕生日") }}
-                <br>
-                {{ studentform.student_school.label }}
-                {{ studentform.student_school(placeholder="学校名") }}
-                <br>
-                {{ studentform.student_class_num.label }}
-                {{ studentform.student_class_num(placeholder="クラス番号") }}
-                <br>
-                {{ studentform.submit }}
+                {{ studentform.student_password(placeholder="パスワード", style="width: 300px;") }}
+                <div class="sign-in">
+                {{ studentform.student_entrollment_year.label(style="width: 100px;") }}
+                {{ studentform.student_entrollment_year(placeholder="入学年度", style="width: 200px;") }}
+                </div>
+                <div class="sign-in">
+                {{ studentform.student_birth_date.label(style="width: 100px;") }}
+                {{ studentform.student_birth_date(placeholder="誕生日", style="width: 200px;") }}
+                </div>
+                <div class="sign-in">
+                {{ studentform.student_school.label(style="width: 100px;") }}
+                {{ studentform.student_school(placeholder="学校名", style="width: 200px;") }}
+                </div>
+                <div class="sign-in">
+                {{ studentform.student_class_num.label(style="width: 100px;") }}
+                {{ studentform.student_class_num(placeholder="クラス番号", style="width: 200px;") }}
+                </div>
+                {{ studentform.submit(class="grey font_white") }}
             </form>
-        </section>
+        </div>
     </div>
-</div>
+</section>
+<script>
+    const switchers = [...document.querySelectorAll('.loginform-switcher')]
+
+    switchers.forEach(item => {
+    item.addEventListener('click', function() {
+        switchers.forEach(item => item.parentElement.classList.remove('is-active'))
+        this.parentElement.classList.add('is-active')
+    })
+    })
+</script>
 {% endblock %}
