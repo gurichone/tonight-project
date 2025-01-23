@@ -5,7 +5,7 @@ basedir = Path(__file__).parent # baseディレクトリの指定(appsフォル�
 class BaseConfig:
     SECRET_KEY = "2AZSMss3p5QPbcY2hBsJ"
     WTF_CSRF_SECRET_KEY = "AuwzyszU5sugKN7KZs6f"
-    GEMINI_API_KEY = "AIzaSyAx46slXSnBOfnkCFK3MlKNnmoDuziwrpU"
+    GEMINI_API_KEY = "AIzaSyCYErBLD7yQiZwvxfrFZdpfz150GoR6VE8"
     SQLALCHEMY_ECHO=True
     
     MAIL_SERVER="smtp.gmail.com"
