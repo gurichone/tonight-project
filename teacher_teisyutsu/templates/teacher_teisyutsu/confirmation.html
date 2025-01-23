@@ -13,22 +13,23 @@
         <form action="{{ url_for('teacher.teisyutsu.t_teisyutsu_confirmation') }}" method="POST">
         {{ form.csrf_token }}
         <div class="div_form">
-        <div class="t_sub_add_input">
-        <input type="text" name="name" value="{{ form.name.data }}" readonly>
-        </div>
-        <div class="t_sub_add_input">
-        {{ form.subject.label }}<select name="subject"><option value="{{ form.subject.choices[0][0]}}">{{ form.subject.choices[0][1] }}</option></select>
-        </div>
-        <div class="t_sub_add_input">
-        {{ form.type.label }}<select name="type"><option value="{{ form.type.choices[0][0]}}">{{ form.type.choices[0][1] }}</option></select>
-        </div>
-        <div class="t_sub_add_input">
-        {{ form.rimit.label }}<input type="date" name="rimit" value="{{ form.rimit.data }}" readonly>
-        </div>
-        <div class="t_sub_add_input">
-        {{ form.scoring_type.label }}<select name="scoring_type"><option value="{{ form.scoring_type.choices[0][0]}}">{{ form.scoring_type.choices[0][1] }}</option></select>
-        </div>
-        {{ form.submit(class="grey font_white") }}
+            <div class="t_sub_add_input">
+            <input type="text" name="name" value="{{ form.name.data }}" readonly>
+            </div>
+            <div class="t_sub_add_input">
+            {{ form.subject.label }}<select name="subject"><option value="{{ form.subject.choices[0][0]}}">{{ form.subject.choices[0][1] }}</option></select>
+            </div>
+            <div class="t_sub_add_input">
+            {{ form.type.label }}<select name="type"><option value="{{ form.type.choices[0][0]}}">{{ form.type.choices[0][1] }}</option></select>
+            </div>
+            <div class="t_sub_add_input">
+            {{ form.rimit.label }}<input type="date" name="rimit" value="{{ form.rimit.data }}" readonly>
+            </div>
+            <div class="t_sub_add_input">
+            {{ form.scoring_type.label }}<select name="scoring_type"><option value="{{ form.scoring_type.choices[0][0]}}">{{ form.scoring_type.choices[0][1] }}</option></select>
+            </div>
+            <br>
+            {{ form.submit(class="grey font_white") }}
         </div>
         <div id="div_question" class="grey font_white scroll_palent">
             <p>生成AIによる採点を使用する場合問題文を入力してください</p>
