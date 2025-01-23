@@ -8,15 +8,6 @@
 <div id="h1_title"><h1>新規登録</h1></div>
 <div class="modorulink"><a href="{{url_for('admin.admin_menu')}}"><img src="{{ url_for('static', filename='images/modoru.png') }}" alt="戻る"></a></div>
     
-        {% with error_messages = get_flashed_messages(with_categories=true) %}
-        {% if error_messages %}
-            <div class="flashes">
-                {% for category, m in error_messages %}
-                    <div class="flash {{ category }}">{{ m }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-        {% endwith %} 
 <section class="loginform-forms-section">
     
     <div class="loginform-forms">
