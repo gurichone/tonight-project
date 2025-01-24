@@ -4,7 +4,6 @@
 {% block modorulink %}{{ url_for('teacher.menu.t_menu') }}{% endblock %}
 {% block content %}
         <div id="t_seiseki_search_form" class="search_form">
-            {{ score.csrf_token }}
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     <ul class="flashes">
@@ -15,6 +14,7 @@
                 {% endif %}
             {% endwith %}
             <form class="white" action="{{ url_for('teacher.seiseki.search') }}" method="POST" novalidate="novalidate">
+                {{ score.csrf_token }}
                 <!-- 科目名を選ぶ -->
                 <label for="subject_id">科目名</label>
                 <select name="subject_id" id="subject_id">
