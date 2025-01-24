@@ -599,6 +599,7 @@ padding: 15px 40px;
     position: relative;
     cursor: pointer;
     transition: background-color .2s ease-in-out;
+    display: inline-block;
 }
 .toggle_switch_outer.active {
     background-color: #51E373;
@@ -617,6 +618,14 @@ padding: 15px 40px;
 }
 .toggle_switch_inner.active {
     left: 21px;
+}
+#s_teisyutsu_toggle_switch{
+  display: flex;
+}
+#s_teisyutsu_toggle_switch label{
+  margin-right: 10px;
+  font-size: 12px;
+  padding-top: 3px;
 }
 
 
