@@ -35,7 +35,7 @@ class TestingConfig(BaseConfig):
     # 画像アップロード先にmedia/imagesを指定する
     UPLOAD_FOLDER = str(Path(basedir,"codes"))
     JUPYTER_FOLDER = str(Path(basedir,"jupyter"))
-    SUBMIT_FOLDER = str(Path(basedir,"submit"))
+    SUBMIT_FOLDER = "submit"
 
 
 # config辞書にマッピングする
