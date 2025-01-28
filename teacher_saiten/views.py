@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, redirect, url_for, session, current_app, send_file, flash
 from flask_login import current_user, login_required
 from app import db
+from config import basedir
 from teacher_saiten.forms import PointForm
 from teacher_teisyutsu.models import Submission, Personal_Submission
 from auth.models import Subject, Student

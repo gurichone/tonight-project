@@ -1819,3 +1819,9 @@ padding: 15px 40px;
   border-radius: 5px;
   margin-left: 100px;
 }
+
+#loading_p{
+  color: red;
+  text-align: center;
+  font-size: 12px;
+}

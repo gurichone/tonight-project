@@ -47,7 +47,6 @@ def search():
     # db.session.add(haru)
     # db.session.commit()
     
-
     # 検索ボタンを押すとフィルタリング
     if score.validate_on_submit():
         subject_name = Subject.subject_name
@@ -68,7 +67,6 @@ def search():
             student_name=student_name,
             results=query.all()
             )
-
     # 検索が行われていない場合、全部の結果を表示
     return render_template("/teacher_seiseki/index.html", score=score, results=query.all())
 

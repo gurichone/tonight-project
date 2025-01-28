@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from flask_mail import Mail
 
 login_manager = LoginManager()
-login_manager.login_view = "auth.signup"
+login_manager.login_view = "auth.login"
 login_manager.loginmessage = ""     
 
 db = SQLAlchemy()

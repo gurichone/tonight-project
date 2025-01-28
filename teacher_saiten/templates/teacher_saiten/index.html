@@ -30,9 +30,10 @@
             </ul>
             <div id="saiten_action">
             <a href="{{ url_for('teacher.saiten.manual') }}" id="downroad" class="font_white">ダウンロード</a>
-            <a href="{{ url_for('teacher.saiten.auto') }}" class="grey font_white">採点</a>
+            <a href="{{ url_for('teacher.saiten.auto') }}" id="loading_a" onclick="saiten()" class="grey font_white">採点</a>
             <a href="{{ url_for('teacher.saiten.show') }}" class="grey font_white">点数</a>
             </div>
+            <p id="loading_p" class="hidden">採点には時間がかかります。<br>ページの読み込みを停止させないでください。</p>
         </div>
         <!-- <table>
             <tr><th>生徒番号</th><th>氏名</th><th>提出状況</th></tr>
@@ -56,4 +57,13 @@
         </div> -->
     </div>
 </div>
+<script>
+    var loadingAElm = document.getElementById("loading_a");
+    var loadingPElm = document.getElementById("loading_p");
+    function saiten(){
+        loadingAElm.style.backgroundColor="#D9D9D9";
+        loadingAElm.innerText='採点中...';
+        loadingPElm.classList.remove("hidden");
+    }
+</script>
 {% endblock %}
