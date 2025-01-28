@@ -172,3 +172,10 @@ def upload_code():
         return redirect(url_for("gemini.gemini_app"))
 
     return render_template("gemini/upload.html", form=form)
+
+@gemini.errorhandler(400)
+@gemini.errorhandler(404)
+@gemini.errorhandler(405)
+@gemini.errorhandler(500)
+def error_handler(error):
+    return render_template("teacher/error.html", code=error.code, error=error)

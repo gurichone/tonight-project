@@ -36,3 +36,10 @@ student.register_blueprint(student_profile_views.prof, url_prefix="/profile")
 
 from student_notice import views as student_notice_views
 student.register_blueprint(student_notice_views.notice, url_prefix="/notice")
+
+@student.errorhandler(400)
+@student.errorhandler(404)
+@student.errorhandler(405)
+@student.errorhandler(500)
+def error_handler(error):
+    return render_template("student/error.html", code=error.code, error=error)

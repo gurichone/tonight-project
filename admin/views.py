@@ -133,3 +133,10 @@ def class_delete():
     aaa = db.session.query(ClassNum).delete()
     db.session.commit()
     return render_template("admin/admin.html", message="けしたよ")
+
+@admin.errorhandler(400)
+@admin.errorhandler(404)
+@admin.errorhandler(405)
+@admin.errorhandler(500)
+def error_handler(error):
+    return render_template("admin/error.html", code=error.code, error=error)

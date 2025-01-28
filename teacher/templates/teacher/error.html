@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>error {{code}}</title>
+		<link rel="icon" href="{{ url_for('static', filename='images/favicon/EZfav.ico') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/stylecss.css') }}" />
+	</head>
+	<body id="body">
+        <div id="error_div" class="font_white">{{error}}</div>
+        <div id="logoutlink"><a href="{{ url_for('auth.logout') }}" class="loguot" style="float: right;"><img src="{{ url_for('static', filename='images/logout.png') }}" alt="ログアウト"></a></div>
+    </body>
+</html>

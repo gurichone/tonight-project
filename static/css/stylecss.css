@@ -1825,3 +1825,7 @@ padding: 15px 40px;
   text-align: center;
   font-size: 12px;
 }
+#error_div{
+  padding: 100px;
+  overflow: hidden;
+}

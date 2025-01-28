@@ -210,3 +210,10 @@ def newpw():
         else:
             message="新しいパスワードの値が再確認で入力された値と違います"
     return render_template("auth/newpw.html", form=form, message=message)
+
+@auth.errorhandler(400)
+@auth.errorhandler(404)
+@auth.errorhandler(405)
+@auth.errorhandler(500)
+def error_handler(error):
+    return render_template("auth/error.html", code=error.code, error=error)

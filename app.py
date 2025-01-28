@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import config
@@ -30,8 +30,8 @@ def create_app(config_name="local"):
     from student import views as student_views
     app.register_blueprint(student_views.student, url_prefix="/student")
 
-    from gemini import views as gemini_views # gemini/views.pyをgemini_viewsという名前で使用
-    app.register_blueprint(gemini_views.gemini, url_prefix="/gemini") # gemini_viewsのgeminiとurl"/gemini"を紐づけ
+    # from gemini import views as gemini_views # gemini/views.pyをgemini_viewsという名前で使用
+    # app.register_blueprint(gemini_views.gemini, url_prefix="/gemini") # gemini_viewsのgeminiとurl"/gemini"を紐づけ
     
     from admin import views as admin_views
     app.register_blueprint(admin_views.admin, url_prefix="/admin")

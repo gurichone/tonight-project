@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for
+from flask import Blueprint, render_template, redirect, url_for, jsonify
 from app import db
 
 teacher = Blueprint(
@@ -38,3 +38,10 @@ teacher.register_blueprint(teacher_sent_views.sent, url_prefix="/sent")
 
 from teacher_profile import views as teacher_prof_views
 teacher.register_blueprint(teacher_prof_views.prof, url_prefix="/prof")
+
+@teacher.errorhandler(400)
+@teacher.errorhandler(404)
+@teacher.errorhandler(405)
+@teacher.errorhandler(500)
+def error_handler(error):
+    return render_template("teacher/error.html", code=error.code, error=error)
