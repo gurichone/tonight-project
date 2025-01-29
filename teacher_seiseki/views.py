@@ -80,9 +80,9 @@ def add():
     score_form = AddScore()
 
     # studentテーブル、subjectテーブルから情報を取得し、それぞれセレクトフィールドで表示する
-    students = db.session.query(Student).all() 
+    students = db.session.query(Student).filter_by(class_num = current_user.class_num).all() 
     score_form.id.choices = [(c.id, c.id)for c in students]
-    subjects = db.session.query(Subject).all()
+    subjects = db.session.query(Subject).filter_by(class_num = current_user.class_num).all()
     score_form.subject_id.choices = [(c.subject_id, c.subject_name)for c in subjects]
     
     # バリデートする際の変数actionの変化によって表示するものを変更する
