@@ -3,7 +3,7 @@ from flask_login import current_user, login_required
 from app import db
 from teacher_seiseki.forms import SearchScore, AddScore, AttendScore, EditScore
 from teacher_seiseki.models import Score
-from auth.models import Student, Subject
+from auth.models import Student, Subject, CourseSubject, ClassNum
 from datetime import datetime,timedelta
 from teacher_jikanwari.models import Timetable
 import hashlib
@@ -82,8 +82,9 @@ def add():
     # studentテーブル、subjectテーブルから情報を取得し、それぞれセレクトフィールドで表示する
     students = db.session.query(Student).filter_by(class_num = current_user.class_num).all() 
     score_form.id.choices = [(c.id, c.id)for c in students]
-    subjects = db.session.query(Subject).filter_by(class_num = current_user.class_num).all()
-    score_form.subject_id.choices = [(c.subject_id, c.subject_name)for c in subjects]
+    course =db.session.query(ClassNum).filter_by(class_num=current_user.class_num).first()
+    subjects = db.session.query(Subject, CourseSubject).join(CourseSubject, CourseSubject.subject_id==Subject.subject_id).filter_by(course_id=course.course_id).all()
+    score_form.subject_id.choices = [(c.Subject.subject_id, c.Subject.subject_name)for c in subjects]
     
     # バリデートする際の変数actionの変化によって表示するものを変更する
     if score_form.validate_on_submit():
