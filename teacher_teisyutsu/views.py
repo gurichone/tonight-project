@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, session, current_app
+from flask import Blueprint, render_template, redirect, url_for, session, current_app, flash
 from flask_login import current_user, login_required
 from app import db
 from teacher_teisyutsu.forms import SubmissionForms, CreateSubmissionForms
@@ -44,6 +44,10 @@ def t_teisyutsu():
 def t_teisyutsu_add():
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
+    print( db.session.query(Student).filter_by(class_num = current_user.class_num).count())
+    if db.session.query(Student).filter_by(class_num = current_user.class_num).count() == 0:
+        flash("生徒が登録されていないクラスに提出物を登録することはできません")
+        return redirect(url_for('teacher.teisyutsu.t_teisyutsu'))
     form1 = CreateSubmissionForms()
     # 科目の選択肢をデータベースから取得
     course =db.session.query(ClassNum).filter_by(class_num=current_user.class_num).first()

@@ -19,6 +19,15 @@
 </div>
 <div class="list_out">
     <div class="list_in grey font_white">
+        {% with error_messages = get_flashed_messages(with_categories=true) %}
+        {% if error_messages %}
+            <div class="flashes">
+                {% for category, m in error_messages %}
+                    <div class="flash {{ category }}">{{ m }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% endwith %} 
         <div id="t_sub_label">
             <div>
             {% if subject %}
