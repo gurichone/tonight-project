@@ -25,6 +25,7 @@ class LocalConfig(BaseConfig):
     UPLOAD_FOLDER = "codes"
     JUPYTER_FOLDER = "jupyter"
     SUBMIT_FOLDER = "submit"
+    DOWNLOAD_PATH = ""
 
 
 # BaseConfigクラスを継承してTestingConfigクラスを作成する
@@ -36,6 +37,7 @@ class TestingConfig(BaseConfig):
     UPLOAD_FOLDER = str(Path(basedir,"codes"))
     JUPYTER_FOLDER = str(Path(basedir,"jupyter"))
     SUBMIT_FOLDER = str(Path(basedir,"submit"))
+    DOWNLOAD_PATH = Path(__file__).parent
 
 
 # config辞書にマッピングする

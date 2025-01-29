@@ -171,7 +171,7 @@ def manual():
         return render_template("teacher/gohb.html")
     submission = db.session.query(Submission, Subject).join(Submission, Submission.subject_id==Subject.subject_id).filter_by(submission_id=session["submission"]).first()
     filename=submission.Submission.submission_name
-    shutil.make_archive(filename, format="zip", root_dir=Path(current_app.config["SUBMIT_FOLDER"]), base_dir=Path(str(submission.Submission.submission_id)))
+    shutil.make_archive(Path(current_app.config["DOWNLOAD_PATH"], filename), format="zip", root_dir=Path(current_app.config["SUBMIT_FOLDER"]), base_dir=Path(str(submission.Submission.submission_id)))
     return send_file(filename + ".zip")
 
 @saiten.route("/auto", methods=["GET", "POST"])
