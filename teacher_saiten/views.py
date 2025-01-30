@@ -122,13 +122,21 @@ def gemini(question, lst, codes):
             try:
                 response = model.generate_content(prompt)
                 # 応答をテキストとして取得（ここではresponse.textと仮定）
+                print(response.text)
                 assistant_response = response.text.split("\n")
 
                 # 文字列整理 
                 ans = ""
+                numcheck = False
                 for a in assistant_response[0]:
-                    if a in "0123456789":
+                    if numcheck:
+                        if a in "0123456789":
+                            ans+=a
+                        else:
+                            break
+                    elif a in "0123456789":
                         ans+=a
+                        numcheck = True
             except:
                 ans = -1
             # codeflag = False
