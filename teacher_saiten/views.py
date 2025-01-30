@@ -11,6 +11,7 @@ import copy
 import google.generativeai as genai
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
+import time
 
 def jupyter(testcase, lst, codes):
     testcase = testcase.split("\r\n")
@@ -117,15 +118,19 @@ def gemini(question, lst, codes):
             txt = codes[l.Student.id]
             # セッション状態にメッセージリストがない場合は初期化
             prompt = question + gemini_syntax + txt
-            response = model.generate_content(prompt)
-            # 応答をテキストとして取得（ここではresponse.textと仮定）
-            assistant_response = response.text.split("\n")
+            # print("---------------\n", prompt, "\n~~~~~~~~~~~\n",l,  "\n------------")
+            try:
+                response = model.generate_content(prompt)
+                # 応答をテキストとして取得（ここではresponse.textと仮定）
+                assistant_response = response.text.split("\n")
 
-            # 文字列整理 
-            ans = ""
-            for a in assistant_response[0]:
-                if a in "0123456789":
-                    ans+=a
+                # 文字列整理 
+                ans = ""
+                for a in assistant_response[0]:
+                    if a in "0123456789":
+                        ans+=a
+            except:
+                ans = -1
             # codeflag = False
             # for a in assistant_response:
             #     if len(a) == 0:
@@ -144,7 +149,9 @@ def gemini(question, lst, codes):
             #         ans.append({"class":"text", "txt":a})
         else:
             ans = "0"
+        # print(ans)
         output[l.Student.id] = {"result":int(ans)}
+        time.sleep(60)
     return output
 
 saiten = Blueprint(
