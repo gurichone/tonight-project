@@ -151,7 +151,7 @@ def gemini(question, lst, codes):
             ans = "0"
         # print(ans)
         output[l.Student.id] = {"result":int(ans)}
-        time.sleep(60)
+        # time.sleep(60)
     return output
 
 saiten = Blueprint(
