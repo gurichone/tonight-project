@@ -7,6 +7,7 @@ from flask_mail import Message
 import datetime
 import uuid
 import hashlib
+from ipwhois import IPWhois
 
 # authアプリを生成。テンプレートを保存するフォルダ名にtemplates、スタティックを保存するフォルダ名にstaticを指定
 # htmlファイルを探すときは自動的にauth/templatesの中を参照するようになる
@@ -82,6 +83,11 @@ def signup():
 # localhost:5000/login/というURLが送られてきたときの処理
 @auth.route("/", methods=["GET", "POST"])
 def login():
+    print("---------------------------------")
+    addr = request.remote_addr
+    print(addr)
+    # print(IPWhois(addr))
+    print("----------------------------------")
     teacherform = TeacherLoginForm() # forms.puのTeacherLoginFormを使えるようにする
     studentform = StudentLoginForm() # forms.puのStudentLoginFormを使えるようにする
 
