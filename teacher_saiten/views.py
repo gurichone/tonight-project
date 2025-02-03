@@ -216,6 +216,7 @@ def auto():
             file_path = Path(current_app.config["SUBMIT_FOLDER"], pl.Personal_Submission.file)
             with open(file_path, encoding="utf-8") as f:
                 codes[pl.Student.id] = f.read()
+                # print(codes[pl.Student.id])
     if submission.Submission.scoring_type == 1:
         jupyter_output = jupyter(submission.Submission.testcase, personal_lst, codes)
         gemini_output = False
@@ -232,11 +233,14 @@ def auto():
         for p in personal_lst:
             points[p.Student.id]=(jupyter_output[p.Student.id]["point"]+gemini_output[p.Student.id]["result"])//2
     else:
-        jupyter_output = False
+        jupyter_output = False  
         gemini_output = False
     for pl in personal_lst:
         if pl.Personal_Submission.submitted:
             codes[pl.Student.id]=codes[pl.Student.id].split("\n")
+            for aaa in codes[pl.Student.id]:
+                print(aaa)
+
     return render_template("teacher_saiten/result.html", jupyter=jupyter_output, gemini=gemini_output, personal_lst=personal_lst, codes=codes, form=form, points=points, submission=submission)
     # return render_template("teacher_saiten/index.html")
 

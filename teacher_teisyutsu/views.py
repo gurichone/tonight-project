@@ -18,12 +18,6 @@ teisyutsu = Blueprint(
 @teisyutsu.route("/", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu():
-    print("---------------------------------")
-    addr = request.remote_addr
-    flash(addr)
-    print(addr)
-    # print(IPWhois(addr))
-    print("----------------------------------")
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
     form = SubmissionForms()

@@ -83,13 +83,6 @@ def signup():
 # localhost:5000/login/というURLが送られてきたときの処理
 @auth.route("/", methods=["GET", "POST"])
 def login():
-    print("---------------------------------")
-    addr = request.remote_addr
-    flash(addr)
-    print(addr)
-    # print(IPWhois(request.remote_addr).lookup_whois())
-    # print(IPWhois(addr))
-    print("----------------------------------")
     teacherform = TeacherLoginForm() # forms.puのTeacherLoginFormを使えるようにする
     studentform = StudentLoginForm() # forms.puのStudentLoginFormを使えるようにする
 

@@ -93,7 +93,7 @@
             <div class="scroll_palent grey">
             <div class="font_white scroll_child">
                 {% for code in codes[p.Student.id] %}
-                    {{code}}<br>
+                    {{code | forceescape}}<br>
                 {% endfor %}
             </div>
             </div>

@@ -89,7 +89,16 @@ def s_syusseki():
                 subject=subjects.period3
                 score = db.session.query(Score).filter_by(id=current_user.id, subject_id=subjects.period3).first()
             if score:
-                if score.attend_day is None:
+                if score is None:
+                    score = Score(
+                        id=current_user.id,
+                        class_num=current_user.class_num,
+                        subject_id=subject,
+                        attend_day=1
+                    )
+                    db.session.add(score)
+                    db.session.commit()
+                elif score.attend_day is None:
                     score.attend_day = 1
                     db.session.add(score)
                     db.session.commit()
