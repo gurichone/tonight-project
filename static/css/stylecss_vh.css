@@ -110,14 +110,14 @@ padding: 5px;
 display: block;
 }
 #menu_body header .student-session{
-padding-top: 8vh;
-height: 12vh;
-margin-bottom: 8vh;
+  padding-top: 40px;
+  height: 60px;
+  margin-bottom: 40px;
 }
 #menu_body header .teacher-session{
-padding-top: 8vh;
-height: 12vh;
-margin-bottom: 8vh;
+  padding-top: 40px;
+  height: 60px;
+  margin-bottom: 40px;
 }
 .menu_out{
 display: flex;
@@ -150,49 +150,49 @@ width: 57vh;
 margin-right: 8vh;
 }
 .menu-icon {
-float: right;
-margin-right: 20vh;
+  float: right;
+  margin-right: 100px;
 }
 .menu-icon div{
-width: 11vh;
-height: 8vh;
-display: flex;
-justify-content: center;
+  width: 56px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
 }
 .menu-icon img {
-height: 6vh;
-width: 6vh;
-border-radius: 3vh;
-object-fit: cover;
-margin: 0;
+  height: 32px;
+  width: 32px;
+  border-radius: 16px;
+  object-fit: cover;
+  margin: 0;
 }
 .menu-icon p{
-font-size: 8px;/************************************/
-margin: 0;
-color: #fff;
-text-decoration: none;
+  font-size: 8px;
+  margin: 0;
+  color: #fff;
+  text-decoration: none;
 }
 .notice-icon{
-float: right;
-margin-right: 6vh;
+  float: right;
+  margin-right: 30px;
 }
 .notice-icon div{
-width: 11vh;
-height: 8vh;
-display: flex;
-justify-content: center;
+  width: 56px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
 }
 .notice-icon img{
-height: 6vh;
-margin: 0;
+  height: 32px;
+  margin: 0;
 }
 .notice-icon p{
-font-size: 8px;/********************************/
-margin: 0;
-color: #fff;
-text-decoration: none;
-width: 11vh;
-text-align: center;
+  font-size: 8px;
+  margin: 0;
+  color: #fff;
+  text-decoration: none;
+  width: 56px;
+  text-align: center;
 }
 #h1_title{
 display: flex;
