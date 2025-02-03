@@ -79,7 +79,7 @@ def jupyter(testcase, lst, codes):
                     print("----------error--------------\n", e, "\n------------------------")
                     ans = "error\n"
                 r["ans"] = ans.split("\n")[:-1]
-
+                print(r["output"], "<<<<<<<<<<<<<<<<<<<<<", r["ans"])
                 # 正誤判定
                 if len(r["output"]) == len(r["ans"]):
                     r["ox"] = True
@@ -88,6 +88,8 @@ def jupyter(testcase, lst, codes):
                             r["ox"] = False
                             point -= 1
                             break
+                else:
+                    point -= 1
         else:
             result = False
             point = 0
@@ -96,6 +98,7 @@ def jupyter(testcase, lst, codes):
             output[l.Student.id] = {"result":result, "point":(point*100) // len(baseout)}
         else:
             output[l.Student.id] = {"result":result, "point":0}
+    # print("-----------------\n", output, "\n--------------------")
     return output
 
 
@@ -238,9 +241,24 @@ def auto():
     for pl in personal_lst:
         if pl.Personal_Submission.submitted:
             codes[pl.Student.id]=codes[pl.Student.id].split("\n")
-            for aaa in codes[pl.Student.id]:
-                print(aaa)
+            codeinfo = []
+            for line in codes[pl.Student.id]:
+                lineinfo = []
+                for l in line:
+                    if l == " ":
+                        lineinfo.append(False)
+                    else:
+                        if len(lineinfo) == 0:
+                            lineinfo.append(l)
+                        elif lineinfo[-1]:
+                            lineinfo[-1] += l
+                        else:
+                            lineinfo.append(l)
+                codeinfo.append(lineinfo)
+                print(lineinfo)
+            codes[pl.Student.id] = codeinfo
 
+    print(codes)
     return render_template("teacher_saiten/result.html", jupyter=jupyter_output, gemini=gemini_output, personal_lst=personal_lst, codes=codes, form=form, points=points, submission=submission)
     # return render_template("teacher_saiten/index.html")
 

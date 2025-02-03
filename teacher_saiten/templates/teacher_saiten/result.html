@@ -92,9 +92,18 @@
             <h3>コード</h3>
             <div class="scroll_palent grey">
             <div class="font_white scroll_child">
-                {% for code in codes[p.Student.id] %}
-                    {{code | forceescape}}<br>
-                {% endfor %}
+                {%- for code in codes[p.Student.id] -%}
+                    {%- if code -%}
+                    {%- for line in code -%}
+                        {%- if line -%}
+                            {{- line -}}
+                        {%- else -%}
+                            &nbsp;
+                        {%- endif -%}
+                    {%- endfor -%}
+                    {%- endif -%}
+                    <br>
+                {%- endfor -%}
             </div>
             </div>
         </div>
