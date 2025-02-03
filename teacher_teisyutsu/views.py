@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, session, current_app, flash
+from flask import Blueprint, render_template, redirect, url_for, session, current_app, flash, request
 from flask_login import current_user, login_required
 from app import db
 from teacher_teisyutsu.forms import SubmissionForms, CreateSubmissionForms
@@ -18,6 +18,12 @@ teisyutsu = Blueprint(
 @teisyutsu.route("/", methods=["GET", "POST"])
 @login_required
 def t_teisyutsu():
+    print("---------------------------------")
+    addr = request.remote_addr
+    flash(addr)
+    print(addr)
+    # print(IPWhois(addr))
+    print("----------------------------------")
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
     form = SubmissionForms()
