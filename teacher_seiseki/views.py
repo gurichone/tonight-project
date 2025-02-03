@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import current_user, login_required
 from app import db
 from teacher_seiseki.forms import SearchScore, AddScore, AttendScore, EditScore
-from teacher_seiseki.models import Score
-from auth.models import Student, Subject, CourseSubject, ClassNum
+from teacher_seiseki.models import Score, Syusseki
+from auth.models import Student, Subject, CourseSubject, ClassNum, Student
 from datetime import datetime,timedelta
 from teacher_jikanwari.models import Timetable
 import hashlib
@@ -303,8 +303,11 @@ def issue_code():
         # 一時的に発行したコードを保存（生徒が後で確認できるようにする）
         # session['attendance_code'] = code_hash
         # session['code_timestamp'] = datetime.now().timestamp()  # 時刻も保存
+        student_list=db.session.query(Student).filter_by(class_num = current_user.class_num).all()
+        syusseki = [s.student_id for s in db.session.query(Syusseki).filter_by(year=year, month=month, day=day, periods=period).all()]
 
-        return render_template("teacher_seiseki/display_code.html", code=code_hash)
+
+        return render_template("teacher_seiseki/display_code.html", code=code_hash, student_list=student_list, syusseki=syusseki)
         # else:
         #     flash("選択した授業は登録されていません。コードを発行できません。", "error")
         #     return redirect(url_for("teacher.seiseki.issue_code"))

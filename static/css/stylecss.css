@@ -1830,3 +1830,10 @@ font-size: 12px;
 padding: 20vh;
 overflow: hidden;
 }
+
+#s_code_modoru{
+  padding: 1vh 2vh;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-left: 10vh;
+}
