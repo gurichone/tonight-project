@@ -86,6 +86,7 @@ def login():
     print("---------------------------------")
     addr = request.remote_addr
     flash(addr)
+    print(addr)
     # print(IPWhois(addr))
     print("----------------------------------")
     teacherform = TeacherLoginForm() # forms.puのTeacherLoginFormを使えるようにする
