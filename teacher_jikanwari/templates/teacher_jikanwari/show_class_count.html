@@ -13,19 +13,19 @@
         <table class="table_head">
             <thead>
                 <tr>
-                    <th style="width:100px;">授業科目</th>
-                    <th style="width:100px;">コマ数</th>
-                    <th style="width:100px;">単位数</th>
+                    <th style="width:20vh;">授業科目</th>
+                    <th style="width:20vh;">コマ数</th>
+                    <th style="width:20vh;">単位数</th>
                 </tr>
             </thead>
         </table>
-        <div class="scroll_palent" style="height: 150px;">
+        <div class="scroll_palent" style="height: 30vh;">
         <table class="table_body scroll_child">
             <tbody>
                 {% for subject in subjects %}
                 <tr>
-                    <td style="width:100px;">{{ subject.Subject.subject_name }}</td>
-                    <td style="width:100px;">
+                    <td style="width:20vh;">{{ subject.Subject.subject_name }}</td>
+                    <td style="width:20vh;">
                         <select class="lightgrey" name="periods_{{ subject.Subject.subject_id }}" 
                                 onchange="updateUnitsAndPeriods('{{ subject.Subject.subject_id }}', 'periods')" 
                                 required>
@@ -41,7 +41,7 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td style="width:100px;">
+                    <td style="width:20vh;">
                         <select class="lightgrey" name="units_{{ subject.Subject.subject_id }}" 
                                 onchange="updateUnitsAndPeriods('{{ subject.Subject.subject_id }}', 'units')" 
                                 required>

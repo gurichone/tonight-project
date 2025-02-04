@@ -18,16 +18,16 @@
 
     {% if submissions %}
         <h3>{{subject.name}}</h3>
-          <div class="scroll_palent" style="height: 200px; width: 100%;">
+          <div class="scroll_palent" style="height: 40vh; width: 100%;">
           <table class="scroll_child">
             <tbody>
                 {% for submission in submissions %}
                 <tr>
-                    <td style="width: 150px;">{{ submission.Submission.submission_name }}</td>
+                    <td style="width: 20vh;">{{ submission.Submission.submission_name }}</td>
                     {% if submission.Personal_Submission.point or submission.Personal_Submission.point==0%}
-                    <td style="width: 150px;">点数  {{ submission.Personal_Submission.point }}</td>
+                    <td style="width: 20vh;">点数  {{ submission.Personal_Submission.point }}</td>
                     {% else %}
-                    <td style="width: 150px;">未提出</td>
+                    <td style="width: 20vh;">未提出</td>
                     {% endif %}
                 </tr>
                 {% endfor %}

@@ -20,20 +20,20 @@
         <table>
             <thead>
                 <tr>
-                    <th style="width: 100px;">科目名</th>
-                    <th style="width: 100px;">評価ID</th>
-                    <th style="width: 100px;">出席日数</th>
+                    <th style="width: 20vh;">科目名</th>
+                    <th style="width: 20vh;">評価ID</th>
+                    <th style="width: 20vh;">出席日数</th>
                 </tr>
             </thead>
           </table>
-          <div class="scroll_palent" style="height: 200px; width: 100%;">
+          <div class="scroll_palent" style="height: 40vh; width: 100%;">
           <table class="scroll_child">
             <tbody>
                 {% for score, subject_name in scores %}
                 <tr>
-                    <td style="width: 100px;"><a class="font_white" href="{{ url_for('student.seiseki.s_submission', subject_id=score.subject_id) }}">{{ subject_name }}</a></td>
-                    <td style="width: 100px;">{{ score.assessment_id }}</td>
-                    <td style="width: 100px;">{{ score.attend_day }}</td>
+                    <td style="width: 20vh;"><a class="font_white" href="{{ url_for('student.seiseki.s_submission', subject_id=score.subject_id) }}">{{ subject_name }}</a></td>
+                    <td style="width: 20vh;">{{ score.assessment_id }}</td>
+                    <td style="width: 20vh;">{{ score.attend_day }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
