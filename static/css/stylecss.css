@@ -1751,14 +1751,14 @@ justify-content: center;
 align-items: center;
 }
 #admin .inner{
-width: 154vh;
+width: 102vh;
 border-radius: 10px;
 padding: 2vh;
 }
 #admin .inner .left{
 float: left;
-width: 40vh;
-height: 58vh;
+width: 27vh;
+height: 38vh;
 border-radius: 10px;
 }
 #admin .inner .left ul{
@@ -1773,8 +1773,8 @@ padding: 2vh;
 }
 #admin .inner .right{
 float: right;
-width: 112vh;
-height: 58vh;
+width: 74vh;
+height: 38vh;
 }
 #admin .inner .right .add{
 border-radius: 10px;
@@ -1800,7 +1800,7 @@ border-radius: 5px;
 margin-bottom: 2vh;
 }
 #admin .inner .right .table .scroll_palent{
-height: 32vh;
+height: 21vh;
 }
 #admin .inner .right .table th{
 text-align: start;
@@ -1818,7 +1818,7 @@ font-weight: bold;
 padding: 1vh 2vh;
 text-decoration: none;
 border-radius: 5px;
-margin-left: 20vh;
+margin-left: 14vh;
 }
 
 #loading_p{
