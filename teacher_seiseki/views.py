@@ -230,7 +230,23 @@ def edit(score_id):
     subject = Subject.query.get(score.subject_id)
 
     form.assessment_id.data = score.assessment_id
-    form.attend_day.data = score.attend_day
+    syusseki = db.session.query(Syusseki).filter_by(student_id=score.id).all()
+    attend_day = 0
+    for s in syusseki:
+        
+        timetable =db.session.query(Timetable).filter_by(class_num = current_user.class_num, year=s.year, month=s.month, day=s.day).first()
+        # print(s.periods, "----------------------------", timetable.period1, timetable.period2, timetable.period3, "---------", score.subject_id)
+        if s.periods == 1:
+            if timetable.period1 == int(score.subject_id):
+                attend_day += 1
+        elif s.periods == 2:
+            if timetable.period2 == int(score.subject_id):
+                attend_day += 1
+        elif s.periods == 3:
+            if timetable.period3 == int(score.subject_id):
+                attend_day += 1
+
+    form.attend_day.data = attend_day
 
     return render_template(
         "teacher_seiseki/edit.html",
@@ -303,11 +319,9 @@ def issue_code():
         # 一時的に発行したコードを保存（生徒が後で確認できるようにする）
         # session['attendance_code'] = code_hash
         # session['code_timestamp'] = datetime.now().timestamp()  # 時刻も保存
-        student_list=db.session.query(Student).filter_by(class_num = current_user.class_num).all()
-        syusseki = [s.student_id for s in db.session.query(Syusseki).filter_by(year=year, month=month, day=day, periods=period).all()]
 
 
-        return render_template("teacher_seiseki/display_code.html", code=code_hash, student_list=student_list, syusseki=syusseki)
+        return render_template("teacher_seiseki/display_code.html", code=code_hash)
         # else:
         #     flash("選択した授業は登録されていません。コードを発行できません。", "error")
         #     return redirect(url_for("teacher.seiseki.issue_code"))
@@ -315,3 +329,6 @@ def issue_code():
     # 最初にTimetableから取得した授業一覧を表示する処理
     periods = [1, 2, 3]
     return render_template("teacher_seiseki/issue_code.html", periods=periods)
+
+# student_list=db.session.query(Student).filter_by(class_num = current_user.class_num).all()
+# syusseki = [[s.student_id, s.periods] for s in db.session.query(Syusseki).filter_by(year=year, month=month, day=day).all()]

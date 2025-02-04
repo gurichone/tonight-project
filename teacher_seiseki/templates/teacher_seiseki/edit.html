@@ -15,7 +15,7 @@
             </div>
             
             <div class="t_seiseki_edit">
-                {{ form.attend_day.label(style="width:100px;", class="t_seiseki_edit_label") }}: {{ form.attend_day(style="width:200px;", class="t_seiseki_edit_input") }}
+                {{ form.attend_day.label(style="width:100px;", class="t_seiseki_edit_label") }}: {{ form.attend_day(style="width:200px;", class="t_seiseki_edit_input", readonly=true) }}
                 {% for error in form.attend_day.errors %}
                     <span style="color:red">{{ error }}</span>
                 {% endfor %}

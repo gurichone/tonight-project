@@ -11,6 +11,8 @@ class Score(db.Model):
     subject_id = db.Column(db.String(10))
     assessment_id = db.Column(db.String(1))
     attend_day = db.Column(db.Integer)
+# attend_dayは出席日数を表すカラムだが、出席に数はSyussekiテーブルにcount文を使うことで取得できるため実質使わないことにする
+# ただし消したらエラーが怖いから放置
 
 class Syusseki(db.Model):
     __tablename__ = "syusseki"
