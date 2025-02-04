@@ -33,12 +33,12 @@
     </div>
     <div class="table font_white">
     <table>
-        <tr><th style="width: 100px;">course_id</th><th style="width: 180px;">(course_name)</th><th style="width: 100px;">subject_id</th><th style="width: 180px;">(subject_name)</th></tr>
+        <tr><th style="width: 20vh;">course_id</th><th style="width: 36vh;">(course_name)</th><th style="width: 20vh;">subject_id</th><th style="width: 36vh;">(subject_name)</th></tr>
     </table>
     <div class="scroll_palent">
     <table class="scroll_child">
     {% for cs in cs_list %}
-    <tr><td style="width: 100px;">{{ cs.Course.course_id }}</td><td style="width: 180px;">{{ cs.Course.course_name }}</td><td style="width: 100px;">{{ cs.Subject.subject_id }}</td><td style="width: 180px;">{{ cs.Subject.subject_name }}</td></tr>     
+    <tr><td style="width: 20vh;">{{ cs.Course.course_id }}</td><td style="width: 36vh;">{{ cs.Course.course_name }}</td><td style="width: 20vh;">{{ cs.Subject.subject_id }}</td><td style="width: 36vh;">{{ cs.Subject.subject_name }}</td></tr>     
     {% endfor %}
     </table>
     </div>

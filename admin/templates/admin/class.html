@@ -32,12 +32,12 @@
     </div>
     <div class="table font_white">
     <table>
-        <tr><th style="width: 180px;">class_num</th><th style="width: 180px;">course_id</th><th style="width: 300px;">(course_name)</th></tr>
+        <tr><th style="width: 36vh;">class_num</th><th style="width: 36vh;">course_id</th><th style="width: 60vh;">(course_name)</th></tr>
     </table>
     <div class="scroll_palent">
     <table class="scroll_child">
     {% for c in class_list %}
-    <tr><td style="width: 180px;">{{ c.ClassNum.class_num }}</td><td style="width: 180px;">{{ c.Course.course_id }}</td><td style="width: 300px;">{{ c.Course.course_name }}</td></tr>     
+    <tr><td style="width: 36vh;">{{ c.ClassNum.class_num }}</td><td style="width: 36vh;">{{ c.Course.course_id }}</td><td style="width: 40vh;">{{ c.Course.course_name }}</td></tr>     
     {% endfor %}
     </table>
     </div>
