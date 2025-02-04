@@ -23,18 +23,18 @@
                 <table class="table_head">
                 <thead>
                     <tr>
-                        <th style="width: 100px;">生徒番号</th>
-                        <th style="width: 180px;">氏名</th>
+                        <th style="width: 20vh;">生徒番号</th>
+                        <th style="width: 36vh;">氏名</th>
                     </tr>
                 </thead>
             </table>
-            <div class="scroll_palent" style="height: 220px;">
+            <div class="scroll_palent" style="height: 44vh;">
             <table class="table_body scroll_child">
                 <tbody>
                     {% for student in students %}
                         <tr>
-                            <td class="table_text" style="width: 100px;">{{ student.id }}</td>
-                            <td class="table_text" style="width: 200px;">{{ student.student_name }}</td>
+                            <td class="table_text" style="width: 20vh;">{{ student.id }}</td>
+                            <td class="table_text" style="width: 40vh;">{{ student.student_name }}</td>
                             <td class="table_button">
                                 <!-- 削除ページのリンクを生徒ごとに表示 -->
                                 <a href="{{ url_for('teacher.student.delete_confirm', id=student.id) }}" class="red font_white">削除</a>

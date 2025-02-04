@@ -47,20 +47,20 @@
         </div>
         <div>
             <table class="table_head">
-                <tr><th class="table_button"></th><th style="width: 240px;">ファイル名</th><th style="width: 120px;">実施内容</th><th class="table_button"></th><th class="table_button"></th></tr>
+                <tr><th class="table_button"></th><th style="width: 48vh;">ファイル名</th><th style="width: 24vh;">実施内容</th><th class="table_button"></th><th class="table_button"></th></tr>
             </table>
-            <div class="scroll_palent" style="height: 160px;">
+            <div class="scroll_palent" style="height: 32vh;">
             <table class="table_body scroll_child">
                 {% for sub in submissions %}
                 <tr>
                     <td class="table_button"><a href="{{ url_for('teacher.saiten.t_saiten', submission_id=sub.Submission.submission_id) }}" class="green font_grey">採点</a></td>
-                    <td class="table_text" style="width: 240px;">{{ sub.Submission.submission_name}}</td>
+                    <td class="table_text" style="width: 48vh;">{{ sub.Submission.submission_name}}</td>
                     {% if sub.Submission.submission_type==1 %}
-                    <td class="table_text" style="width: 120px;">効果測定</td>
+                    <td class="table_text" style="width: 24vh;">効果測定</td>
                     {% elif sub.Submission.submission_type==2 %}
-                    <td class="table_text" style="width: 120px;">演習問題</td>
+                    <td class="table_text" style="width: 24vh;">演習問題</td>
                     {% else %}
-                    <td class="table_text" style="width: 120px;">指定なし</td>
+                    <td class="table_text" style="width: 24vh;">指定なし</td>
                     {% endif %}
                     <td class="table_button"><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_edit', submission_id=sub.Submission.submission_id) }}" class="white font_grey">変更</a></td>
                     <td class="table_button"><a href="{{ url_for('teacher.teisyutsu.t_teisyutsu_delete', submission_id=sub.Submission.submission_id) }}" class="red font_white">削除</a></td>

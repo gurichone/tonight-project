@@ -44,9 +44,9 @@
         <table class="table_head">
             <thead>
                 <tr>
-                    <th style="width: 140px;">生徒番号</th>
-                    <th style="width: 100px;">クラス番号</th>
-                    <th style="width: 280px;">氏名</th>
+                    <th style="width: 28vh;">生徒番号</th>
+                    <th style="width: 20vh;">クラス番号</th>
+                    <th style="width: 56vh;">氏名</th>
                     <th></th>
                 </tr>
             </thead>
@@ -56,9 +56,9 @@
             <tbody>
                 {% for student in students %}
                     <tr>
-                        <td class="table_text" style="width: 140px;">{{ student.id }}</td>
-                        <td class="table_text" style="width: 100px;">{{ student.class_num }}</td>
-                        <td class="table_text" style="width: 280px;">{{ student.student_name }}</td>
+                        <td class="table_text" style="width: 28vh;">{{ student.id }}</td>
+                        <td class="table_text" style="width: 20vh;">{{ student.class_num }}</td>
+                        <td class="table_text" style="width: 56vh;">{{ student.student_name }}</td>
                         <!-- 生徒の詳細画面へのボタン -->
                         <td class="table_button"><a href="{{ url_for('teacher.student.student_detail', id=student.id) }}" class="lightgrey3 font_white">詳細</a></td>
                     </tr>
