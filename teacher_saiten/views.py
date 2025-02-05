@@ -125,7 +125,7 @@ def gemini(question, lst, codes):
             try:
                 response = model.generate_content(prompt)
                 # 応答をテキストとして取得（ここではresponse.textと仮定）
-                print(response.text)
+                print("============================\n", txt, "\n-----\n", response.text, "\n==========================")
                 assistant_response = response.text
 
                 # 文字列整理 
