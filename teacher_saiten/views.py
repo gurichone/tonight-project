@@ -105,7 +105,7 @@ def jupyter(testcase, lst, codes):
 def gemini(question, lst, codes):
     gemini_syntax = """
     という問題に対して以下のコードを書きましたpythonで書きました。
-    このコードを評価し、100点満点で点数をつけて
+    このコードを評価し、100点満点で点数をつけて点数のみを出力して
     """
     output = dict()
     # file_path = Path(current_app.config["UPLOAD_FOLDER"], code.code_path)
