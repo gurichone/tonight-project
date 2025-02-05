@@ -64,10 +64,10 @@
                         <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.weekday }}</td>
                         <td class="jikanwari-td">
                             {% if [entry.day, 1] in syusseki %}
-                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data,entry.period1]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 1時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
                             {% else %}
-                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data,entry.period1]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 1時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="white">
                             {% endif %}
                                     {% if entry.period1 %}
@@ -78,10 +78,10 @@
                         </td>
                         <td class="jikanwari-td">
                             {% if [entry.day, 2] in syusseki %}
-                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data,entry.period2]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 2時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
                             {% else %}
-                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data,entry.period2]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 2時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="white">
                             {% endif %}
                                     {% if entry.period1 %}
@@ -92,10 +92,10 @@
                         </td>
                         <td class="jikanwari-td">
                             {% if [entry.day, 3] in syusseki %}
-                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,3,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,3,attend.student_name.data,entry.period3]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 3時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
                             {% else %}
-                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,3,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,3,attend.student_name.data,entry.period3]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 3時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="white">
                             {% endif %}
                                     {% if entry.period1 %}
@@ -115,10 +115,10 @@
                         <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.weekday }}</td>
                         <td class="jikanwari-td">
                             {% if [entry.day, 1] in syusseki %}
-                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data,entry.period1]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 1時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
                             {% else %}
-                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data,entry.period1]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 1時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="lightgrey4">
                             {% endif %}
                                     {% if entry.period1 %}
@@ -129,10 +129,10 @@
                         </td>
                         <td class="jikanwari-td">
                             {% if [entry.day, 2] in syusseki %}
-                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data,entry.period2]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 2時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
                             {% else %}
-                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data,entry.period2]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 2時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="lightgrey4">
                             {% endif %}
                                     {% if entry.period1 %}
@@ -143,10 +143,10 @@
                         </td>
                         <td class="jikanwari-td">
                             {% if [entry.day, 3] in syusseki %}
-                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,3,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,3,attend.student_name.data,entry.period3]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 3時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
                             {% else %}
-                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,3,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,3,attend.student_name.data,entry.period3]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
                                 <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 3時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="lightgrey4">
                             {% endif %}
                                     {% if entry.period1 %}

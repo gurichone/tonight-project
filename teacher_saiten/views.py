@@ -79,7 +79,7 @@ def jupyter(testcase, lst, codes):
                     print("----------error--------------\n", e, "\n------------------------")
                     ans = "error\n"
                 r["ans"] = ans.split("\n")[:-1]
-                print(r["output"], "<<<<<<<<<<<<<<<<<<<<<", r["ans"])
+                # print(r["output"], "<<<<<<<<<<<<<<<<<<<<<", r["ans"])
                 # 正誤判定
                 if len(r["output"]) == len(r["ans"]):
                     r["ox"] = True

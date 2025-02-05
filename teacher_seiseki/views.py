@@ -219,8 +219,9 @@ def attend():
 def attend_add(attend_info):
     if len(current_user.id) != 6:
         return render_template("teacher/gohb.html")
-    # print(attend_info[0], attend_info[1], attend_info[2], attend_info[3], attend_info[4])
+    
     attend_info = attend_info[1:-1].split(", ")
+    # print(attend_info[0], attend_info[1], attend_info[2], attend_info[3], attend_info[4], attend_info[5])
     syusseki = Syusseki(
         year=int(attend_info[0]), 
         month=int(attend_info[1]), 
@@ -230,7 +231,26 @@ def attend_add(attend_info):
     )
     db.session.add(syusseki)
     db.session.commit()
-    
+    score = db.session.query(Score).filter_by(id=attend_info[4][1:-1], subject_id=int(attend_info[5])).first()
+    # print(attend_info[4][1:-1],int(attend_info[5]))
+    if score is not None:
+        if score.attend_day is None:
+            score.attend_day = 1
+            db.session.add(score)
+            db.session.commit()
+        else:
+            score.attend_day += 1
+            db.session.add(score)
+            db.session.commit()
+    else:
+        score = Score(
+            id=attend_info[4][1:-1],
+            class_num=current_user.class_num,
+            subject_id=int(attend_info[5]),
+            attend_day = 1
+        )
+        db.session.add(score)
+        db.session.commit()
     # フォームインスタンスの作成
     attend = AttendScore()
     now = datetime.now()
@@ -249,7 +269,7 @@ def attend_add(attend_info):
     selected_month = attend.month.data
 
     syusseki = [[s.day, s.periods] for s in db.session.query(Syusseki).filter_by(student_id=attend.student_name.data, year=selected_year, month=selected_month).all()]
-    print(syusseki)
+    # print(syusseki)
     # 年月を指定してJikanwariエントリを取得
     entries = Timetable.query.filter_by(year=selected_year, month=selected_month, class_num=current_user.class_num).all()
     sbj_key_val = {subject.subject_id:subject.subject_name for subject in db.session.query(Subject).all()}
@@ -276,6 +296,10 @@ def attend_delete(attend_info):
     print(attend_info[0], attend_info[1], attend_info[2], attend_info[3], attend_info[4])
 
     aaa = db.session.query(Syusseki).filter_by(year=int(attend_info[0]), month=int(attend_info[1]), day=int(attend_info[2]), periods=int(attend_info[3]), student_id=attend_info[4][1:-1]).delete()
+    db.session.commit()
+    score = db.session.query(Score).filter_by(id=attend_info[4][1:-1], subject_id=int(attend_info[5])).first()
+    score.attend_day -= 1
+    db.session.add(score)
     db.session.commit()
     # フォームインスタンスの作成
     attend = AttendScore()
