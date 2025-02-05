@@ -44,20 +44,20 @@
                 <table class="font_white table_head">
                     <thead>
                         <tr>
-                            <th style="width: 180px;">科目名</th>
-                            <th style="width: 180px;">氏名</th>
-                            <th style="width: 80px;">成績</th>
+                            <th style="width: 36vh;">科目名</th>
+                            <th style="width: 36vh;">氏名</th>
+                            <th style="width: 16vh;">成績</th>
                         </tr>
                     </thead>
                 </table>
-                <div class="scroll_palent" style="height: 144px;">
+                <div class="scroll_palent" style="height: 28vh;">
                     <table class="scroll_child table_body">
                         <tbody class="t_seiseki_tbody">
                             {% for results in results %}
                             <tr>
-                                <td class="table_text" style="width: 180px;">{{ results.Subject.subject_name }}</td>
-                                <td class="table_text" style="width: 180px;">{{ results.Student.student_name }}</td>
-                                <td class="table_text" style="width: 80px;">{{ results.Score.assessment_id }}</td>
+                                <td class="table_text" style="width: 36vh;">{{ results.Subject.subject_name }}</td>
+                                <td class="table_text" style="width: 36vh;">{{ results.Student.student_name }}</td>
+                                <td class="table_text" style="width: 16vh;">{{ results.Score.assessment_id }}</td>
                                 <td class="table_button">
                                     <!-- 編集ボタン -->
                                     <form  action="{{ url_for('teacher.seiseki.edit', score_id=results.Score.score_id) }}" method="GET">

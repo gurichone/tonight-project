@@ -44,10 +44,10 @@
         <h3 id="h3_sub" class="font_white">以下の内容を登録しますか？</h3>
         <form class="form_in t_seiseki_add_form white" action="{{ url_for('teacher.seiseki.add') }}" method="POST" novalidate="novalidate">
             {{ score.csrf_token }}
-            <p style="margin: 9px 0;">生徒番号: {{ score.id(disabled=true, class="font_black") }}</p>
-            <p style="margin: 9px 0;">生徒名: {{ student_name }}</p>
-            <p style="margin: 9px 0;">科目名: {{ score.subject_id(disabled=true, class="font_black") }}</p>
-            <p style="margin: 9px 0;">評価: {{ score.assessment_id(disabled=true, class="font_black") }}</p>
+            <p style="margin: 1vh 0;">生徒番号: {{ score.id(disabled=true, class="font_black") }}</p>
+            <p style="margin: 1vh 0;">生徒名: {{ student_name }}</p>
+            <p style="margin: 1vh 0;">科目名: {{ score.subject_id(disabled=true, class="font_black") }}</p>
+            <p style="margin: 1vh 0;">評価: {{ score.assessment_id(disabled=true, class="font_black") }}</p>
             <input type="hidden" name="id" value="{{ score.id.data }}">
             <!-- 一応ここにも追加したけど必要なさそう -->
             {% for error in score.id.errors %}
