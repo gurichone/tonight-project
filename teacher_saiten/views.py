@@ -105,7 +105,7 @@ def jupyter(testcase, lst, codes):
 def gemini(question, lst, codes):
     gemini_syntax = """
     という問題に対して以下のコードを書きましたpythonで書きました。
-    このコードを評価し、100点満点で点数をつけて点数のみを出力して
+    このコードを評価し、100点満点で点数をつけて
     """
     output = dict()
     # file_path = Path(current_app.config["UPLOAD_FOLDER"], code.code_path)
@@ -121,17 +121,17 @@ def gemini(question, lst, codes):
             txt = codes[l.Student.id]
             # セッション状態にメッセージリストがない場合は初期化
             prompt = question + gemini_syntax + txt
-            # print("---------------\n", prompt, "\n~~~~~~~~~~~\n",l,  "\n------------")
+            print("---------------\n", prompt, "\n~~~~~~~~~~~\n",l,  "\n------------")
             try:
                 response = model.generate_content(prompt)
                 # 応答をテキストとして取得（ここではresponse.textと仮定）
                 print(response.text)
-                assistant_response = response.text.split("\n")
+                assistant_response = response.text
 
                 # 文字列整理 
                 ans = ""
                 numcheck = False
-                for a in assistant_response[0]:
+                for a in assistant_response:
                     if numcheck:
                         if a in "0123456789":
                             ans+=a
