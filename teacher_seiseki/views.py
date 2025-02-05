@@ -166,45 +166,152 @@ def attend():
         return render_template("teacher/gohb.html")
     # フォームインスタンスの作成
     attend = AttendScore()
-    
-    # 科目名を選択、テーブルのidに応じて科目名を表示している
-    subjects = Subject.query.with_entities(Subject.subject_id, Subject.subject_name).all()
-    attend.subject_id.choices = [("","--")] + [(c.subject_id, c.subject_name)for c in subjects]
-    
+    now = datetime.now()
     # クラス番号を選択
-    class_nums = Score.query.with_entities(Score.class_num).distinct().all()
-    attend.class_num.choices = [("","--")] + [(c.class_num, c.class_num)for c in class_nums]
+    student_name = Student.query.filter_by(class_num=current_user.class_num).with_entities(Student.id, Student.student_name).all()
+    attend.student_name.choices = [(s.id, "{}({})".format(s.student_name, s.id))for s in student_name]
     
-    # ベースクエリの定義
-    query = db.session.query(Score, Subject, Student).join(Subject, Score.subject_id == Subject.subject_id).join(Student, Score.id == Student.id)
+    attend.year.choices = [(now.year-1, now.year-1), (now.year, now.year), (now.year+1, now.year+1)]
+    attend.month.choices = [(i, i)for i in range(1,13)]
 
     # フォームのバリデーションと検索条件の適用
     if attend.validate_on_submit():
-        subject_name = Subject.subject_name
-        student_name = Student.student_name
+        # subject_name = Subject.subject_name
+        # student_name = Student.student_name
 
-        # 科目名、クラス番号、生徒番号のいずれかを入力しフィルターする
-        if attend.subject_id.data:
-            query = query.filter(Score.subject_id == attend.subject_id.data)
-        if attend.class_num.data:
-            query = query.filter(Score.class_num == attend.class_num.data)
-        if attend.student_name.data:
-            query = query.filter(Score.student_name.like(f"%{attend.student_name.data}%"))
+        
+        
+        selected_year = attend.year.data
+        selected_month = attend.month.data
 
-        # フィルタリング結果を取得し、画面に表示
+        syusseki = [[s.day, s.periods] for s in db.session.query(Syusseki).filter_by(student_id=attend.student_name.data, year=selected_year, month=selected_month).all()]
+        print(syusseki)
+        # 年月を指定してJikanwariエントリを取得
+        entries = Timetable.query.filter_by(year=selected_year, month=selected_month, class_num=current_user.class_num).all()
+        sbj_key_val = {subject.subject_id:subject.subject_name for subject in db.session.query(Subject).all()}
+        # フィルタリング結果を取得し、画面に表示 
+        print(attend.year.data, attend.month.data)
         return render_template(
             "/teacher_seiseki/attend.html", 
             attend=attend, 
-            subject_name=subject_name, 
-            student_name=student_name, 
-            results=query.all()
+            # subject_name=subject_name, 
+            # student_name=student_name, 
+            # year=selected_year,
+            # month=selected_month,
+            results=True,
+            entries=entries,
+            sbj_key_val=sbj_key_val,
+            thisyear = now.year,
+            syusseki=syusseki
             )
     
-    # 検索が行われていない場合、全部の結果を表示
+    # 検索が行われていない場合、何も表示しない
+    attend.year.data = now.year
+    attend.month.data = now.month
     return render_template(
         "/teacher_seiseki/attend.html", 
         attend=attend,
-        results=query.all()
+        results=False,
+        thisyear = now.year
+        )
+@seiseki.route("/attend_add/<attend_info>", methods=["GET", "POST"])
+@login_required
+def attend_add(attend_info):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
+    # print(attend_info[0], attend_info[1], attend_info[2], attend_info[3], attend_info[4])
+    attend_info = attend_info[1:-1].split(", ")
+    syusseki = Syusseki(
+        year=int(attend_info[0]), 
+        month=int(attend_info[1]), 
+        day=int(attend_info[2]), 
+        periods=int(attend_info[3]), 
+        student_id=attend_info[4][1:-1]
+    )
+    db.session.add(syusseki)
+    db.session.commit()
+    
+    # フォームインスタンスの作成
+    attend = AttendScore()
+    now = datetime.now()
+    
+    # クラス番号を選択
+    student_name = Student.query.filter_by(class_num=current_user.class_num).with_entities(Student.id, Student.student_name).all()
+    attend.student_name.choices = [(s.id, "{}({})".format(s.student_name, s.id))for s in student_name]
+    
+    attend.year.choices = [(now.year-1, now.year-1), (now.year, now.year), (now.year+1, now.year+1)]
+    attend.month.choices = [(i, i)for i in range(1,13)]
+
+    attend.year.data = int(attend_info[0])
+    attend.month.data = int(attend_info[1])
+    attend.student_name.data = attend_info[4][1:-1]
+    selected_year = attend.year.data
+    selected_month = attend.month.data
+
+    syusseki = [[s.day, s.periods] for s in db.session.query(Syusseki).filter_by(student_id=attend.student_name.data, year=selected_year, month=selected_month).all()]
+    print(syusseki)
+    # 年月を指定してJikanwariエントリを取得
+    entries = Timetable.query.filter_by(year=selected_year, month=selected_month, class_num=current_user.class_num).all()
+    sbj_key_val = {subject.subject_id:subject.subject_name for subject in db.session.query(Subject).all()}
+    # フィルタリング結果を取得し、画面に表示 
+    return render_template(
+        "/teacher_seiseki/attend.html", 
+        attend=attend, 
+        # subject_name=subject_name, 
+        # student_name=student_name, 
+        # year=selected_year,
+        # month=selected_month,
+        results=True,
+        entries=entries,
+        sbj_key_val=sbj_key_val,
+        thisyear = now.year,
+        syusseki=syusseki
+        )
+@seiseki.route("/attend_delete/<attend_info>", methods=["GET", "POST"])
+@login_required
+def attend_delete(attend_info):
+    if len(current_user.id) != 6:
+        return render_template("teacher/gohb.html")
+    attend_info = attend_info[1:-1].split(", ")
+    print(attend_info[0], attend_info[1], attend_info[2], attend_info[3], attend_info[4])
+
+    aaa = db.session.query(Syusseki).filter_by(year=int(attend_info[0]), month=int(attend_info[1]), day=int(attend_info[2]), periods=int(attend_info[3]), student_id=attend_info[4][1:-1]).delete()
+    db.session.commit()
+    # フォームインスタンスの作成
+    attend = AttendScore()
+    now = datetime.now()
+    
+    # クラス番号を選択
+    student_name = Student.query.filter_by(class_num=current_user.class_num).with_entities(Student.id, Student.student_name).all()
+    attend.student_name.choices = [(s.id, "{}({})".format(s.student_name, s.id))for s in student_name]
+    
+    attend.year.choices = [(now.year-1, now.year-1), (now.year, now.year), (now.year+1, now.year+1)]
+    attend.month.choices = [(i, i)for i in range(1,13)]
+
+    attend.year.data = int(attend_info[0])
+    attend.month.data = int(attend_info[1])
+    attend.student_name.data = attend_info[4][1:-1]
+    selected_year = attend.year.data
+    selected_month = attend.month.data
+
+    syusseki = [[s.day, s.periods] for s in db.session.query(Syusseki).filter_by(student_id=attend.student_name.data, year=selected_year, month=selected_month).all()]
+    print(syusseki)
+    # 年月を指定してJikanwariエントリを取得
+    entries = Timetable.query.filter_by(year=selected_year, month=selected_month, class_num=current_user.class_num).all()
+    sbj_key_val = {subject.subject_id:subject.subject_name for subject in db.session.query(Subject).all()}
+    # フィルタリング結果を取得し、画面に表示 
+    return render_template(
+        "/teacher_seiseki/attend.html", 
+        attend=attend, 
+        # subject_name=subject_name, 
+        # student_name=student_name, 
+        # year=selected_year,
+        # month=selected_month,
+        results=True,
+        entries=entries,
+        sbj_key_val=sbj_key_val,
+        thisyear = now.year,
+        syusseki=syusseki
         )
 
 # 成績の編集を行うための処理を実装
@@ -319,9 +426,11 @@ def issue_code():
         # 一時的に発行したコードを保存（生徒が後で確認できるようにする）
         # session['attendance_code'] = code_hash
         # session['code_timestamp'] = datetime.now().timestamp()  # 時刻も保存
+        student_list=db.session.query(Student).filter_by(class_num = current_user.class_num).all()
+        syusseki = [s.student_id for s in db.session.query(Syusseki).filter_by(year=year, month=month, day=day, periods=period).all()]
 
 
-        return render_template("teacher_seiseki/display_code.html", code=code_hash)
+        return render_template("teacher_seiseki/display_code.html", code=code_hash, student_list=student_list, syusseki=syusseki)
         # else:
         #     flash("選択した授業は登録されていません。コードを発行できません。", "error")
         #     return redirect(url_for("teacher.seiseki.issue_code"))
@@ -330,5 +439,3 @@ def issue_code():
     periods = [1, 2, 3]
     return render_template("teacher_seiseki/issue_code.html", periods=periods)
 
-# student_list=db.session.query(Student).filter_by(class_num = current_user.class_num).all()
-# syusseki = [[s.student_id, s.periods] for s in db.session.query(Syusseki).filter_by(year=year, month=month, day=day).all()]

@@ -44,11 +44,12 @@ class AddScore(FlaskForm):
 
 # 出席日数を絞り込みするフォームを作成
 class AttendScore(FlaskForm):
-    subject_id = SelectField("科目名")
 
-    class_num = SelectField("クラス番号")
+    student_name = SelectField("氏名")
 
-    student_name = StringField("氏名")
+    year = SelectField("年",coerce=int,)
+
+    month = SelectField("月",coerce=int,)
 
     submit = SubmitField("")
 

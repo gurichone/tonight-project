@@ -7,57 +7,225 @@
     <div class="search_form">
         <form class="form_white_form white" action="{{ url_for('teacher.seiseki.attend') }}" method="POST" novalidate="novalidate">
             {{ attend.csrf_token }}
-            <!-- 科目名を選ぶ -->
-            <label for="subject_id" class="">科目名</label>
-            <select name="subject_id" id="subject_id">
-                {% for subject_id, label in attend.subject_id.choices %}
-                    <option value="{{ subject_id }}" {% if attend.subject_id.data == subject_id %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
             <!-- クラス番号を選ぶ -->
-            <label for="class_num" class="">クラス番号</label>
-            <select name="class_num" id="class_num">
-                {% for class_num, label in attend.class_num.choices %}
-                    <option value="{{ class_num }}" {% if attend.class_num.data == class_num %}selected{% endif %}>{{ label }}</option>
+            <label for="student_name" class="">生徒名</label>
+            <select name="student_name" id="student_name" style="width:40vh; margin-right: 10vh;">
+                {% for student_name, label in attend.student_name.choices %}
+                    <option value="{{ student_name }}" {% if attend.student_name.data == student_name %}selected{% endif %}>{{ label }}</option>
                 {% endfor %}
             </select>
-            <!-- 生徒番号を入力 -->
-            <label for="student_name" class="">生徒名</label>
-            <input type="text" name="student_name" id="student_name" value="{{ attend.student_name.data or '' }}">
+            <select name="year" id="year" style="width:20vh;">
+                {% for year, label in attend.year.choices %}
+                    <option value="{{ year }}" {% if attend.year.data == year %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+                <!-- 必要に応じて追加 -->
+            </select>
+            <label for="year" class="">年</label>
+        
+            <select name="month" id="month" style="width:20vh;">
+                {% for month, label in attend.month.choices %}
+                <option value="{{ month }}" {% if attend.month.data == month %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <label for="month" class="">月</label>
             <!-- ボタンを押して検索 -->
             {{ attend.submit }}
         </form>
     </div>
     <!-- 検索結果を表示 -->
     {% if results %}
-        <div class="list_out">
-            <div class="list_in grey font_white">
-                <table class="font_white table_head">
-                    <thead>
-                        <tr>
-                            <th style="width: 240px;">科目名</th>
-                            <th style="width: 240px;">氏名</th>
-                            <th style="width: 100px;">日数</th>
-                        </tr>
-                    </thead>
-                </table>
-                <div class="scroll_palent" style="height: 200px;">
-                    <table class="scroll_child table_body">
-                        <tbody>
-                            {% for attend in results %}
-                            <tr>
-                                <td style="width: 240px;">{{ attend.Subject.subject_name }}</td>
-                                <td style="width: 240px;">{{ attend.Student.student_name }}</td>
-                                <td style="width: 100px;">{{ attend.Score.attend_day }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="jikanwari_out">
+        <!-- カレンダー表示 -->
+        <div class="jikanwari_in" style="width: 95vh;">
+        <table class="jikanwari_table_head" id="calendar-table">
+            <thead>
+                <tr class="jikanwari-tr">
+                    <!-- <th class="jikanwari-th lightgrey2 font_white">年</th>
+                    <th class="jikanwari-th lightgrey2 font_white">月</th> -->
+                    <th class="jikanwari-th grey font_white">{{selected_year}}年 {{selected_month}}月</th>
+                    <!-- <th class="jikanwari-th lightgrey2 font_white">曜日</th> -->
+                    <th class="jikanwari-th lightgrey2 font_white">1時間目</th>
+                    <th class="jikanwari-th lightgrey2 font_white">2時間目</th>
+                    <th class="jikanwari-th lightgrey2 font_white">3時間目</th>
+                    <!-- <th class="jikanwari-th lightgrey2 font_white">備考</th>
+                    <th class="jikanwari-th lightgrey2 font_white">イベント</th> -->
+                </tr>
+            </thead>
+        </table>
+        <div class="scroll_palent" style="height: 32vh;">
+            <table class="scroll_child jikanwari_table_body">
+                <tbody>
+                    {% for entry in entries %}
+                    {% if entry.weekday != '土' and entry.weekday != '日' %}
+                    <tr>
+                        <!-- <td class="jikanwari-td white">{{ entry.year }}</td>
+                        <td class="jikanwari-td white">{{ entry.month }}</td> -->
+                        <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.day }}</td>
+                        <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.weekday }}</td>
+                        <td class="jikanwari-td">
+                            {% if [entry.day, 1] in syusseki %}
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 1時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
+                            {% else %}
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 1時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="white">
+                            {% endif %}
+                                    {% if entry.period1 %}
+                                    {{ sbj_key_val[entry.period1] }}
+                                    {% endif %}
+                                </button>
+                            </form> 
+                        </td>
+                        <td class="jikanwari-td">
+                            {% if [entry.day, 2] in syusseki %}
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 2時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
+                            {% else %}
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 2時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="white">
+                            {% endif %}
+                                    {% if entry.period1 %}
+                                    {{ sbj_key_val[entry.period1] }}
+                                    {% endif %}
+                                </button>
+                            </form> 
+                        </td>
+                        <td class="jikanwari-td">
+                            {% if [entry.day, 3] in syusseki %}
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 3時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
+                            {% else %}
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 3時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="white">
+                            {% endif %}
+                                    {% if entry.period1 %}
+                                    {{ sbj_key_val[entry.period1] }}
+                                    {% endif %}
+                                </button>
+                            </form> 
+                        </td>
+                        <!-- <td class="jikanwari-td white">{{ entry.notes }}</td>
+                        <td class="jikanwari-td white">{{ entry.event }}</td> -->
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <!-- <td class="jikanwari-td white">{{ entry.year }}</td>
+                        <td class="jikanwari-td white">{{ entry.month }}</td> -->
+                        <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.day }}</td>
+                        <td class="jikanwari-td jikanwari-date grey font_white">{{ entry.weekday }}</td>
+                        <td class="jikanwari-td">
+                            {% if [entry.day, 1] in syusseki %}
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 1時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
+                            {% else %}
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,1,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 1時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="lightgrey4">
+                            {% endif %}
+                                    {% if entry.period1 %}
+                                    {{ sbj_key_val[entry.period1] }}
+                                    {% endif %}
+                                </button>
+                            </form> 
+                        </td>
+                        <td class="jikanwari-td">
+                            {% if [entry.day, 2] in syusseki %}
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 2時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
+                            {% else %}
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 2時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="lightgrey4">
+                            {% endif %}
+                                    {% if entry.period1 %}
+                                    {{ sbj_key_val[entry.period1] }}
+                                    {% endif %}
+                                </button>
+                            </form> 
+                        </td>
+                        <td class="jikanwari-td">
+                            {% if [entry.day, 3] in syusseki %}
+                            <form action="{{ url_for('teacher.seiseki.attend_delete', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 3時限目の出席を取り消しますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="green">
+                            {% else %}
+                            <form action="{{ url_for('teacher.seiseki.attend_add', attend_info=[attend.year.data,attend.month.data,entry.day,2,attend.student_name.data]) }}" method="POST" style="margin: 0; padding: 0; height: 100%; width: 100%;">
+                                <button type="submit" onclick="return confirm('生徒番号{{attend.student_name.data}}の{{attend.year.data}}/{{attend.month.data}}/{{entry.day}} 3時限目を出席済にしますか')" style="margin: 0; padding: 0; height: 100%; width: 100%; border: none;" class="lightgrey4">
+                            {% endif %}
+                                    {% if entry.period1 %}
+                                    {{ sbj_key_val[entry.period1] }}
+                                    {% endif %}
+                                </button>
+                            </form> 
+                        </td>
+                        <!-- <td class="jikanwari-td lightgrey4">{{ entry.notes }}</td>
+                        <td class="jikanwari-td lightgrey4">{{ entry.event }}</td> -->
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
-    </div>
+        </div>
+        </div>
+        
+        <script>
+            // 月ごとの日数を取得する関数
+            function getDaysInMonth(year, month) {
+                return new Date(year, month, 0).getDate(); // 月の最後の日付を取得
+            }
+        
+            // 曜日を取得する関数
+            function getWeekday(day, year, month) {
+                const date = new Date(year, month - 1, day); // JavaScriptでは月が0から始まる
+                const weekdays = ['月', '火', '水', '木', '金', '土', '日'];
+                return weekdays[date.getDay()]; // 0=日曜日, 6=土曜日
+            }
+        
+            // 年と月を基にカレンダーを更新する関数
+            function updateCalendar(year, month) {
+                const numberOfDays = getDaysInMonth(year, month);
+                const calendarBody = document.getElementById('calendar-body');
+                calendarBody.innerHTML = ''; // 既存のテーブル行をクリア
+        
+                // 日付をループして行を追加
+                for (let day = 1; day <= numberOfDays; day++) {
+                    const weekday = getWeekday(day, year, month);
+                    const row = document.createElement('tr');
+                    row.classList.add('jikanwari-tr');
+        
+                    // 年、月、日、曜日のセルを追加
+                    row.innerHTML = `
+                        <td class="jikanwari-td">${year}</td>
+                        <td class="jikanwari-td">${month}</td>
+                        <td class="jikanwari-td">${day}</td>
+                        <td class="jikanwari-td">${weekday}</td>
+                        <td class="jikanwari-td"></td>
+                        <td class="jikanwari-td"></td>
+                        <td class="jikanwari-td"></td>
+                        <td class="jikanwari-td"></td>
+                        <td class="jikanwari-td"></td>
+                    `;
+        
+                    calendarBody.appendChild(row);
+                }
+            }
+        
+            // ページが読み込まれた時に、カレンダーを初期表示
+            document.addEventListener('DOMContentLoaded', function () {
+                const yearSelect = document.getElementById('year-select');
+                const monthSelect = document.getElementById('month-select');
+        
+                // 初期カレンダーの更新
+                updateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+        
+                // 年と月が変更されたらカレンダーを更新
+                yearSelect.addEventListener('change', function () {
+                    updateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+                });
+        
+                monthSelect.addEventListener('change', function () {
+                    updateCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+                });
+            });
+        </script>
         {% else %}
-            <h2>一致する結果がありません</h2>
         {% endif %}
 {% endblock %}
