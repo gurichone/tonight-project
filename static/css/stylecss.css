@@ -117,7 +117,7 @@ display: block;
 #menu_body header .teacher-session{
   padding-top: 40px;
   height: 60px;
-  margin-bottom: 40px;
+  margin-bottom: 8vh;
 }
 .menu_out{
 display: flex;
