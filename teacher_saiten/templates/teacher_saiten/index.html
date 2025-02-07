@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="list_out">
-    <div id="saiten_index" class="white font_grey">
+    <div id="saiten_index" class="grey font_white">
         {% with error_messages = get_flashed_messages(with_categories=true) %}
         {% if error_messages %}
             <div class="flashes">
@@ -29,9 +29,9 @@
                 {% endif %}
             </ul>
             <div id="saiten_action">
-            <a href="{{ url_for('teacher.saiten.manual') }}" id="downroad" class="font_white">ダウンロード</a>
-            <a href="{{ url_for('teacher.saiten.auto') }}" id="loading_a" onclick="saiten()" class="grey font_white">採点</a>
-            <a href="{{ url_for('teacher.saiten.show') }}" class="grey font_white">点数</a>
+            <a href="{{ url_for('teacher.saiten.manual') }}" id="downroad" class="font_grey">ダウンロード</a>
+            <a href="{{ url_for('teacher.saiten.auto') }}" id="loading_a" onclick="saiten()" class="white font_grey">採点</a>
+            <a href="{{ url_for('teacher.saiten.show') }}" class="white font_grey">点数</a>
             </div>
             <p id="loading_p" class="hidden">採点には時間がかかります。<br>ページの読み込みを停止させないでください。</p>
         </div>

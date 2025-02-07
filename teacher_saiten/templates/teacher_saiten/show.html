@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="form_out" id="resultlist">
-<div class="form_in white">
+<div class="form_in grey font_white">
     <table>
         <tr><th style="width: 40vh; text-align: start;">氏名</th><th style="width: 20vh; text-align: start;">点数</th></tr>
     </table>
@@ -17,9 +17,9 @@
     <table class="scroll_child">
         {% for p in personal_lst %}
         <tr>
-        <td style="width: 40vh; text-align: start;">{{p.Student.student_name}}({{p.Student.id}})</td>
-        <td style="width: 20vh; text-align: start;">{{p.Personal_Submission.point}}</td>
-        <tr></tr>
+        <td style="width: 40vh; text-align: start; border-bottom: solid 1px white;">{{p.Student.student_name}}({{p.Student.id}})</td>
+        <td style="width: 20vh; text-align: start; border-bottom: solid 1px white;">{{p.Personal_Submission.point}}</td>
+        </tr>
         {% endfor %}
     </table>
     </div>
