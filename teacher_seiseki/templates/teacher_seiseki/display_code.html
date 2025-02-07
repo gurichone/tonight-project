@@ -16,10 +16,10 @@
                 <table class="scroll_child table_body">
                 {% for student in student_list %}
                     <tr>
-                        <td style="width: 40vh;">
+                        <td style="width: 40vh; border-bottom: 1px solid white;">
                             {{student.student_name}}({{student.id}})
                         </td>
-                        <td style="width: 20vh;">
+                        <td style="width: 20vh; border-bottom: 1px solid white;">
                             {% if student.id in syusseki %}
                                 <div id="submitted_true">✓</div>
                             {% else %}

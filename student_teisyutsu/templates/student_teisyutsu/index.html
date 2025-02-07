@@ -8,9 +8,9 @@
 
 {% block content %}
 <div class="list_out">
-    <div class="list_in white">
+    <div class="list_in grey font_white">
         <div id="s_teisyutsu_toggle_switch">
-        <label class="font_grey" for="toggle_switch">未提出絞り込み</label>
+        <label class="font_white" for="toggle_switch">未提出絞り込み</label>
         <div id="toggle_switch" class="toggle_switch_outer stu_sub_taoggle">
             <div class="toggle_switch_inner"></div>
         </div>
@@ -27,7 +27,7 @@
                         <div id="submitted_none"></div>
                         {% endif %}
                     </td>
-                    <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}" class="grey font_white">提出</a></td>
+                    <td><a href="{{ url_for('student.teisyutsu.s_teisyutsu', submission_id=sub.Personal_Submission.submission_id) }}" class="white font_grey">提出</a></td>
                 </tr>
                 {% endfor %}
             </table>
